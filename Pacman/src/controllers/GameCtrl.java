@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.Calendar;
+
 import enumations.TileEnum;
 import models.Game;
 import models.Ghost;
@@ -15,18 +17,9 @@ import views.MazeBuilder;
 * @version V1.0   
 */
 
-public class GameCtrl {
+public class GameCtrl implements Runnable {
 	
 	private GameCtrl() {}
-	
-	private static GameCtrl gameCtrl;
-	
-	public static GameCtrl getInstance() {
-		if (null == gameCtrl) {
-			gameCtrl = new GameCtrl();
-		}
-		return gameCtrl;
-	}
 	
 	private PacmanCtrl pacmanCtrl = PacmanCtrl.getInstance();
 	private GhostCtrl ghostCtrl = GhostCtrl.getInstance();
@@ -70,6 +63,27 @@ public class GameCtrl {
 	
 	private void nextLevel() {
 		
+	}
+	
+	@Override
+	public void run() {
+		update();
+		System.out.println(Calendar.getInstance().getTime().toString());
+	}
+	
+	@SuppressWarnings("static-access")
+	public static void main(String[] args) {
+		GameCtrl gameCtrl = new GameCtrl();
+		while (true) {
+			gameCtrl.init();
+			Thread thread = new Thread(gameCtrl);
+			while (true) {
+				thread.run();
+				try {
+					thread.sleep(33);
+				} catch (InterruptedException e) {}
+			}
+		}
 	}
 	
 }

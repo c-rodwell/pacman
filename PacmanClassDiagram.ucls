@@ -39,7 +39,7 @@
   </class>  
   <class id="5" language="java" name="models.Ghost" project="Pacman" file="/Pacman/src/models/Ghost.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="701" y="960"/>    
+    <position height="-1" width="-1" x="674" y="821"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -48,7 +48,7 @@
   </class>  
   <class id="6" language="java" name="models.Pacman" project="Pacman" file="/Pacman/src/models/Pacman.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1104" y="800"/>    
+    <position height="-1" width="-1" x="1117" y="614"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -57,7 +57,7 @@
   </class>  
   <enumeration id="7" language="java" name="enumations.DirectionEnum" project="Pacman" 
     file="/Pacman/src/enumations/DirectionEnum.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="689" y="1412"/>    
+    <position height="-1" width="-1" x="685" y="1315"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -84,7 +84,7 @@
   </enumeration>  
   <interface id="10" language="java" name="interfaces.Collidable" project="Pacman" 
     file="/Pacman/src/interfaces/Collidable.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="1094" y="1290"/>    
+    <position height="-1" width="-1" x="1205" y="973"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -93,7 +93,7 @@
   </interface>  
   <interface id="11" language="java" name="interfaces.Movable" project="Pacman" 
     file="/Pacman/src/interfaces/Movable.java" binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="902" y="1291"/>    
+    <position height="-1" width="-1" x="996" y="1034"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -112,10 +112,10 @@
   <association id="13">    
     <end type="SOURCE" refId="6" navigable="false">      
       <attribute id="14" name="pacman">        
-        <position height="0" width="0" x="326" y="-151"/>      
+        <position height="0" width="0" x="339" y="-337"/>      
       </attribute>      
       <multiplicity id="15" minimum="0" maximum="1">        
-        <position height="0" width="0" x="326" y="-151"/>      
+        <position height="0" width="0" x="339" y="-337"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
@@ -124,10 +124,10 @@
   <association id="16">    
     <end type="SOURCE" refId="4" navigable="false">      
       <attribute id="17" name="ghosts">        
-        <position height="0" width="0" x="181" y="0"/>      
+        <position height="0" width="0" x="154" y="-139"/>      
       </attribute>      
       <multiplicity id="18" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="181" y="0"/>      
+        <position height="0" width="0" x="154" y="-139"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
@@ -144,10 +144,10 @@
   <association id="22">    
     <end type="SOURCE" refId="3" navigable="false">      
       <attribute id="23" name="pacman">        
-        <position height="0" width="0" x="326" y="-151"/>      
+        <position height="0" width="0" x="339" y="-337"/>      
       </attribute>      
       <multiplicity id="24" minimum="0" maximum="1">        
-        <position height="0" width="0" x="326" y="-151"/>      
+        <position height="0" width="0" x="339" y="-337"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
@@ -157,10 +157,10 @@
     <bendpoint x="380" y="731"/>    
     <end type="SOURCE" refId="4" navigable="false">      
       <attribute id="26" name="inputDirection">        
-        <position height="18" width="73" x="549" y="1277"/>      
+        <position height="18" width="73" x="545" y="1180"/>      
       </attribute>      
       <multiplicity id="27" minimum="0" maximum="1">        
-        <position height="16" width="23" x="606" y="1295"/>      
+        <position height="16" width="23" x="602" y="1198"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
@@ -168,14 +168,14 @@
   </association>  
   <association id="28">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="29" name="gameCtrl">        
-        <position height="0" width="0" x="1" y="9"/>      
+      <attribute id="29" name="game">        
+        <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="30" minimum="0" maximum="1">        
-        <position height="0" width="0" x="1" y="9"/>      
+        <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="31">    
@@ -193,10 +193,10 @@
   <association id="34">    
     <end type="SOURCE" refId="5" navigable="false">      
       <attribute id="35" name="currentDirection">        
-        <position height="18" width="85" x="715" y="1196"/>      
+        <position height="18" width="85" x="716" y="1065"/>      
       </attribute>      
       <multiplicity id="36" minimum="0" maximum="1">        
-        <position height="16" width="23" x="641" y="1214"/>      
+        <position height="16" width="23" x="628" y="1077"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
@@ -241,133 +241,121 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="47">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="48" name="ghosts">        
+        <position height="0" width="0" x="154" y="-139"/>      
+      </attribute>      
+      <multiplicity id="49" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="154" y="-139"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="50">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="48" name="game">        
+      <attribute id="51" name="game">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="49" minimum="0" maximum="1">        
+      <multiplicity id="52" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="4" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="50">    
-    <end type="SOURCE" refId="5" navigable="false">      
-      <attribute id="51" name="nextDirection">        
-        <position height="18" width="71" x="600" y="1195"/>      
-      </attribute>      
-      <multiplicity id="52" minimum="0" maximum="1">        
-        <position height="16" width="23" x="703" y="1253"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <realization id="53">    
-    <end type="SOURCE" refId="6"/>    
+    <end type="SOURCE" refId="5"/>    
     <end type="TARGET" refId="11"/>  
   </realization>  
   <association id="54">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="55" name="currentDirection">        
-        <position height="18" width="85" x="698" y="1234"/>      
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="55" name="nextDirection">        
+        <position height="18" width="71" x="583" y="1056"/>      
       </attribute>      
       <multiplicity id="56" minimum="0" maximum="1">        
-        <position height="16" width="23" x="774" y="1313"/>      
+        <position height="16" width="23" x="689" y="1125"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="7" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="57">    
-    <end type="SOURCE" refId="12" navigable="false">      
-      <attribute id="58" name="mazeBuilder"/>      
-      <multiplicity id="59" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="12" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="60">    
-    <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="61" name="gameState">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="62" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="8" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="63">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="64" name="nextDirection">        
-        <position height="18" width="71" x="769" y="1299"/>      
-      </attribute>      
-      <multiplicity id="65" minimum="0" maximum="1">        
-        <position height="16" width="23" x="765" y="1213"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="66">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="10"/>  
-  </realization>  
-  <association id="67">    
-    <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="68" name="game">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="69" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="70">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="71" name="ghosts">        
-        <position height="0" width="0" x="181" y="0"/>      
-      </attribute>      
-      <multiplicity id="72" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="181" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="73">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="11"/>  
-  </realization>  
-  <association id="74">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="75" name="ghostCtrl">        
+      <attribute id="58" name="ghostCtrl">        
         <position height="0" width="0" x="98" y="0"/>      
       </attribute>      
-      <multiplicity id="76" minimum="0" maximum="1">        
+      <multiplicity id="59" minimum="0" maximum="1">        
         <position height="0" width="0" x="98" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="77">    
+  <realization id="60">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="11"/>  
+  </realization>  
+  <association id="61">    
     <end type="SOURCE" refId="4" navigable="false">      
-      <attribute id="78" name="pacman">        
-        <position height="18" width="46" x="913" y="745"/>      
+      <attribute id="62" name="pacman">        
+        <position height="18" width="46" x="926" y="559"/>      
       </attribute>      
-      <multiplicity id="79" minimum="0" maximum="1">        
-        <position height="0" width="0" x="326" y="-151"/>      
+      <multiplicity id="63" minimum="0" maximum="1">        
+        <position height="0" width="0" x="339" y="-337"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <association id="64">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="65" name="currentDirection">        
+        <position height="18" width="85" x="685" y="1106"/>      
+      </attribute>      
+      <multiplicity id="66" minimum="0" maximum="1">        
+        <position height="16" width="23" x="766" y="1216"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="67">    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="68" name="mazeBuilder"/>      
+      <multiplicity id="69" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="70">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="71" name="gameState">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="72" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="73">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="74" name="nextDirection">        
+        <position height="18" width="71" x="760" y="1201"/>      
+      </attribute>      
+      <multiplicity id="75" minimum="0" maximum="1">        
+        <position height="16" width="23" x="764" y="1086"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="76">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="10"/>  
+  </realization>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    

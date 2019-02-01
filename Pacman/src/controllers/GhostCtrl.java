@@ -28,6 +28,7 @@ public class GhostCtrl {
 	
 	public Ghost[] init() {
 		for (Ghost g : ghosts) {
+			g = new Ghost();
 			g.setDead(true);
 			//more
 		}
