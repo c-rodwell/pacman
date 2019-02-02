@@ -30,7 +30,17 @@ public class Pacman implements Movable, Collidable {
 
 	@Override
 	public void move() {
-		
+		switch (currentDirection){
+			case Bottom: y -= speed;
+			break;
+			case Up: y += speed;
+			break;
+			case Left: x -= speed;
+			break;
+			case Right: x += speed;
+			break;
+			default:	throw new Exception("direction is invalid");
+		}
 	}
 	
 	public TileEnum eat(TileEnum[][] maze) {

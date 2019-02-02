@@ -1,12 +1,11 @@
 package controllers;
 
-import java.util.Calendar;
-
 import enumations.TileEnum;
 import models.Game;
 import models.Ghost;
 import models.Pacman;
 import views.MazeBuilder;
+import java.util.Calendar;
 
 /**   
 * @Title: GameCtrl.java 

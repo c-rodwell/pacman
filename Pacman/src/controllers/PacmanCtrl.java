@@ -1,5 +1,6 @@
 package controllers;
 
+import enumations.DirectionEnum;
 import enumations.TileEnum;
 import models.Pacman;
 
@@ -33,6 +34,7 @@ public class PacmanCtrl {
 	}
 	
 	public void movePacman(TileEnum[][] maze) {
+		pacman.setNextDirection(getDirectionInput());
 		if (checkChangeDirection()) {
 			//changeDirection
 		}
@@ -53,6 +55,10 @@ public class PacmanCtrl {
 	
 	private boolean checkMove() {
 		return false;
+	}
+
+	private DirectionEnum getDirectionInput(){
+		return DirectionEnum.Bottom;
 	}
 	
 }

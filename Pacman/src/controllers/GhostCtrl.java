@@ -1,5 +1,6 @@
 package controllers;
 
+import enumations.DirectionEnum;
 import models.Ghost;
 
 /**   
@@ -36,7 +37,15 @@ public class GhostCtrl {
 	}
 	
 	public void moveGhosts() {
-		
+		for (Ghost g : ghosts) {
+			g.setNextDirection(decideMove(g));
+			g.move();
+		}
+
+	}
+
+	public DirectionEnum decideMove(Ghost g){
+		return DirectionEnum.Bottom;
 	}
 	
 }
