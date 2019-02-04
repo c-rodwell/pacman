@@ -39,7 +39,7 @@ public class Pacman implements Movable, Collidable {
 			break;
 			case Right: x += speed;
 			break;
-			default:	throw new Exception("direction is invalid");
+			default:	//throw new Exception("direction is invalid");
 		}
 	}
 	

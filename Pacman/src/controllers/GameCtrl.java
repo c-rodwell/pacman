@@ -22,7 +22,7 @@ public class GameCtrl implements Runnable {
 	
 	private PacmanCtrl pacmanCtrl = PacmanCtrl.getInstance();
 	private GhostCtrl ghostCtrl = GhostCtrl.getInstance();
-	private MazeBuilder mazeBuilder = MazeBuilder.getInstance();
+	//private MazeBuilder mazeBuilder = MazeBuilder.getInstance();
 	
 	private Game game = Game.getInstance();
 	
@@ -45,7 +45,7 @@ public class GameCtrl implements Runnable {
 		} else if (noMoreFood(game.getMaze())) {
 			nextLevel();
 		}
-		mazeBuilder.update(game);
+		//mazeBuilder.update(game);
 	}
 	
 	private boolean isPacmanCaptured(Pacman pacman, Ghost[] ghosts) {
@@ -70,7 +70,7 @@ public class GameCtrl implements Runnable {
 		System.out.println(Calendar.getInstance().getTime().toString());
 	}
 	
-	@SuppressWarnings("static-access")
+	/*@SuppressWarnings("static-access")
 	public static void main(String[] args) {
 		GameCtrl gameCtrl = new GameCtrl();
 		while (true) {
@@ -83,6 +83,6 @@ public class GameCtrl implements Runnable {
 				} catch (InterruptedException e) {}
 			}
 		}
-	}
+	}*/
 	
 }
