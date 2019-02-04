@@ -24,6 +24,8 @@ public class MazeBuilder {
 		return mazeBuilder;
 	}
 	
+	public void test () {}
+	
 	public void update(Game game) {
 		
 	}
