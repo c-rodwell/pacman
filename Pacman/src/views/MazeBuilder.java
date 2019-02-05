@@ -2,12 +2,19 @@ package views;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import controllers.GameCtrl;
+import models.Game;
+import enumations.DirectionEnum;
+
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.*;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-//hello
+
 public class MazeBuilder extends JFrame {
 	private JPanel topPanel;
 	private DrawingPanel gamePanel;
@@ -17,6 +24,14 @@ public class MazeBuilder extends JFrame {
 	BufferedImage food;
 	BufferedImage wall;
 	BufferedImage blank;
+	BufferedImage redGhost;
+	BufferedImage cyanGhost;
+	BufferedImage orangeGhost;
+	BufferedImage pinkGhost;
+	BufferedImage spookedGhost;
+	
+	GameCtrl gameControl = GameCtrl.getInstance();
+	
 	
 	public MazeBuilder(int[][] a) {
 		
@@ -40,6 +55,8 @@ public class MazeBuilder extends JFrame {
 		gamePanel.setBackground(new Color(50,50,50));
 		gamePanel.setVisible(true);
 		gamePanel.updateMap(map);
+		gamePanel.setFocusable(true);
+		gamePanel.requestFocusInWindow();
 		getContentPane().add(gamePanel, BorderLayout.CENTER);
 
 		bottomPanel = new JPanel();
@@ -62,9 +79,34 @@ public class MazeBuilder extends JFrame {
         	System.out.println(e);
         }
 	}
-	private class DrawingPanel extends JPanel{
+	private class DrawingPanel extends JPanel implements KeyListener{
 		
+		public DrawingPanel() {
+			addKeyListener(this);
+		}
 		int[][] drawingMap = new int[28][30];
+		int c;
+		
+		public void keyPressed(KeyEvent e) { 
+			c = e.getKeyCode();
+			switch(c) {
+			case 38:
+				gameControl.updatePacmanDirection(DirectionEnum.Up);
+				break;
+			case 39:
+				gameControl.updatePacmanDirection(DirectionEnum.Right);
+				break;
+			case 40:
+				gameControl.updatePacmanDirection(DirectionEnum.Bottom);
+				break;
+			case 37:
+				gameControl.updatePacmanDirection(DirectionEnum.Left);
+				break;
+			}
+			System.out.println(c);
+		}
+	    public void keyReleased(KeyEvent e) { }
+	    public void keyTyped(KeyEvent e) { }
 		
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
@@ -88,7 +130,13 @@ public class MazeBuilder extends JFrame {
 		public void updateMap(int[][] a) {
 			drawingMap = a.clone();
 		}
+		
+		
 	}
+	
+	
+	
+	
 	public static void main(String[] args) {
 
 	

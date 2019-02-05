@@ -1,5 +1,7 @@
+
 package controllers;
 
+import enumations.DirectionEnum;
 import enumations.TileEnum;
 import models.Game;
 import models.Ghost;
@@ -20,9 +22,9 @@ public class GameCtrl implements Runnable {
 	
 	private GameCtrl() {}
 	
-	private GameCtrl gameCtrl;
+	private static GameCtrl gameCtrl;
 	
-	public GameCtrl getInstance() {
+	public static GameCtrl getInstance() {
 		if (null == gameCtrl) {
 			gameCtrl = new GameCtrl();
 		}
@@ -73,8 +75,8 @@ public class GameCtrl implements Runnable {
 		
 	}
 	
-	public void updatePacmanDirection() {
-		pacmanCtrl.updatePacmanDirection(game.getInputDirection());
+	public void updatePacmanDirection(DirectionEnum direction) {
+		pacmanCtrl.updatePacmanDirection(direction);
 	}
 	
 	@Override
@@ -82,8 +84,8 @@ public class GameCtrl implements Runnable {
 		update();
 		System.out.println(Calendar.getInstance().getTime().toString());
 	}
-	
-	/*@SuppressWarnings("static-access")
+	/*
+	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
 		GameCtrl gameCtrl = new GameCtrl();
 		while (true) {
