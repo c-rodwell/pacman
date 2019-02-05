@@ -1,5 +1,6 @@
 package controllers;
 
+import enumations.DirectionEnum;
 import enumations.TileEnum;
 import models.Game;
 import models.Ghost;
@@ -20,9 +21,18 @@ public class GameCtrl implements Runnable {
 	
 	private GameCtrl() {}
 	
+	private static GameCtrl gameCtrl;
+	
+	public static GameCtrl getInstance() {
+		if (null == gameCtrl) {
+			gameCtrl = new GameCtrl();
+		}
+		return gameCtrl;
+	}
+	
 	private PacmanCtrl pacmanCtrl = PacmanCtrl.getInstance();
 	private GhostCtrl ghostCtrl = GhostCtrl.getInstance();
-	private MazeBuilder mazeBuilder = MazeBuilder.getInstance();
+	//private MazeBuilder mazeBuilder = MazeBuilder.getInstance();
 	
 	private Game game = Game.getInstance();
 	
@@ -45,7 +55,7 @@ public class GameCtrl implements Runnable {
 		} else if (noMoreFood(game.getMaze())) {
 			nextLevel();
 		}
-		mazeBuilder.update(game);
+		//mazeBuilder.update(game);
 	}
 	
 	private boolean isPacmanCaptured(Pacman pacman, Ghost[] ghosts) {
@@ -62,6 +72,10 @@ public class GameCtrl implements Runnable {
 	
 	private void nextLevel() {
 		
+	}
+	
+	public void updatePacmanDirection(DirectionEnum direction) {
+		pacmanCtrl.updatePacmanDirection(direction);
 	}
 	
 	@Override
