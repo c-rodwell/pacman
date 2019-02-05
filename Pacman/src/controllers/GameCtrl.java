@@ -1,5 +1,6 @@
 package controllers;
 
+import enumations.DirectionEnum;
 import enumations.TileEnum;
 import models.Game;
 import models.Ghost;
@@ -73,8 +74,8 @@ public class GameCtrl implements Runnable {
 		
 	}
 	
-	public void updatePacmanDirection() {
-		pacmanCtrl.updatePacmanDirection(game.getInputDirection());
+	public void updatePacmanDirection(DirectionEnum direction) {
+		pacmanCtrl.updatePacmanDirection(direction);
 	}
 	
 	@Override
