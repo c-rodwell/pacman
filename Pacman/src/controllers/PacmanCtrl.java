@@ -38,7 +38,7 @@ public class PacmanCtrl {
 		if (checkChangeDirection()) {
 			//changeDirection
 		}
-		pacman.move();
+		//pacman.move();
 		if (!checkMove()) {
 			//reset pacman to legal position
 		}
@@ -47,6 +47,10 @@ public class PacmanCtrl {
 	
 	public void pacmanIsCaptured() {
 		pacman.setLives(pacman.getLives() - 1);
+	}
+	
+	public void updatePacmanDirection(DirectionEnum nextDirection) {
+		pacman.setNextDirection(nextDirection);
 	}
 	
 	private boolean checkChangeDirection() {
