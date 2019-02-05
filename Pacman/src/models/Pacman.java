@@ -10,7 +10,7 @@ import interfaces.Movable;
 * @Package model 
 * @Description:  
 * @author Pengbin Li   
-* @date 2019年1月30日 下午2:20:39 
+* @date 2019骞�1鏈�30鏃� 涓嬪崍2:20:39 
 * @version V1.0   
 */
 
@@ -29,7 +29,7 @@ public class Pacman implements Movable, Collidable {
 	}
 
 	@Override
-	public void move() {
+	public void move() throws Exception {
 		switch (currentDirection){
 			case Bottom: y -= speed;
 			break;

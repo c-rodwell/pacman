@@ -20,6 +20,15 @@ public class GameCtrl implements Runnable {
 	
 	private GameCtrl() {}
 	
+	private GameCtrl gameCtrl;
+	
+	public GameCtrl getInstance() {
+		if (null == gameCtrl) {
+			gameCtrl = new GameCtrl();
+		}
+		return gameCtrl;
+	}
+	
 	private PacmanCtrl pacmanCtrl = PacmanCtrl.getInstance();
 	private GhostCtrl ghostCtrl = GhostCtrl.getInstance();
 	//private MazeBuilder mazeBuilder = MazeBuilder.getInstance();
@@ -62,6 +71,10 @@ public class GameCtrl implements Runnable {
 	
 	private void nextLevel() {
 		
+	}
+	
+	public void updatePacmanDirection() {
+		pacmanCtrl.updatePacmanDirection(game.getInputDirection());
 	}
 	
 	@Override
