@@ -1,3 +1,4 @@
+
 package controllers;
 
 import enumations.DirectionEnum;
@@ -83,7 +84,7 @@ public class GameCtrl implements Runnable {
 		update();
 		System.out.println(Calendar.getInstance().getTime().toString());
 	}
-	
+	/*
 	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
 		GameCtrl gameCtrl = new GameCtrl();
@@ -97,6 +98,6 @@ public class GameCtrl implements Runnable {
 				} catch (InterruptedException e) {}
 			}
 		}
-	}
+	}*/
 	
 }
