@@ -21,9 +21,9 @@ public class GameCtrl implements Runnable {
 	
 	private GameCtrl() {}
 	
-	private GameCtrl gameCtrl;
+	private static GameCtrl gameCtrl;
 	
-	public GameCtrl getInstance() {
+	public static GameCtrl getInstance() {
 		if (null == gameCtrl) {
 			gameCtrl = new GameCtrl();
 		}
