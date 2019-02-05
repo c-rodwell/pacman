@@ -34,9 +34,7 @@ public class MazeBuilder extends JFrame {
 	
 	
 	public MazeBuilder(int[][] a) {
-		
 		importImage();
-		
 		map = a.clone();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Pac Man");
@@ -74,6 +72,11 @@ public class MazeBuilder extends JFrame {
             food = ImageIO.read(getClass().getResource("/pictures/Food.png"));
             wall = ImageIO.read(getClass().getResource("/pictures/Wall.png"));
             blank = ImageIO.read(getClass().getResource("/pictures/Blank.png"));
+            redGhost = ImageIO.read(getClass().getResource("/pictures/Red.png"));
+            cyanGhost = ImageIO.read(getClass().getResource("/pictures/Cyan.png"));
+            pinkGhost = ImageIO.read(getClass().getResource("/pictures/Pink.png"));
+            orangeGhost = ImageIO.read(getClass().getResource("/pictures/Orange.png"));
+            spookedGhost = ImageIO.read(getClass().getResource("/pictures/Spooked.png"));
             
         }catch(IOException e){
         	System.out.println(e);
@@ -111,6 +114,13 @@ public class MazeBuilder extends JFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
+			drawMaze(g2);
+			drawPacMan(g2);
+			drawGhost(g2);
+			
+		}
+		
+		private void drawMaze(Graphics2D g2) {
 			for(int i = 0; i < drawingMap.length; i++) {
 				for(int j = 0; j < drawingMap[0].length; j++) {
 					switch(drawingMap[i][j]) {
@@ -127,6 +137,13 @@ public class MazeBuilder extends JFrame {
 				}
 			}
 		}
+		private void drawPacMan(Graphics2D g2) {
+		
+		}
+		private void drawGhost(Graphics2D g2) {
+			
+		}
+		
 		public void updateMap(int[][] a) {
 			drawingMap = a.clone();
 		}
