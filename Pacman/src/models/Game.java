@@ -1,6 +1,5 @@
 package models;
 
-import enumations.DirectionEnum;
 import enumations.GameStateEnum;
 import enumations.TileEnum;
 
@@ -15,7 +14,6 @@ import enumations.TileEnum;
 
 public class Game {
 
-	private DirectionEnum inputDirection;
 	private int foodEat;
 	private int allFood;
 	private TileEnum[][] maze;
@@ -32,14 +30,6 @@ public class Game {
 			game = new Game();
 		}
 		return game;
-	}
-	
-	public DirectionEnum getInputDirection() {
-		return inputDirection;
-	}
-
-	public void setInputDirection(DirectionEnum inputDirection) {
-		this.inputDirection = inputDirection;
 	}
 
 	public int getFoodEat() {

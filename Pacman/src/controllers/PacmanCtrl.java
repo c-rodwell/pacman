@@ -51,6 +51,7 @@ public class PacmanCtrl {
 	
 	public void updatePacmanDirection(DirectionEnum nextDirection) {
 		pacman.setNextDirection(nextDirection);
+		System.out.println(pacman.getNextDirection());
 	}
 	
 	private boolean checkChangeDirection() {

@@ -34,6 +34,20 @@ public class Ghost implements Movable, Collidable {
 		
 	}
 	
+	private Ghost() {}
+	
+	private static Ghost[] ghosts;
+	
+	public static Ghost[] getInstance() {
+		if (null == ghosts) {
+			ghosts = new Ghost[4];
+			for (int i = 0; i < ghosts.length; i++) {
+				ghosts[i] = new Ghost();
+			}
+		}
+		return ghosts;
+	}
+	
 	public double getX() {
 		return x;
 	}

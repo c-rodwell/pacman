@@ -6,7 +6,6 @@ import models.Game;
 import models.Ghost;
 import models.Pacman;
 import views.MazeBuilder;
-import java.util.Calendar;
 
 /**   
 * @Title: GameCtrl.java 
@@ -20,7 +19,7 @@ import java.util.Calendar;
 public class GameCtrl implements Runnable {
 	
 	private GameCtrl() {}
-	
+
 	private static GameCtrl gameCtrl;
 	
 	public static GameCtrl getInstance() {
@@ -32,14 +31,44 @@ public class GameCtrl implements Runnable {
 	
 	private PacmanCtrl pacmanCtrl = PacmanCtrl.getInstance();
 	private GhostCtrl ghostCtrl = GhostCtrl.getInstance();
-	//private MazeBuilder mazeBuilder = MazeBuilder.getInstance();
+	private MazeBuilder mazeBuilder;
 	
 	private Game game = Game.getInstance();
 	
 	public void init() {
 		game.setPacman(pacmanCtrl.init());
 		game.setGhosts(ghostCtrl.init());
+		game.setMaze(new TileEnum[][]{
+				{TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall},
+				{TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall}});
 		//more
+		mazeBuilder = MazeBuilder.getInstance(game);
 	}
 	
 	public void update() {
@@ -55,7 +84,7 @@ public class GameCtrl implements Runnable {
 		} else if (noMoreFood(game.getMaze())) {
 			nextLevel();
 		}
-		//mazeBuilder.update(game);
+		mazeBuilder.update(game);
 	}
 	
 	private boolean isPacmanCaptured(Pacman pacman, Ghost[] ghosts) {
@@ -81,7 +110,7 @@ public class GameCtrl implements Runnable {
 	@Override
 	public void run() {
 		update();
-		System.out.println(Calendar.getInstance().getTime().toString());
+		System.out.println(game.getGhosts()[0].isDead());
 	}
 	
 	@SuppressWarnings("static-access")
