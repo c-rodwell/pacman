@@ -24,13 +24,12 @@ public class GhostCtrl {
 		}
 		return ghostCtrl;
 	}
-	
-	private Ghost[] ghosts = new Ghost[4];
+		
+	private Ghost[] ghosts = Ghost.getInstance();
 	
 	public Ghost[] init() {
 		for (Ghost g : ghosts) {
-			g = new Ghost();
-			g.setDead(true);
+			g.setDead(false);
 			//more
 		}
 		return ghosts;
@@ -41,11 +40,14 @@ public class GhostCtrl {
 			g.setNextDirection(decideMove(g));
 			g.move();
 		}
-
 	}
 
 	public DirectionEnum decideMove(Ghost g){
 		return DirectionEnum.Bottom;
+	}
+	
+	public void killGhost(int i) {
+		ghosts[i].setDead(true);
 	}
 	
 }
