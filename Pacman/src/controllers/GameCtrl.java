@@ -1,3 +1,4 @@
+
 package controllers;
 
 import enumations.DirectionEnum;
@@ -112,7 +113,7 @@ public class GameCtrl implements Runnable {
 		update();
 		System.out.println(game.getGhosts()[0].isDead());
 	}
-	
+	/*
 	@SuppressWarnings("static-access")
 	public static void main(String[] args) {
 		GameCtrl gameCtrl = new GameCtrl();
@@ -126,6 +127,6 @@ public class GameCtrl implements Runnable {
 				} catch (InterruptedException e) {}
 			}
 		}
-	}
+	}*/
 	
 }
