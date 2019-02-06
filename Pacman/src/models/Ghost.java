@@ -1,10 +1,5 @@
 package models;
 
-import enumations.DirectionEnum;
-import enumations.TileEnum;
-import interfaces.Collidable;
-import interfaces.Movable;
-
 /**   
 * @Title: Ghost.java 
 * @Package models 
@@ -18,11 +13,6 @@ public class Ghost extends Agent {
 
 	private boolean vulnerable;
 	private boolean dead;
-	
-	@Override
-	public TileEnum collide(TileEnum[][] maze) {
-		return null;
-	}
 	
 	private Ghost() {}
 	

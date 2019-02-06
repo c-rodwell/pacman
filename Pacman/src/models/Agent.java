@@ -14,12 +14,11 @@ public abstract class Agent implements Movable, Collidable {
     private DirectionEnum currentDirection;
     private DirectionEnum nextDirection;
 
-    //should collide go in this class too? not sure if it works same for Pacman and Ghost
 
-//    @Override
-//    public TileEnum collide(TileEnum[][] maze) {
-//        return null;
-//    }
+    @Override
+    public TileEnum collide(TileEnum[][] maze) {
+        return null;
+    }
 
     @Override
     public void move() {

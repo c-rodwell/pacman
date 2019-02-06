@@ -1,9 +1,6 @@
 package models;
 
-import enumations.DirectionEnum;
 import enumations.TileEnum;
-import interfaces.Collidable;
-import interfaces.Movable;
 
 /**   
 * @Title: Pacman.java 
@@ -14,14 +11,9 @@ import interfaces.Movable;
 * @version V1.0   
 */
 
-public class Pacman extends Agent{
+public class Pacman extends Agent {
 
 	private int lives;
-
-	@Override
-	public TileEnum collide(TileEnum[][] maze) {
-		return null;
-	}
 	
 	public TileEnum eat(TileEnum[][] maze) {
 		return null;

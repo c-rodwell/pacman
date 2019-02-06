@@ -30,6 +30,8 @@ public class GhostCtrl {
 	public Ghost[] init() {
 		for (Ghost g : ghosts) {
 			g.setDead(false);
+			g.setCurrentDirection(DirectionEnum.Up);
+			g.setSpeed(0.2);
 			//more
 		}
 		return ghosts;
