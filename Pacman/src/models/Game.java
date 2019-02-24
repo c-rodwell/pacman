@@ -1,5 +1,6 @@
 package models;
 
+import enumations.DirectionEnum;
 import enumations.GameStateEnum;
 import enumations.TileEnum;
 
@@ -91,6 +92,15 @@ public class Game {
 			ghostString+="Ghost "+i+": "+ghosts[i].getDebugString()+"\n";
 		}
 		return gameString + "\n"+ pacManString + "\n"+ ghostString;
+	}
+
+	public boolean checkMove(Agent agent, DirectionEnum direction) {
+		double[] nextPosition = agent.getNextPosition(direction);
+		return (isPassable(nextPosition[0], nextPosition[1]));
+	}
+
+	public boolean isPassable(double x, double y){
+		return true;
 	}
 	
 }

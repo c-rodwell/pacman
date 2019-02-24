@@ -19,7 +19,9 @@ public class Pacman extends Agent {
 		return null;
 	}
 
-	private Pacman() {}
+	private Pacman() {
+		speed = 0.25;
+	}
 	
 	private static Pacman pacman;
 	

@@ -36,6 +36,26 @@ public abstract class Agent implements Movable, Collidable {
         }
     }
 
+    //position that would result if it went in that direction
+    public double[] getNextPosition(DirectionEnum direction){
+        double nextX = x;
+        double nextY = y;
+        switch (direction){
+            case Bottom: nextY -= speed;
+                break;
+            case Up: nextY += speed;
+                break;
+            case Left: nextX -= speed;
+                break;
+            case Right: nextX += speed;
+                break;
+            default:	System.out.println("direction is invalid");
+                System.exit(1);
+        }
+        double[] newPosition = {nextX, nextY};
+        return newPosition;
+    }
+
     public double getX() {
         return x;
     }

@@ -2,6 +2,7 @@ package controllers;
 
 import enumations.DirectionEnum;
 import enumations.TileEnum;
+import models.Game;
 import models.Pacman;
 
 /**   
@@ -32,15 +33,23 @@ public class PacmanCtrl {
 		//set pacman
 		return pacman;
 	}
-	
+
 	public void movePacman(TileEnum[][] maze) {
-		pacman.setNextDirection(getDirectionInput());
-		if (checkChangeDirection()) {
-			//changeDirection
-		}
-		//pacman.move();
-		if (!checkMove()) {
-			//reset pacman to legal position
+
+		Game game = Game.getInstance();
+		DirectionEnum nextDirection = pacman.getNextDirection();
+		DirectionEnum currentDirection = pacman.getCurrentDirection();
+
+		//first, try to go in nextDirection if possible (then update currentDirection, set nextDirection back to null)
+		if ((nextDirection!= null)&&(game.checkMove(pacman, nextDirection))){
+			pacman.setCurrentDirection(nextDirection);
+			pacman.setNextDirection(null);	//does this risk race condition since listener also sets nextDirection?
+			pacman.move();
+		//next try going in currentDirection
+		} else if ((currentDirection!= null)&&(game.checkMove(pacman, currentDirection))){
+			pacman.move();
+		} else {
+			//pacman can't move in currentDirection or nextDirection - stay still?
 		}
 		pacman.eat(maze);
 	}
@@ -57,13 +66,15 @@ public class PacmanCtrl {
 	private boolean checkChangeDirection() {
 		return false;
 	}
-	
-	private boolean checkMove() {
-		return false;
-	}
 
-	private DirectionEnum getDirectionInput(){
-		return DirectionEnum.Bottom;
-	}
+//	private boolean checkMove(DirectionEnum direction) {
+//		double[] nextPosition = pacman.getNextPosition(direction);
+//		if(game.isPassable(x,y))
+//
+//	}
+
+//	private DirectionEnum getDirectionInput(){
+//		return DirectionEnum.Bottom;
+//	}
 	
 }
