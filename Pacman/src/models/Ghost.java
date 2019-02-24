@@ -43,5 +43,14 @@ public class Ghost extends Agent {
 	public void setDead(boolean dead) {
 		this.dead = dead;
 	}
+
+	public String getDebugString(){
+		return "dead: "+dead
+				+", x: "+x
+				+", y: "+y
+				+", speed: "+speed
+				+", currentDirection: "+currentDirection
+				+", nextDirection: "+nextDirection;
+	}
 	
 }
