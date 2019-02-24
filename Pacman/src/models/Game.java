@@ -79,5 +79,18 @@ public class Game {
 	public void setGameState(GameStateEnum gameState) {
 		this.gameState = gameState;
 	}
+
+	public String getDebugString(){
+		String gameString = "Game: "
+				+"all food: "+getAllFood()
+				+", eaten food: "+getFoodEat();
+
+		String pacManString = "Pacman: "+pacman.getDebugString();
+		String ghostString = "";
+		for (int i=0; i<ghosts.length; i++){
+			ghostString+="Ghost "+i+": "+ghosts[i].getDebugString()+"\n";
+		}
+		return gameString + "\n"+ pacManString + "\n"+ ghostString;
+	}
 	
 }

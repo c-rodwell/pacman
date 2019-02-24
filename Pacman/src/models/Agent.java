@@ -8,11 +8,11 @@ import interfaces.Movable;
 
 public abstract class Agent implements Movable, Collidable {
 
-    private double x;
-    private double y;
-    private double speed;
-    private DirectionEnum currentDirection;
-    private DirectionEnum nextDirection;
+    protected double x;
+    protected double y;
+    protected double speed;
+    protected DirectionEnum currentDirection;
+    protected DirectionEnum nextDirection;
 
 
     @Override

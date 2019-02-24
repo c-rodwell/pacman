@@ -37,5 +37,14 @@ public class Pacman extends Agent {
 	public void setLives(int lives) {
 		this.lives = lives;
 	}
+
+	public String getDebugString(){
+		return "lives: "+lives
+				+", x: "+x
+				+", y: "+y
+				+", speed: "+speed
+				+", currentDirection: "+currentDirection
+				+", nextDirection: "+nextDirection;
+	}
 	
 }

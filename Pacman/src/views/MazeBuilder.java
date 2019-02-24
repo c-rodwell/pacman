@@ -152,7 +152,7 @@ public class MazeBuilder extends JFrame {
 	}
 	
 	public void update(Game game) {
-		
+		System.out.println("mazeBuilder.update");
 	}
 	
 }

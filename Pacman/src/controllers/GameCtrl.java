@@ -77,7 +77,7 @@ public class GameCtrl implements Runnable {
 		if (isPacmanCaptured(game.getPacman(), game.getGhosts())) {
 			pacmanCtrl.pacmanIsCaptured();
 			if (game.getPacman().getLives() == 0) {
-				//game over
+				gameOver();
 			} else {
 				reset();
 			}
@@ -94,13 +94,22 @@ public class GameCtrl implements Runnable {
 	private boolean noMoreFood(TileEnum[][] maze) {
 		return game.getAllFood() == game.getFoodEat();
 	}
-	
+
+	//pacman lost a life but has lives left:
+	//	put pacman and ghosts back to original positions
+	//	food remains eaten
 	private void reset() {
-		
+		System.out.println("reset current level");
 	}
-	
+
+	//create next level - new food, new ghosts, possibly new maze layout
 	private void nextLevel() {
-		
+		System.out.println("next level");
+	}
+
+	//game over - show a game over message and score. can play again from here
+	private void gameOver(){
+		System.out.println("Game over");
 	}
 	
 	public void updatePacmanDirection(DirectionEnum direction) {
@@ -110,7 +119,8 @@ public class GameCtrl implements Runnable {
 	@Override
 	public void run() {
 		update();
-		System.out.println(game.getGhosts()[0].isDead());
+		printStatus();
+		//System.out.println(game.getGhosts()[0].isDead());
 	}
 	
 	@SuppressWarnings("static-access")
@@ -126,6 +136,13 @@ public class GameCtrl implements Runnable {
 				} catch (InterruptedException e) {}
 			}
 		}
+	}
+
+	//debugging helper - print out details of game state
+	public void printStatus(){
+
+		System.out.println("\n______ game state: ______");
+		System.out.println(game.getDebugString());
 	}
 	
 }
