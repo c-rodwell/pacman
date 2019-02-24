@@ -20,7 +20,12 @@ public class Pacman extends Agent {
 	}
 
 	private Pacman() {
-		speed = 0.25;
+		speed = 1;
+
+		//hardcode position corresponding to 1,1 in the hardcoded maze, which is a food tile
+		//TODO get pacman start position from the maze layout
+		x = 16;
+		y = 16;
 	}
 	
 	private static Pacman pacman;

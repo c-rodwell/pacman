@@ -91,7 +91,8 @@ public class Game {
 		for (int i=0; i<ghosts.length; i++){
 			ghostString+="Ghost "+i+": "+ghosts[i].getDebugString()+"\n";
 		}
-		return gameString + "\n"+ pacManString + "\n"+ ghostString;
+		//return gameString + "\n"+ pacManString + "\n"+ ghostString;
+		return pacManString;
 	}
 
 	public boolean checkMove(Agent agent, DirectionEnum direction) {
@@ -99,8 +100,19 @@ public class Game {
 		return (isPassable(nextPosition[0], nextPosition[1]));
 	}
 
+	//check if pac man can go to that place
+	//is it as simple as checking if position is a wall, or do we need to enforce min distance from a wall?
+	//in tunnel of 1 square width, pacman shouldn't be able to move toward either wall
 	public boolean isPassable(double x, double y){
-		return true;
+		int[] intPosition = doubleToIntPosition(x, y);
+		return maze[intPosition[0]][intPosition[1]] != TileEnum.Wall;
+	}
+
+	//transate the double position to closest integer position in the maze
+	//is this the right way up? not sure which way x and y go in the array
+	public int[] doubleToIntPosition(double x, double y){
+		int[] intPoint = {(int) x/16, (int) y/16};
+		return intPoint;
 	}
 	
 }
