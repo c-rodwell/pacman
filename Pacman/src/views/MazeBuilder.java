@@ -29,9 +29,20 @@ public class MazeBuilder extends JFrame {
 	BufferedImage orangeGhost;
 	BufferedImage pinkGhost;
 	BufferedImage spookedGhost;
+	BufferedImage pacman1;
+	BufferedImage pacman2Down;
+	BufferedImage pacman2Left;
+	BufferedImage pacman2Up;
+	BufferedImage pacman2Right;
+	BufferedImage pacman3Down;
+	BufferedImage pacman3Left;
+	BufferedImage pacman3Up;
+	BufferedImage pacman3Right;
 	
 	GameCtrl gameControl = GameCtrl.getInstance();
 	
+	
+	DirectionEnum temp = temp = DirectionEnum.Up;;
 	
 	public MazeBuilder(int[][] a) {
 		importImage();
@@ -77,11 +88,21 @@ public class MazeBuilder extends JFrame {
             pinkGhost = ImageIO.read(getClass().getResource("/pictures/Pink.png"));
             orangeGhost = ImageIO.read(getClass().getResource("/pictures/Orange.png"));
             spookedGhost = ImageIO.read(getClass().getResource("/pictures/Spooked.png"));
+            pacman1 = ImageIO.read(getClass().getResource("/pictures/pacman1.png"));
+            pacman2Down = ImageIO.read(getClass().getResource("/pictures/pacman2Down.png"));
+            pacman2Left = ImageIO.read(getClass().getResource("/pictures/pacman2Left.png"));
+            pacman2Up = ImageIO.read(getClass().getResource("/pictures/pacman2Up.png"));
+            pacman2Right = ImageIO.read(getClass().getResource("/pictures/pacman2Right.png"));
+            pacman3Down = ImageIO.read(getClass().getResource("/pictures/pacman3Down.png"));
+            pacman3Left = ImageIO.read(getClass().getResource("/pictures/pacman3Left.png"));
+            pacman3Up = ImageIO.read(getClass().getResource("/pictures/pacman3Up.png"));
+            pacman3Right = ImageIO.read(getClass().getResource("/pictures/pacman3Right.png"));
             
         }catch(IOException e){
         	System.out.println(e);
         }
 	}
+	@SuppressWarnings("serial")
 	private class DrawingPanel extends JPanel implements KeyListener{
 		
 		public DrawingPanel() {
@@ -89,33 +110,39 @@ public class MazeBuilder extends JFrame {
 		}
 		int[][] drawingMap = new int[28][30];
 		int c;
-		
+
+		@Override
 		public void keyPressed(KeyEvent e) { 
 			c = e.getKeyCode();
 			switch(c) {
 			case 38:
 				gameControl.updatePacmanDirection(DirectionEnum.Up);
+				temp = DirectionEnum.Up;
 				break;
 			case 39:
 				gameControl.updatePacmanDirection(DirectionEnum.Right);
+				temp = DirectionEnum.Right; 
 				break;
 			case 40:
 				gameControl.updatePacmanDirection(DirectionEnum.Bottom);
+				temp = DirectionEnum.Bottom;
 				break;
 			case 37:
 				gameControl.updatePacmanDirection(DirectionEnum.Left);
+				temp = DirectionEnum.Left;
 				break;
 			}
-			System.out.println(c);
 		}
+		@Override
 	    public void keyReleased(KeyEvent e) { }
+		@Override
 	    public void keyTyped(KeyEvent e) { }
 		
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
 			drawMaze(g2);
-			drawPacMan(g2);
+			drawPacMan(g2,temp);
 			drawGhost(g2);
 			
 		}
@@ -137,8 +164,29 @@ public class MazeBuilder extends JFrame {
 				}
 			}
 		}
-		private void drawPacMan(Graphics2D g2) {
-		
+		private void drawPacMan(Graphics2D g2, DirectionEnum dir) {
+			switch(dir) {
+			case Up: 
+				g2.drawImage(pacman2Up, 100, 100, this); 
+				repaint();
+				break;
+			
+			case Right: 
+				g2.drawImage(pacman2Right, 100, 100, this);
+				repaint();
+				break;
+			case Bottom: 
+				g2.drawImage(pacman2Down, 100, 100, this);
+				repaint();
+				break;
+			case Left: 
+				g2.drawImage(pacman2Left, 100, 100, this);
+				repaint();
+				break;
+			}
+			
+				
+			
 		}
 		private void drawGhost(Graphics2D g2) {
 			
