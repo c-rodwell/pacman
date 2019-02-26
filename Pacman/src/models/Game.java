@@ -105,6 +105,8 @@ public class Game {
 	//in tunnel of 1 square width, pacman shouldn't be able to move toward either wall
 	public boolean isPassable(double x, double y){
 		int[] intPosition = doubleToIntPosition(x, y);
+
+		System.out.println("check x: " + intPosition[0] + " y: " + intPosition[1] + " its a " + maze[intPosition[0]][intPosition[1]]);
 		return maze[intPosition[0]][intPosition[1]] != TileEnum.Wall;
 	}
 

@@ -23,9 +23,9 @@ public abstract class Agent implements Movable, Collidable {
     @Override
     public void move() {
         switch (currentDirection){
-            case Bottom: y -= speed;
+            case Bottom: y += speed;
                 break;
-            case Up: y += speed;
+            case Up: y -= speed;
                 break;
             case Left: x -= speed;
                 break;
@@ -41,18 +41,18 @@ public abstract class Agent implements Movable, Collidable {
         double nextX = x;
         double nextY = y;
         switch (direction){
-            case Bottom: nextY -= speed;
-                break;
-            case Up: nextY += speed;
-                break;
-            case Left: nextX -= speed;
-                break;
-            case Right: nextX += speed;
-                break;
+	        case Bottom: y += speed;
+		        break;
+		    case Up: y -= speed;
+		        break;
+		    case Left: x -= speed;
+		        break;
+		    case Right: x += speed;
+		        break;
             default:	System.out.println("direction is invalid");
                 System.exit(1);
         }
-        double[] newPosition = {nextX, nextY};
+        double[] newPosition = {nextX-1, nextY-1};
         return newPosition;
     }
 

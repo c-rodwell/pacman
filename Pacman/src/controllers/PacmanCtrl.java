@@ -50,7 +50,7 @@ public class PacmanCtrl {
 		} else if ((currentDirection!= null)&&(game.checkMove(pacman, currentDirection))){
 			pacman.move();
 		} else {
-			System.out.println("hit a wall, can't go any further "+currentDirection);
+			//System.out.println("hit a wall, can't go any further "+currentDirection);
 			//pacman can't move in currentDirection or nextDirection - stay still?
 		}
 		pacman.eat(maze);

@@ -50,7 +50,7 @@ public class MazeBuilder extends JFrame {
 	GameCtrl gameControl = GameCtrl.getInstance();
 	
 
-	DirectionEnum temp = temp = DirectionEnum.Up;;
+	DirectionEnum temp = DirectionEnum.Up;;
 	public MazeBuilder(TileEnum[][] a) {
 		importImage();
 		
@@ -177,23 +177,22 @@ public class MazeBuilder extends JFrame {
 		}
 
 		private void drawPacMan(Graphics2D g2, DirectionEnum dir) {
+			int x = (int)gameControl.game.getPacman().getX();
+			int y = (int)gameControl.game.getPacman().getY();
+			System.out.println("x: " + x/16 + " y: " + y/16);
 			switch(dir) {
 			case Up: 
-				g2.drawImage(pacman2Up, 100, 100, this); 
-				repaint();
+				g2.drawImage(pacman2Up, x, y, this); 
 				break;
 			
 			case Right: 
-				g2.drawImage(pacman2Right, 100, 100, this);
-				repaint();
+				g2.drawImage(pacman2Right, x, y, this);
 				break;
 			case Bottom: 
-				g2.drawImage(pacman2Down, 100, 100, this);
-				repaint();
+				g2.drawImage(pacman2Down, x, y, this);
 				break;
 			case Left: 
-				g2.drawImage(pacman2Left, 100, 100, this);
-				repaint();
+				g2.drawImage(pacman2Left, x, y, this);
 				break;
 			}
 			
