@@ -8,12 +8,11 @@ import interfaces.Movable;
 
 public abstract class Agent implements Movable, Collidable {
 
-    protected double x;
-    protected double y;
-    protected double speed;
+    protected int x;
+    protected int y;
+    protected int speed;
     protected DirectionEnum currentDirection;
     protected DirectionEnum nextDirection;
-
 
     @Override
     public TileEnum collide(TileEnum[][] maze) {
@@ -22,24 +21,15 @@ public abstract class Agent implements Movable, Collidable {
 
     @Override
     public void move() {
-        switch (currentDirection){
-            case Bottom: y -= speed;
-                break;
-            case Up: y += speed;
-                break;
-            case Left: x -= speed;
-                break;
-            case Right: x += speed;
-                break;
-            default:	System.out.println("direction is invalid");
-                System.exit(1);
-        }
+        int[] newPosition = getNextPosition(currentDirection);
+        x = newPosition[0];
+        y = newPosition[1];
     }
 
     //position that would result if it went in that direction
-    public double[] getNextPosition(DirectionEnum direction){
-        double nextX = x;
-        double nextY = y;
+    public int[] getNextPosition(DirectionEnum direction){
+        int nextX = x;
+        int nextY = y;
         switch (direction){
             case Bottom: nextY -= speed;
                 break;
@@ -52,15 +42,15 @@ public abstract class Agent implements Movable, Collidable {
             default:	System.out.println("direction is invalid");
                 System.exit(1);
         }
-        double[] newPosition = {nextX, nextY};
+        int[] newPosition = {nextX, nextY};
         return newPosition;
     }
 
-    public double getX() {
+    public int getX() {
         return x;
     }
 
-    public void setX(double x) {
+    public void setX(int x) {
         this.x = x;
     }
 
@@ -68,7 +58,7 @@ public abstract class Agent implements Movable, Collidable {
         return y;
     }
 
-    public void setY(double y) {
+    public void setY(int y) {
         this.y = y;
     }
 
@@ -76,7 +66,7 @@ public abstract class Agent implements Movable, Collidable {
         return speed;
     }
 
-    public void setSpeed(double speed) {
+    public void setSpeed(int speed) {
         this.speed = speed;
     }
 
