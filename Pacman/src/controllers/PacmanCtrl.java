@@ -52,7 +52,6 @@ public class PacmanCtrl {
 		} else {
 			System.out.println("hit a wall, can't go any further "+currentDirection);
 		}
-		pacman.eat(game.getMaze());
 	}
 	
 	public void pacmanIsCaptured() {
@@ -64,6 +63,15 @@ public class PacmanCtrl {
 	}
 	
 	private boolean checkMove(Game game, DirectionEnum direction) {
+		if (TileEnum.Wall.equals(checkFace(game, direction))) {
+			pacman.restoreExpect();
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	private TileEnum checkFace(Game game, DirectionEnum direction) {
 		pacman.preMove(direction);
 		int[] p1 = new int[2];
 		int[] p2 = new int[2];
@@ -80,12 +88,19 @@ public class PacmanCtrl {
 			p1 = pacman.translateToTile(pacman.getNextX(), pacman.getNextY());
 			p2 = pacman.translateToTile(pacman.getNextX(), pacman.getNextY() + 15);
 		}
-		boolean res = game.getMaze()[p1[0]][p1[1]] != TileEnum.Wall
-				&& game.getMaze()[p2[0]][p2[1]] != TileEnum.Wall;
-		if (!res) {
-			pacman.restoreExpect();
-		}
-		return res;
+		TileEnum t1 = game.getMaze()[p1[0]][p1[1]];
+		TileEnum t2 = game.getMaze()[p2[0]][p2[1]];
+		if (t1.equals(t2)) {
+			if (t1 != TileEnum.Wall) {
+				int[] p = pacman.translateToTile(pacman.getNextX() + 7, pacman.getNextY() + 7);
+				if (game.getMaze()[p[0]][p[1]] == TileEnum.Food) {
+					game.getMaze()[p[0]][p[1]] = TileEnum.Path;
+				}
+			}
+			return t1;
+		} else {
+			return TileEnum.Wall;
+		}	
 	}
 	
 }

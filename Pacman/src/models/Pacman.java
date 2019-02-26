@@ -1,7 +1,5 @@
 package models;
 
-import enumations.TileEnum;
-
 /**   
 * @Title: Pacman.java 
 * @Package model 
@@ -14,10 +12,6 @@ import enumations.TileEnum;
 public class Pacman extends Agent {
 
 	private int lives;
-	
-	public TileEnum eat(TileEnum[][] maze) {
-		return null;
-	}
 
 	private Pacman() {}
 	

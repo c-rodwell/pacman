@@ -53,7 +53,7 @@ public class MazeBuilder extends JFrame {
 		
 		importImage();
 		
-		map = a.clone();
+		map = a;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Pac Man");
 		setPreferredSize(new Dimension(28*16,37*16+6));
@@ -122,6 +122,7 @@ public class MazeBuilder extends JFrame {
 		TileEnum[][] drawingMap = new TileEnum[28][30];
 		int c;
 		
+		@Override
 		public void keyPressed(KeyEvent e) { 
 			c = e.getKeyCode();
 			switch(c) {
@@ -140,10 +141,13 @@ public class MazeBuilder extends JFrame {
 			}
 		}
 		
+		@Override
 	    public void keyReleased(KeyEvent e) {}
 	    
+		@Override
 	    public void keyTyped(KeyEvent e) {}
 		
+		@Override
 	    public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
@@ -198,7 +202,7 @@ public class MazeBuilder extends JFrame {
 		}
 		
 		public void updateMap(TileEnum[][] a) {
-			drawingMap = a.clone();
+			drawingMap = a;
 		}
 		
 	}
@@ -208,13 +212,13 @@ public class MazeBuilder extends JFrame {
 	public static MazeBuilder getInstance(Game game) {
 		if (null == mazeBuilder) {
 			mazeBuilder = new MazeBuilder(game.getMaze());
+			mazeBuilder.game = game;
 		}
 		return mazeBuilder;
 	}
 	
 	public void update(Game game) {
 		System.out.println("mazeBuilder.update");
-		this.game = game;
 		this.repaint();
 	}
 	
