@@ -1,6 +1,7 @@
 package controllers;
 
 import enumations.DirectionEnum;
+import enumations.GameStateEnum;
 import enumations.TileEnum;
 import models.Game;
 import models.Ghost;
@@ -69,6 +70,8 @@ public class GameCtrl implements Runnable {
 				{TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall}});
 		//more
 		mazeBuilder = MazeBuilder.getInstance(game);
+		game.setAllFood(244);
+		game.setGameState(GameStateEnum.Pause);
 	}
 	
 	public void update() {
@@ -81,17 +84,23 @@ public class GameCtrl implements Runnable {
 			} else {
 				reset();
 			}
-		} else if (noMoreFood(game.getMaze())) {
+		} else if (noMoreFood()) {
 			nextLevel();
 		}
 		mazeBuilder.update(game);
+	}
+	
+	public void setGameState(GameStateEnum e) {
+		if (!GameStateEnum.End.equals(game.getGameState())) {
+			game.setGameState(e);
+		}
 	}
 	
 	private boolean isPacmanCaptured(Pacman pacman, Ghost[] ghosts) {
 		return false;
 	}
 	
-	private boolean noMoreFood(TileEnum[][] maze) {
+	private boolean noMoreFood() {
 		return game.getAllFood() == game.getFoodEat();
 	}
 
@@ -105,11 +114,13 @@ public class GameCtrl implements Runnable {
 	//create next level - new food, new ghosts, possibly new maze layout
 	private void nextLevel() {
 		System.out.println("next level");
+		game.setGameState(GameStateEnum.End);
 	}
 
 	//game over - show a game over message and score. can play again from here
 	private void gameOver(){
 		System.out.println("Game over");
+		game.setGameState(GameStateEnum.Pause);
 	}
 	
 	public void updatePacmanDirection(DirectionEnum direction) {
@@ -118,8 +129,10 @@ public class GameCtrl implements Runnable {
 	
 	@Override
 	public void run() {
-		update();
-		printStatus();
+		if (GameStateEnum.Running.equals(game.getGameState())) {
+			update();
+			printStatus();
+		}
 		//System.out.println(game.getGhosts()[0].isDead());
 	}
 	

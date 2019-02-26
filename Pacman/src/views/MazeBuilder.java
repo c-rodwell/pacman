@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import controllers.GameCtrl;
 import models.Game;
 import enumations.DirectionEnum;
+import enumations.GameStateEnum;
 import enumations.TileEnum;
 
 import java.awt.BorderLayout;
@@ -125,19 +126,23 @@ public class MazeBuilder extends JFrame {
 		@Override
 		public void keyPressed(KeyEvent e) { 
 			c = e.getKeyCode();
+			gameControl.setGameState(GameStateEnum.Running);
 			switch(c) {
-			case 38:
-				gameControl.updatePacmanDirection(DirectionEnum.Up);
-				break;
-			case 39:
-				gameControl.updatePacmanDirection(DirectionEnum.Right);
-				break;
-			case 40:
-				gameControl.updatePacmanDirection(DirectionEnum.Bottom);
-				break;
-			case 37:
-				gameControl.updatePacmanDirection(DirectionEnum.Left);
-				break;
+				case 38:
+					gameControl.updatePacmanDirection(DirectionEnum.Up);
+					break;
+				case 39:
+					gameControl.updatePacmanDirection(DirectionEnum.Right);
+					break;
+				case 40:
+					gameControl.updatePacmanDirection(DirectionEnum.Bottom);
+					break;
+				case 37:
+					gameControl.updatePacmanDirection(DirectionEnum.Left);
+					break;
+				default: 
+					gameControl.setGameState(GameStateEnum.Pause);
+					break;
 			}
 		}
 		

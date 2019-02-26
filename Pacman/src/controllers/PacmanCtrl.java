@@ -31,7 +31,7 @@ public class PacmanCtrl {
 	
 	public Pacman init() {
 		//set pacman
-		pacman.setSpeed(1);
+		pacman.setSpeed(4);
 		pacman.setCurrentDirection(DirectionEnum.Right);
 		pacman.setX(16);
 		pacman.setY(16);
@@ -95,6 +95,7 @@ public class PacmanCtrl {
 				int[] p = pacman.translateToTile(pacman.getNextX() + 7, pacman.getNextY() + 7);
 				if (game.getMaze()[p[0]][p[1]] == TileEnum.Food) {
 					game.getMaze()[p[0]][p[1]] = TileEnum.Path;
+					game.setFoodEat(game.getFoodEat() + 1);
 				}
 			}
 			return t1;
