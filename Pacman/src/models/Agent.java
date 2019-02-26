@@ -28,13 +28,23 @@ public abstract class Agent implements Movable, Collidable {
     @Override
     public int[] preMove(DirectionEnum d) {
         switch (d){
-            case Bottom: nextY = y + speed;
+            case Bottom:
+            	nextY = y + speed;
                 break;
-            case Up: nextY = y - speed;
+            case Up:
+            	nextY = y - speed;
                 break;
-            case Left: nextX = x - speed;
+            case Left:
+            	nextX = x - speed;
+            	if (nextX < 0) {
+            		nextX = 432;
+            	}
                 break;
-            case Right: nextX = x + speed;
+            case Right:
+            	nextX = x + speed;
+            	if (nextX > 432) {
+            		nextX = 0;
+            	}
                 break;
             default:	System.out.println("direction is invalid");
                 System.exit(1);
