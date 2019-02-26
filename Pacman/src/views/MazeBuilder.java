@@ -148,7 +148,7 @@ public class MazeBuilder extends JFrame {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
 			drawMaze(g2);
-			drawPacMan(g2, DirectionEnum.Right);
+			drawPacMan(g2, game.getPacman().getCurrentDirection());
 			drawGhost(g2);
 			
 		}
