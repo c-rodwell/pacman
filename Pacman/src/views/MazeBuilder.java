@@ -36,8 +36,18 @@ public class MazeBuilder extends JFrame {
 	BufferedImage orangeGhost;
 	BufferedImage pinkGhost;
 	BufferedImage spookedGhost;
+	BufferedImage pacman1;
+	BufferedImage pacman2Down;
+	BufferedImage pacman2Left;
+	BufferedImage pacman2Up;
+	BufferedImage pacman2Right;
+	BufferedImage pacman3Down;
+	BufferedImage pacman3Left;
+	BufferedImage pacman3Up;
+	BufferedImage pacman3Right;
 	
 	GameCtrl gameControl = GameCtrl.getInstance();
+	Game game;
 	
 	private MazeBuilder(TileEnum[][] a) {
 		
@@ -75,16 +85,32 @@ public class MazeBuilder extends JFrame {
 		setVisible(true);
 		pack();	
 	}
+	
 	private void importImage() {
 		try{ 
             food = ImageIO.read(getClass().getResource("/pictures/Food.png"));
             wall = ImageIO.read(getClass().getResource("/pictures/Wall.png"));
             blank = ImageIO.read(getClass().getResource("/pictures/Blank.png"));
+            redGhost = ImageIO.read(getClass().getResource("/pictures/Red.png"));
+            cyanGhost = ImageIO.read(getClass().getResource("/pictures/Cyan.png"));
+            pinkGhost = ImageIO.read(getClass().getResource("/pictures/Pink.png"));
+            orangeGhost = ImageIO.read(getClass().getResource("/pictures/Orange.png"));
+            spookedGhost = ImageIO.read(getClass().getResource("/pictures/Spooked.png"));
+            pacman1 = ImageIO.read(getClass().getResource("/pictures/pacman1.png"));
+            pacman2Down = ImageIO.read(getClass().getResource("/pictures/pacman2Down.png"));
+            pacman2Left = ImageIO.read(getClass().getResource("/pictures/pacman2Left.png"));
+            pacman2Up = ImageIO.read(getClass().getResource("/pictures/pacman2Up.png"));
+            pacman2Right = ImageIO.read(getClass().getResource("/pictures/pacman2Right.png"));
+            pacman3Down = ImageIO.read(getClass().getResource("/pictures/pacman3Down.png"));
+            pacman3Left = ImageIO.read(getClass().getResource("/pictures/pacman3Left.png"));
+            pacman3Up = ImageIO.read(getClass().getResource("/pictures/pacman3Up.png"));
+            pacman3Right = ImageIO.read(getClass().getResource("/pictures/pacman3Right.png"));
             
         }catch(IOException e){
         	System.out.println(e);
         }
 	}
+	
 	private class DrawingPanel extends JPanel implements KeyListener{
 		
 		private static final long serialVersionUID = 3752806378765782599L;
@@ -92,6 +118,7 @@ public class MazeBuilder extends JFrame {
 		public DrawingPanel() {
 			addKeyListener(this);
 		}
+		
 		TileEnum[][] drawingMap = new TileEnum[28][30];
 		int c;
 		
@@ -111,14 +138,22 @@ public class MazeBuilder extends JFrame {
 				gameControl.updatePacmanDirection(DirectionEnum.Left);
 				break;
 			}
-			System.out.println(c);
 		}
-	    public void keyReleased(KeyEvent e) { }
-	    public void keyTyped(KeyEvent e) { }
 		
-		public void paintComponent(Graphics g) {
+	    public void keyReleased(KeyEvent e) {}
+	    
+	    public void keyTyped(KeyEvent e) {}
+		
+	    public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
+			drawMaze(g2);
+			drawPacMan(g2, DirectionEnum.Right);
+			drawGhost(g2);
+			
+		}
+		
+		private void drawMaze(Graphics2D g2) {
 			for(int i = 0; i < drawingMap.length; i++) {
 				for(int j = 0; j < drawingMap[0].length; j++) {
 					switch(drawingMap[i][j]) {
@@ -136,6 +171,32 @@ public class MazeBuilder extends JFrame {
 				}
 			}
 		}
+		
+		private void drawPacMan(Graphics2D g2, DirectionEnum dir) {
+			switch(dir) {
+			case Up: 
+				g2.drawImage(pacman2Up, game.getPacman().getX(), game.getPacman().getY(), this); 
+				repaint();
+				break;
+			case Right: 
+				g2.drawImage(pacman2Right, game.getPacman().getX(), game.getPacman().getY(), this);
+				repaint();
+				break;
+			case Bottom: 
+				g2.drawImage(pacman2Down, game.getPacman().getX(), game.getPacman().getY(), this);
+				repaint();
+				break;
+			case Left: 
+				g2.drawImage(pacman2Left, game.getPacman().getX(), game.getPacman().getY(), this);
+				repaint();
+				break;
+			}
+		}
+		
+		private void drawGhost(Graphics2D g2) {
+			
+		}
+		
 		public void updateMap(TileEnum[][] a) {
 			drawingMap = a.clone();
 		}
@@ -153,6 +214,8 @@ public class MazeBuilder extends JFrame {
 	
 	public void update(Game game) {
 		System.out.println("mazeBuilder.update");
+		this.game = game;
+		this.repaint();
 	}
 	
 }

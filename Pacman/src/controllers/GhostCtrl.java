@@ -1,6 +1,8 @@
 package controllers;
 
 import enumations.DirectionEnum;
+import enumations.TileEnum;
+import models.Game;
 import models.Ghost;
 
 /**   
@@ -31,16 +33,26 @@ public class GhostCtrl {
 		for (Ghost g : ghosts) {
 			g.setDead(false);
 			g.setCurrentDirection(DirectionEnum.Up);
-			g.setSpeed(0.2);
+			g.setSpeed(1);
 			//more
 		}
 		return ghosts;
 	}
 	
-	public void moveGhosts() {
+	public void moveGhosts(Game game) {
 		for (Ghost g : ghosts) {
-			g.setNextDirection(decideMove(g));
-			g.move();
+			DirectionEnum nextDirection = g.getNextDirection();
+			DirectionEnum currentDirection = g.getCurrentDirection();
+			if (nextDirection != null && checkMove(g, game, nextDirection)) {
+				System.out.println("changed direction to " + nextDirection);
+				g.setCurrentDirection(nextDirection);
+				g.setNextDirection(null);	//does this risk race condition since listener also sets nextDirection?
+				g.setPosition();
+			} else if (currentDirection != null && checkMove(g, game, currentDirection)) {
+				g.setPosition();
+			} else {
+				System.out.println("hit a wall, can't go any further "+currentDirection);
+			}
 		}
 	}
 
@@ -50,6 +62,16 @@ public class GhostCtrl {
 	
 	public void killGhost(int i) {
 		ghosts[i].setDead(true);
+	}
+	
+	private boolean checkMove(Ghost g, Game game, DirectionEnum direction) {
+		g.preMove(direction);
+		int[] p = g.translateToTile(g.getNextX(), g.getNextY());
+		boolean res = game.getMaze()[p[0]][p[1]] != TileEnum.Wall;
+		if (!res) {
+			g.restoreExpect();
+		}
+		return res;
 	}
 	
 }

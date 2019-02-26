@@ -1,5 +1,7 @@
 package interfaces;
 
+import enumations.DirectionEnum;
+
 /**   
 * @Title: Movable.java 
 * @Package interfaces 
@@ -11,6 +13,10 @@ package interfaces;
 
 public interface Movable {
 
-	public void move() throws Exception;
+	public int[] preMove(DirectionEnum d);
+	
+	public void setPosition();
+	
+	public void restoreExpect();
 	
 }

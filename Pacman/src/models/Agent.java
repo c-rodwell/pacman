@@ -1,62 +1,88 @@
 package models;
 
 import enumations.DirectionEnum;
-import enumations.TileEnum;
 import interfaces.Collidable;
 import interfaces.Movable;
 
 
 public abstract class Agent implements Movable, Collidable {
 
-    protected double x;
-    protected double y;
-    protected double speed;
-    protected DirectionEnum currentDirection;
-    protected DirectionEnum nextDirection;
+    private int x;
+    private int y;
+    private int nextX;
+    private int nextY;
+    private int speed;
+    private DirectionEnum currentDirection;
+    private DirectionEnum nextDirection;
 
-
-    @Override
+    /*@Override
     public TileEnum collide(TileEnum[][] maze) {
         return null;
-    }
-
+    }*/
+    
     @Override
-    public void move() {
-        switch (currentDirection){
-            case Bottom: y -= speed;
+    public int[] translateToTile(int x, int y) {
+    	return new int[]{x / 16, y / 16};
+    }
+    
+    @Override
+    public int[] preMove(DirectionEnum d) {
+        switch (d){
+            case Bottom: nextY = y + speed;
                 break;
-            case Up: y += speed;
+            case Up: nextY = y - speed;
                 break;
-            case Left: x -= speed;
+            case Left: nextX = x - speed;
                 break;
-            case Right: x += speed;
+            case Right: nextX = x + speed;
                 break;
             default:	System.out.println("direction is invalid");
                 System.exit(1);
         }
+        return new int[]{nextX, nextY};
     }
+    
+    @Override
+    public void setPosition() {
+    	x = nextX;
+    	y = nextY;
+    }
+    
+    @Override
+    public void restoreExpect() {
+    	nextX = x;
+    	nextY = y;
+    }
+    
+    public String getDebugString(){
+		return "x: "+x
+				+", y: "+y
+				+", speed: "+speed
+				+", currentDirection: "+currentDirection
+				+", nextDirection: "+nextDirection;
+	}
 
-    public double getX() {
+    public int getX() {
         return x;
     }
 
-    public void setX(double x) {
+    public void setX(int x) {
         this.x = x;
     }
 
-    public double getY() {
+    public int getY() {
         return y;
     }
 
-    public void setY(double y) {
+    public void setY(int y) {
         this.y = y;
     }
 
-    public double getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 
-    public void setSpeed(double speed) {
+    public void setSpeed(int speed) {
         this.speed = speed;
     }
 
@@ -76,5 +102,20 @@ public abstract class Agent implements Movable, Collidable {
         this.nextDirection = nextDirection;
     }
 
+	public int getNextX() {
+		return nextX;
+	}
+
+	public void setNextX(int nextX) {
+		this.nextX = nextX;
+	}
+
+	public int getNextY() {
+		return nextY;
+	}
+
+	public void setNextY(int nextY) {
+		this.nextY = nextY;
+	}
 
 }

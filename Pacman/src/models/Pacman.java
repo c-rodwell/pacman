@@ -39,12 +39,7 @@ public class Pacman extends Agent {
 	}
 
 	public String getDebugString(){
-		return "lives: "+lives
-				+", x: "+x
-				+", y: "+y
-				+", speed: "+speed
-				+", currentDirection: "+currentDirection
-				+", nextDirection: "+nextDirection;
+		return "lives: "+lives+", "+super.getDebugString();
 	}
 	
 }

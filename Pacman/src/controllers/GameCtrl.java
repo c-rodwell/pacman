@@ -72,8 +72,8 @@ public class GameCtrl implements Runnable {
 	}
 	
 	public void update() {
-		pacmanCtrl.movePacman(game.getMaze());
-		ghostCtrl.moveGhosts();
+		pacmanCtrl.movePacman(game);
+		ghostCtrl.moveGhosts(game);
 		if (isPacmanCaptured(game.getPacman(), game.getGhosts())) {
 			pacmanCtrl.pacmanIsCaptured();
 			if (game.getPacman().getLives() == 0) {
@@ -140,7 +140,6 @@ public class GameCtrl implements Runnable {
 
 	//debugging helper - print out details of game state
 	public void printStatus(){
-
 		System.out.println("\n______ game state: ______");
 		System.out.println(game.getDebugString());
 	}
