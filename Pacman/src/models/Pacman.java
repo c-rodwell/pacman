@@ -38,6 +38,7 @@ public class Pacman extends Agent {
 		this.lives = lives;
 	}
 
+	@Override
 	public String getDebugString(){
 		return "lives: "+lives+", "+super.getDebugString();
 	}
