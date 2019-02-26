@@ -84,7 +84,8 @@ public class GameCtrl implements Runnable {
 		} else if (noMoreFood(game.getMaze())) {
 			nextLevel();
 		}
-		mazeBuilder.update(game);
+		//mazeBuilder.update(game);
+		mazeBuilder.repaint();
 	}
 	
 	private boolean isPacmanCaptured(Pacman pacman, Ghost[] ghosts) {
@@ -119,7 +120,7 @@ public class GameCtrl implements Runnable {
 	@Override
 	public void run() {
 		update();
-		printStatus();
+		//printStatus();
 		//System.out.println(game.getGhosts()[0].isDead());
 	}
 	
