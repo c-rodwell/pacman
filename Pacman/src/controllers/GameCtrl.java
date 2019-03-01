@@ -78,6 +78,7 @@ public class GameCtrl implements Runnable {
 		pacmanCtrl.movePacman(game);
 		ghostCtrl.moveGhosts(game);
 		if (isPacmanCaptured(game.getPacman(), game.getGhosts())) {
+			setGameState(GameStateEnum.Pause);
 			pacmanCtrl.pacmanIsCaptured();
 			if (game.getPacman().getLives() == 0) {
 				gameOver();
@@ -91,12 +92,24 @@ public class GameCtrl implements Runnable {
 	}
 	
 	public void setGameState(GameStateEnum e) {
-		if (!GameStateEnum.End.equals(game.getGameState())) {
+		if (GameStateEnum.End != game.getGameState()) {
 			game.setGameState(e);
 		}
 	}
 	
 	private boolean isPacmanCaptured(Pacman pacman, Ghost[] ghosts) {
+		int xl = pacman.getX();
+		int xr = xl + 15;
+		int yt = pacman.getY();
+		int yb = yt + 15;
+		for (Ghost g : ghosts) {
+			int x = g.getX();
+			int y = g.getY();
+			if (x >= xl && x <= xr && y >= yt && y <= yb) {
+				System.out.println("\n******************\npacman got captured.\n******************\n");
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -120,7 +133,7 @@ public class GameCtrl implements Runnable {
 	//game over - show a game over message and score. can play again from here
 	private void gameOver(){
 		System.out.println("Game over");
-		game.setGameState(GameStateEnum.Pause);
+		game.setGameState(GameStateEnum.End);
 	}
 	
 	public void updatePacmanDirection(DirectionEnum direction) {
@@ -129,7 +142,7 @@ public class GameCtrl implements Runnable {
 	
 	@Override
 	public void run() {
-		if (GameStateEnum.Running.equals(game.getGameState())) {
+		if (GameStateEnum.Running == game.getGameState()) {
 			update();
 			printStatus();
 		}
@@ -152,7 +165,7 @@ public class GameCtrl implements Runnable {
 	}
 
 	//debugging helper - print out details of game state
-	public void printStatus(){
+	private void printStatus(){
 		System.out.println("\n______ game state: ______");
 		System.out.println(game.getDebugString());
 	}

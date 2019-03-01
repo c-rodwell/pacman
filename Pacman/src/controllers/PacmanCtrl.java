@@ -63,7 +63,7 @@ public class PacmanCtrl {
 	}
 	
 	private boolean checkMove(Game game, DirectionEnum direction) {
-		if (TileEnum.Wall.equals(checkFace(game, direction))) {
+		if (TileEnum.Wall == checkFace(game, direction)) {
 			pacman.restoreExpect();
 			return false;
 		} else {
@@ -90,7 +90,7 @@ public class PacmanCtrl {
 		}
 		TileEnum t1 = game.getMaze()[p1[0]][p1[1]];
 		TileEnum t2 = game.getMaze()[p2[0]][p2[1]];
-		if (t1.equals(t2)) {
+		if (t1 == t2) {
 			if (t1 != TileEnum.Wall) {
 				int[] p = pacman.translateToTile(pacman.getNextX() + 7, pacman.getNextY() + 7);
 				if (game.getMaze()[p[0]][p[1]] == TileEnum.Food) {

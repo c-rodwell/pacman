@@ -32,8 +32,10 @@ public class GhostCtrl {
 	public Ghost[] init() {
 		for (Ghost g : ghosts) {
 			g.setDead(false);
-			g.setCurrentDirection(DirectionEnum.Up);
-			g.setSpeed(1);
+			g.setCurrentDirection(DirectionEnum.Left);
+			g.setSpeed(4);
+			g.setX(416);
+			g.setY(16);
 			//more
 		}
 		return ghosts;
@@ -51,6 +53,8 @@ public class GhostCtrl {
 			} else if (currentDirection != null && checkMove(g, game, currentDirection)) {
 				g.setPosition();
 			} else {
+				int r = (int) (Math.random() * 4);
+				g.setNextDirection(DirectionEnum.class.getEnumConstants()[r]);
 				System.out.println("hit a wall, can't go any further "+currentDirection);
 			}
 		}
@@ -65,13 +69,38 @@ public class GhostCtrl {
 	}
 	
 	private boolean checkMove(Ghost g, Game game, DirectionEnum direction) {
-		g.preMove(direction);
-		int[] p = g.translateToTile(g.getNextX(), g.getNextY());
-		boolean res = game.getMaze()[p[0]][p[1]] != TileEnum.Wall;
-		if (!res) {
+		if (TileEnum.Wall == checkFace(g, game, direction)) {
 			g.restoreExpect();
+			return false;
+		} else {
+			return true;
 		}
-		return res;
+	}
+	
+	private TileEnum checkFace(Ghost g, Game game, DirectionEnum direction) {
+		g.preMove(direction);
+		int[] p1 = new int[2];
+		int[] p2 = new int[2];
+		if (direction.equals(DirectionEnum.Bottom)) {
+			p1 = g.translateToTile(g.getNextX(), g.getNextY() + 15);
+			p2 = g.translateToTile(g.getNextX() + 15, g.getNextY() + 15);
+		} else if (direction.equals(DirectionEnum.Right)) {
+			p1 = g.translateToTile(g.getNextX() + 15, g.getNextY());
+			p2 = g.translateToTile(g.getNextX() + 15, g.getNextY() + 15);
+		} else if (direction.equals(DirectionEnum.Up)) {
+			p1 = g.translateToTile(g.getNextX(), g.getNextY());
+			p2 = g.translateToTile(g.getNextX() + 15, g.getNextY());
+		} else if (direction.equals(DirectionEnum.Left)) {
+			p1 = g.translateToTile(g.getNextX(), g.getNextY());
+			p2 = g.translateToTile(g.getNextX(), g.getNextY() + 15);
+		}
+		TileEnum t1 = game.getMaze()[p1[0]][p1[1]];
+		TileEnum t2 = game.getMaze()[p2[0]][p2[1]];
+		if (t1 == t2) {
+			return t1;
+		} else {
+			return TileEnum.Wall;
+		}	
 	}
 	
 }

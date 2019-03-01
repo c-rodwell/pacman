@@ -82,8 +82,8 @@ public class Game {
 
 	public String getDebugString(){
 		String gameString = "Game: "
-				+"all food: "+getAllFood()
-				+", eaten food: "+getFoodEat();
+				+"all food: "+allFood
+				+", eaten food: "+foodEat;
 
 		String pacManString = "Pacman: "+pacman.getDebugString();
 		String ghostString = "";

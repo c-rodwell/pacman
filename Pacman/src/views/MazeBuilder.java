@@ -158,6 +158,10 @@ public class MazeBuilder extends JFrame {
 			Graphics2D g2 = (Graphics2D)g;
 			drawMaze(g2);
 			drawPacMan(g2, game.getPacman().getCurrentDirection());
+			drawPink(g2, game.getGhosts()[0].getCurrentDirection());
+			drawRed(g2, game.getGhosts()[0].getCurrentDirection());
+			drawOrange(g2, game.getGhosts()[0].getCurrentDirection());
+			drawCyan(g2, game.getGhosts()[0].getCurrentDirection());
 			drawGhost(g2);
 			
 		}
@@ -197,6 +201,90 @@ public class MazeBuilder extends JFrame {
 				break;
 			case Left: 
 				g2.drawImage(pacman2Left, game.getPacman().getX(), game.getPacman().getY(), this);
+				repaint();
+				break;
+			}
+		}
+		
+		private void drawPink(Graphics2D g2, DirectionEnum dir) {
+			switch(dir) {
+			case Up: 
+				g2.drawImage(pinkGhost, game.getGhosts()[0].getX(), game.getGhosts()[0].getY(), this); 
+				repaint();
+				break;
+			case Right: 
+				g2.drawImage(pinkGhost, game.getGhosts()[0].getX(), game.getGhosts()[0].getY(), this);
+				repaint();
+				break;
+			case Bottom: 
+				g2.drawImage(pinkGhost, game.getGhosts()[0].getX(), game.getGhosts()[0].getY(), this);
+				repaint();
+				break;
+			case Left: 
+				g2.drawImage(pinkGhost, game.getGhosts()[0].getX(), game.getGhosts()[0].getY(), this);
+				repaint();
+				break;
+			}
+		}
+		
+		private void drawRed(Graphics2D g2, DirectionEnum dir) {
+			switch(dir) {
+			case Up: 
+				g2.drawImage(redGhost, game.getGhosts()[1].getX(), game.getGhosts()[1].getY(), this); 
+				repaint();
+				break;
+			case Right: 
+				g2.drawImage(redGhost, game.getGhosts()[1].getX(), game.getGhosts()[1].getY(), this);
+				repaint();
+				break;
+			case Bottom: 
+				g2.drawImage(redGhost, game.getGhosts()[1].getX(), game.getGhosts()[1].getY(), this);
+				repaint();
+				break;
+			case Left: 
+				g2.drawImage(redGhost, game.getGhosts()[1].getX(), game.getGhosts()[1].getY(), this);
+				repaint();
+				break;
+			}
+		}
+		
+		private void drawOrange(Graphics2D g2, DirectionEnum dir) {
+			switch(dir) {
+			case Up: 
+				g2.drawImage(orangeGhost, game.getGhosts()[2].getX(), game.getGhosts()[2].getY(), this); 
+				repaint();
+				break;
+			case Right: 
+				g2.drawImage(orangeGhost, game.getGhosts()[2].getX(), game.getGhosts()[2].getY(), this);
+				repaint();
+				break;
+			case Bottom: 
+				g2.drawImage(orangeGhost, game.getGhosts()[2].getX(), game.getGhosts()[2].getY(), this);
+				repaint();
+				break;
+			case Left: 
+				g2.drawImage(orangeGhost, game.getGhosts()[2].getX(), game.getGhosts()[2].getY(), this);
+				repaint();
+				break;
+			}
+		}
+		
+		private void drawCyan(Graphics2D g2, DirectionEnum dir) {
+			switch(dir) {
+			case Up: 
+				g2.drawImage(cyanGhost, game.getGhosts()[3].getX(), game.getGhosts()[3].getY(), this); 
+				repaint();
+				break;
+			case Right: 
+				g2.drawImage(cyanGhost, game.getGhosts()[3].getX(), game.getGhosts()[3].getY(), this);
+				repaint();
+				break;
+			case Bottom: 
+				g2.drawImage(cyanGhost, game.getGhosts()[3].getX(), game.getGhosts()[3].getY(), this);
+				repaint();
+				break;
+			case Left: 
+				g2.drawImage(cyanGhost, game.getGhosts()[3].getX(), game.getGhosts()[3].getY(), this);
 				repaint();
 				break;
 			}
