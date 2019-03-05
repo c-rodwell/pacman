@@ -29,7 +29,7 @@ public class GhostCtrl {
 		
 	private Ghost[] ghosts = Ghost.getInstance();
 	
-	public Ghost[] init() {
+	public Ghost[] init(int[][] position) {
 		for (Ghost g : ghosts) {
 			g.setDead(false);
 			g.setCurrentDirection(DirectionEnum.Left);

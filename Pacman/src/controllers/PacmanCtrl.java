@@ -29,7 +29,7 @@ public class PacmanCtrl {
 	
 	private Pacman pacman = Pacman.getInstance();
 	
-	public Pacman init() {
+	public Pacman init(int[] position) {
 		//set pacman
 		pacman.setSpeed(4);
 		pacman.setCurrentDirection(DirectionEnum.Right);

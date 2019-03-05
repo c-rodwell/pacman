@@ -120,7 +120,7 @@ public class MazeBuilder extends JFrame {
 			addKeyListener(this);
 		}
 		
-		TileEnum[][] drawingMap = new TileEnum[28][30];
+		TileEnum[][] drawingMap;
 		int c;
 		
 		@Override
