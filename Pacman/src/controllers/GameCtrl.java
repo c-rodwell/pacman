@@ -76,7 +76,8 @@ public class GameCtrl implements Runnable {
 	
 	public void update() {
 		pacmanCtrl.movePacman(game);
-		ghostCtrl.moveGhosts(game);
+		ghostCtrl.moveGhostsDirectional(game);
+		//ghostCtrl.moveGhosts(game);
 		if (isPacmanCaptured(game.getPacman(), game.getGhosts())) {
 			setGameState(GameStateEnum.Pause);
 			pacmanCtrl.pacmanIsCaptured();

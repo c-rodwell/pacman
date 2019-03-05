@@ -1,9 +1,12 @@
 package controllers;
 
+import java.util.Collections;
+
 import enumations.DirectionEnum;
 import enumations.TileEnum;
 import models.Game;
 import models.Ghost;
+import models.Pacman;
 
 /**   
 * @Title: GhostCtrl.java 
@@ -33,9 +36,28 @@ public class GhostCtrl {
 		for (Ghost g : ghosts) {
 			g.setDead(false);
 			g.setCurrentDirection(DirectionEnum.Left);
-			g.setSpeed(4);
-			g.setX(416);
-			g.setY(16);
+			
+			//Randomize speed
+			double r = Math.random();
+			g.setSpeed((3 + (int)(2 * r)));
+
+			
+			//Randomize starting position
+			r = Math.random();
+			if (r < 0.25) {
+				g.setX(416);
+				g.setY(16);
+			} else if (r < 0.5) {
+				g.setX(240);
+				g.setY(464);
+			} else if (r < 0.75) {
+				g.setX(272);
+				g.setY(464);
+			} else {
+				g.setX(416);
+				g.setY(416);
+			}
+			
 			//more
 		}
 		return ghosts;
@@ -59,7 +81,106 @@ public class GhostCtrl {
 			}
 		}
 	}
+	
+	// return the manhattanDistance between pacman to a ghost
+	private int manhattanDistance(int x1, int y1, int x2, int y2) {
+		return Math.abs(x1 - x2) + Math.abs(y1 - y2);	
+	}
+	
+	
+	
+	public void moveGhostsDirectional(Game game) {
+		//Get pacman position
+		Pacman pacman =  Pacman.getInstance();
+		int pacManX = pacman.getX();
+		int pacManY = pacman.getY();
+		
+		for (Ghost g : ghosts) {			
+			//Calculate distances to pacman for different next directions
+			int[] distances = new int[4];
+			int minDistance = Integer.MAX_VALUE;
+			for (int i = 0; i < 4; i++) {
+				if (checkMove(g, game, DirectionEnum.class.getEnumConstants()[i])) {
+					distances[i] = manhattanDistance(pacManX, pacManY, g.getNextX(), g.getNextY());
+					minDistance = Math.min(minDistance, distances[i]);
+					g.restoreExpect();
+				} else {
+					distances[i] = Integer.MAX_VALUE;
+				}
+			}
+			
+			//Check if currentDirection is optimal
+			DirectionEnum currentDirection = g.getCurrentDirection();
+			boolean ifcontinue = false;
+			for (int i = 0; i < 4; i++) {
+				if (distances[i] == minDistance && DirectionEnum.class.getEnumConstants()[i] == currentDirection) {
+					ifcontinue = true;
+				}
+			}
 
+			//If current already optimal, continue with current direction, otherwise randomize direction
+			DirectionEnum nextDirection;
+			
+			if (ifcontinue) {
+				nextDirection = currentDirection;
+			} else {
+				int numMin = 0;
+				int numOther = 0;
+				for (int i = 0; i < 4; i++) {
+					if (distances[i] == minDistance) {
+						numMin++;
+					} else if (distances[i] < Integer.MAX_VALUE) {
+						numOther++;
+					}
+				}
+				
+				//Calculate next direction distribution
+				double[] distribution = new double[4];
+				double distributionSum = 0;
+				for (int i = 0; i < 4; i++) {
+					if (distances[i] == minDistance) {
+						distribution[i] = 0.7 / (double)numMin;
+						distributionSum += 0.7 / (double)numMin;
+					} else if (distances[i] < Integer.MAX_VALUE) {
+						distribution[i] = 0.3 / (double)numOther;
+						distributionSum += 0.3 / (double)numOther;
+					} else {
+						distribution[i] = 0;
+					}
+				}
+				
+				//Normalize distribution
+				for (int i = 0; i < 4; i++) {
+					distribution[i] /= distributionSum;
+				}
+				
+				//Randomize over the distribution
+				double r = Math.random();
+				double base = 0.0;
+				int direction = 0;
+				for (int i = 0; i < 4; i++) {
+					base += distribution[i];
+					if (r <= base) {
+						direction = i;
+						break;
+					}
+				}
+				
+				nextDirection = DirectionEnum.class.getEnumConstants()[direction];
+			}
+			
+			
+			
+			//Move ghost
+			g.preMove(nextDirection);
+			if (nextDirection != currentDirection) {
+				System.out.println("changed direction to " + nextDirection);
+			}
+			g.setCurrentDirection(nextDirection);
+			g.setPosition();
+		}
+	}
+	
 	public DirectionEnum decideMove(Ghost g){
 		return DirectionEnum.Bottom;
 	}
