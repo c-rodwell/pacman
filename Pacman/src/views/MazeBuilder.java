@@ -166,7 +166,6 @@ public class MazeBuilder extends JFrame {
 			drawOrange(g2, game.getGhosts()[0].getCurrentDirection());
 			drawCyan(g2, game.getGhosts()[0].getCurrentDirection());
 			drawGhost(g2);
-			
 		}
 		
 		private void drawMaze(Graphics2D g2) {

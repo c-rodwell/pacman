@@ -59,16 +59,8 @@ public class GameCtrl implements Runnable {
 	public void update() {
 		pacmanCtrl.movePacman(game);
 		ghostCtrl.moveGhosts(game);
-		if (isPacmanCaptured(game.getPacman(), game.getGhosts())) {
-			setGameState(GameStateEnum.Pause);
-			pacmanCtrl.pacmanIsCaptured();
-			int life = game.getPacman().getLives();
-			if (life == 0) {
-				gameOver();
-			} else {
-				reset();
-			}
-		} else if (noMoreFood()) {
+		updateForGhostCollision();
+		if (noMoreFood()){
 			nextLevel();
 		}
 		mazeBuilder.update(game);
@@ -79,21 +71,47 @@ public class GameCtrl implements Runnable {
 			game.setGameState(e);
 		}
 	}
-	
-	private boolean isPacmanCaptured(Pacman pacman, Ghost[] ghosts) {
+
+	private void updateForGhostCollision() {
+		Pacman pacman = game.getPacman();
 		int xl = pacman.getX();
 		int xr = xl + 15;
 		int yt = pacman.getY();
 		int yb = yt + 15;
-		for (Ghost g : ghosts) {
+		Ghost[] ghosts = game.getGhosts();
+		for (int i=0; i< ghosts.length; i++) {
+			Ghost g = ghosts[i];
 			int x = g.getX();
 			int y = g.getY();
 			if (x >= xl && x <= xr && y >= yt && y <= yb) {
-				System.out.println("\n******************\npacman got captured.\n******************\n");
-				return true;
+				if (g.isVulnerable()) {
+					eatGhost(i);
+				} else {
+					pacmanCaptured();
+					return;
+				}
 			}
 		}
-		return false;
+	}
+
+	public void eatGhost(int ghostNum){
+		Ghost g = game.getGhosts()[ghostNum];
+		g.setVulnerable(false);
+		int[] position = game.getPositionGhosts()[ghostNum];
+		g.setX(position[0]);
+		g.setY(position[1]);
+	}
+
+	private void pacmanCaptured(){
+		System.out.println("\n******************\npacman got captured.\n******************\n");
+		setGameState(GameStateEnum.Pause);
+		pacmanCtrl.pacmanIsCaptured();
+		int life = game.getPacman().getLives();
+		if (life == 0) {
+			gameOver();
+		} else {
+			reset();
+		}
 	}
 	
 	private boolean noMoreFood() {
