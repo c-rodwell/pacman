@@ -20,6 +20,8 @@ public class Game {
 	private Pacman pacman;
 	private Ghost[] ghosts;
 	private GameStateEnum gameState;
+	private int[] positionPacman;
+	private int[][] positionGhosts;
 	
 	private Game() {}
 	
@@ -78,6 +80,22 @@ public class Game {
 
 	public void setGameState(GameStateEnum gameState) {
 		this.gameState = gameState;
+	}
+
+	public int[] getPositionPacman() {
+		return positionPacman;
+	}
+
+	public void setPositionPacman(int[] positionPacman) {
+		this.positionPacman = positionPacman;
+	}
+
+	public int[][] getPositionGhosts() {
+		return positionGhosts;
+	}
+
+	public void setPositionGhosts(int[][] positionGhosts) {
+		this.positionGhosts = positionGhosts;
 	}
 
 	public String getDebugString(){

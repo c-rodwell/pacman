@@ -42,8 +42,10 @@ public class GameCtrl implements Runnable {
 		MazeImportHandler m = new MazeImportHandler();
 		try {
 			m.readFile("./src/maze/1.txt");
-			game.setPacman(pacmanCtrl.init(m.getPositionPacman()));
+			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), 3));
+			game.setPositionPacman(m.getPositionPacman());
 			game.setGhosts(ghostCtrl.init(m.getPositionGhosts()));
+			game.setPositionGhosts(m.getPositionGhosts());
 			game.setMaze(m.getMaze());
 			game.setAllFood(244);
 		} catch (UnsupportedOperationException | IOException e) {
@@ -60,7 +62,8 @@ public class GameCtrl implements Runnable {
 		if (isPacmanCaptured(game.getPacman(), game.getGhosts())) {
 			setGameState(GameStateEnum.Pause);
 			pacmanCtrl.pacmanIsCaptured();
-			if (game.getPacman().getLives() == 0) {
+			int life = game.getPacman().getLives();
+			if (life == 0) {
 				gameOver();
 			} else {
 				reset();
@@ -101,13 +104,16 @@ public class GameCtrl implements Runnable {
 	//	put pacman and ghosts back to original positions
 	//	food remains eaten
 	private void reset() {
+		pacmanCtrl.init(game.getPositionPacman(), game.getPacman().getLives());
+		ghostCtrl.init(game.getPositionGhosts());
+		game.setGameState(GameStateEnum.Pause);
 		System.out.println("reset current level");
 	}
 
 	//create next level - new food, new ghosts, possibly new maze layout
 	private void nextLevel() {
 		System.out.println("next level");
-		game.setGameState(GameStateEnum.End);
+		game.setGameState(GameStateEnum.Pause);
 	}
 
 	//game over - show a game over message and score. can play again from here

@@ -30,12 +30,14 @@ public class PacmanCtrl {
 	
 	private Pacman pacman = Pacman.getInstance();
 	
-	public Pacman init(int[] position) {
+	public Pacman init(int[] position, int life) {
 		//set pacman
+		pacman.setLives(life);
 		pacman.setSpeed(4);
 		pacman.setCurrentDirection(DirectionEnum.Right);
-		pacman.setX(16);
-		pacman.setY(16);
+		pacman.setX(position[0]);
+		pacman.setY(position[1]);
+		pacman.restoreExpect();
 		return pacman;
 	}
 	
