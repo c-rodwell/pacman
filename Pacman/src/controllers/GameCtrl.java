@@ -49,6 +49,7 @@ public class GameCtrl implements Runnable {
 		} catch (UnsupportedOperationException | IOException e) {
 			e.printStackTrace();
 		}
+
 		game.setMaze(new TileEnum[][]{
 				{TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall},
 				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Power,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall},
@@ -78,6 +79,7 @@ public class GameCtrl implements Runnable {
 				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
 				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall},
 				{TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall}});
+
 		mazeBuilder = MazeBuilder.getInstance(game);
 		game.setGameState(GameStateEnum.Pause);
 	}
