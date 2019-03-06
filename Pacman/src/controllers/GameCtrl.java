@@ -111,7 +111,7 @@ public class GameCtrl implements Runnable {
 	//create next level - new food, new ghosts, possibly new maze layout
 	private void nextLevel() {
 		System.out.println("next level");
-		game.setGameState(GameStateEnum.End);
+		game.setGameState(GameStateEnum.Pause);
 	}
 
 	//game over - show a game over message and score. can play again from here
