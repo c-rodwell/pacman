@@ -39,7 +39,7 @@ public class GhostCtrl {
 			
 			//Randomize speed
 			double r = Math.random();
-			g.setSpeed((3 + (int)(2 * r)));
+			g.setSpeed(4);
 
 			
 			//Randomize starting position
@@ -64,8 +64,12 @@ public class GhostCtrl {
 	}
 	
 	public void moveGhosts(Game game) {
-		for (Ghost g : ghosts) {
-			DirectionEnum nextDirection = g.getNextDirection();
+		for (int i = 0; i < 4; i++) {
+			Ghost g = ghosts[i];
+			DirectionEnum nextDirection;
+			
+			nextDirection = moveGhostsDirectional(game, g);
+			
 			DirectionEnum currentDirection = g.getCurrentDirection();
 			if (nextDirection != null && checkMove(g, game, nextDirection)) {
 				System.out.println("changed direction to " + nextDirection);
@@ -75,9 +79,9 @@ public class GhostCtrl {
 			} else if (currentDirection != null && checkMove(g, game, currentDirection)) {
 				g.setPosition();
 			} else {
-				int r = (int) (Math.random() * 4);
-				g.setNextDirection(DirectionEnum.class.getEnumConstants()[r]);
-				System.out.println("hit a wall, can't go any further "+currentDirection);
+//				int r = (int) (Math.random() * 4);
+//				g.setNextDirection(DirectionEnum.class.getEnumConstants()[r]);
+				System.out.println("hit a wall, can't go any further " + currentDirection);
 			}
 		}
 	}
@@ -87,29 +91,127 @@ public class GhostCtrl {
 		return Math.abs(x1 - x2) + Math.abs(y1 - y2);	
 	}
 	
-	
-	
-	public void moveGhostsDirectional(Game game) {
+	private DirectionEnum moveGhostsDirectional(Game game, Ghost g) {
 		//Get pacman position
 		Pacman pacman =  Pacman.getInstance();
 		int pacManX = pacman.getX();
 		int pacManY = pacman.getY();
+		boolean vul = g.isVulnerable();
 		
-		for (Ghost g : ghosts) {			
-			//Calculate distances to pacman for different next directions
-			int[] distances = new int[4];
-			int minDistance = Integer.MAX_VALUE;
-			for (int i = 0; i < 4; i++) {
-				if (checkMove(g, game, DirectionEnum.class.getEnumConstants()[i])) {
-					distances[i] = manhattanDistance(pacManX, pacManY, g.getNextX(), g.getNextY());
-					minDistance = Math.min(minDistance, distances[i]);
-					g.restoreExpect();
+		//Calculate distances to pacman for different next directions
+		int[] distances = new int[4];
+		int optimalDistance;
+		
+		if (vul) {
+			optimalDistance = Integer.MIN_VALUE;
+		} else {
+			optimalDistance = Integer.MAX_VALUE;
+		}
+		
+		for (int i = 0; i < 4; i++) {
+			if (checkMove(g, game, DirectionEnum.class.getEnumConstants()[i])) {
+				distances[i] = manhattanDistance(pacManX, pacManY, g.getNextX(), g.getNextY());
+				if (vul) {
+					optimalDistance = Math.max(optimalDistance, distances[i]);
+				} else {
+					optimalDistance = Math.min(optimalDistance, distances[i]);
+				}
+				g.restoreExpect();
+			} else {
+				if (vul) {
+					distances[i] = Integer.MIN_VALUE;
 				} else {
 					distances[i] = Integer.MAX_VALUE;
 				}
+				
+			}
+		}
+		
+		//Check if currentDirection is optimal
+		DirectionEnum currentDirection = g.getCurrentDirection();
+		boolean ifcontinue = false;
+		for (int i = 0; i < 4; i++) {
+			if (distances[i] == optimalDistance && DirectionEnum.class.getEnumConstants()[i] == currentDirection) {
+				ifcontinue = true;
+			}
+		}
+
+		//If current already optimal, continue with current direction, otherwise randomize direction
+		DirectionEnum nextDirection;
+		
+		if (ifcontinue) {
+			nextDirection = currentDirection;
+		} else {
+			int numMin = 0;
+			int numOther = 0;
+			for (int i = 0; i < 4; i++) {
+				if (distances[i] == optimalDistance) {
+					numMin++;
+				} else if (distances[i] < Integer.MAX_VALUE && distances[i] > Integer.MIN_VALUE) {
+					numOther++;
+				}
 			}
 			
-			//Check if currentDirection is optimal
+			//Calculate next direction distribution
+			double[] distribution = new double[4];
+			double distributionSum = 0;
+			for (int i = 0; i < 4; i++) {
+				if (distances[i] == minDistance) {
+					distribution[i] = 0.7 / (double)numMin;
+					distributionSum += 0.7 / (double)numMin;
+				} else if (distances[i] < Integer.MAX_VALUE && distances[i] > Integer.MIN_VALUE) {
+					distribution[i] = 0.3 / (double)numOther;
+					distributionSum += 0.3 / (double)numOther;
+				} else {
+					distribution[i] = 0;
+				}
+			}
+			
+			//Normalize distribution
+			for (int i = 0; i < 4; i++) {
+				distribution[i] /= distributionSum;
+			}
+			
+			//Randomize over the distribution
+			double r = Math.random();
+			double base = 0.0;
+			int direction = 0;
+			for (int i = 0; i < 4; i++) {
+				base += distribution[i];
+				if (r <= base) {
+					direction = i;
+					break;
+				}
+			}
+			
+			nextDirection = DirectionEnum.class.getEnumConstants()[direction];
+		}	
+//			//Move ghost
+//			g.preMove(nextDirection);
+//			if (nextDirection != currentDirection) {
+//				System.out.println("changed direction to " + nextDirection);
+//			}
+//			g.setCurrentDirection(nextDirection);
+//			g.setPosition();
+	return nextDirection;
+	}
+	
+	private DirectionEnum moveGhostsChaseGhost(Game game, Ghost target, Ghost g) {
+		DirectionEnum nextDirection;
+		int[] distances = new int[4];
+		int minDistance = Integer.MAX_VALUE;
+		
+		for (int i = 0; i < 4; i++) {
+			if (checkMove(g, game, DirectionEnum.class.getEnumConstants()[i])) {
+				distances[i] = manhattanDistance(target.getNextX(), target.getNextY(), g.getNextX(), g.getNextY());
+				minDistance = Math.min(minDistance, distances[i]);
+				g.restoreExpect();
+			} else {
+				distances[i] = Integer.MAX_VALUE;
+			}
+		}
+		
+		//Check if currentDirection is optimal
 			DirectionEnum currentDirection = g.getCurrentDirection();
 			boolean ifcontinue = false;
 			for (int i = 0; i < 4; i++) {
@@ -119,8 +221,6 @@ public class GhostCtrl {
 			}
 
 			//If current already optimal, continue with current direction, otherwise randomize direction
-			DirectionEnum nextDirection;
-			
 			if (ifcontinue) {
 				nextDirection = currentDirection;
 			} else {
@@ -139,11 +239,11 @@ public class GhostCtrl {
 				double distributionSum = 0;
 				for (int i = 0; i < 4; i++) {
 					if (distances[i] == minDistance) {
-						distribution[i] = 0.7 / (double)numMin;
-						distributionSum += 0.7 / (double)numMin;
+						distribution[i] = 0.8 / (double)numMin;
+						distributionSum += 0.8 / (double)numMin;
 					} else if (distances[i] < Integer.MAX_VALUE) {
-						distribution[i] = 0.3 / (double)numOther;
-						distributionSum += 0.3 / (double)numOther;
+						distribution[i] = 0.2 / (double)numOther;
+						distributionSum += 0.2 / (double)numOther;
 					} else {
 						distribution[i] = 0;
 					}
@@ -165,20 +265,9 @@ public class GhostCtrl {
 						break;
 					}
 				}
-				
 				nextDirection = DirectionEnum.class.getEnumConstants()[direction];
-			}
-			
-			
-			
-			//Move ghost
-			g.preMove(nextDirection);
-			if (nextDirection != currentDirection) {
-				System.out.println("changed direction to " + nextDirection);
-			}
-			g.setCurrentDirection(nextDirection);
-			g.setPosition();
-		}
+			}	
+		return nextDirection;
 	}
 	
 	public DirectionEnum decideMove(Ghost g){
