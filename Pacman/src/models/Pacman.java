@@ -11,7 +11,8 @@ package models;
 
 public class Pacman extends Agent {
 
-	private int lives = 3;
+
+	private int lives;
 
 	private Pacman() {}
 	

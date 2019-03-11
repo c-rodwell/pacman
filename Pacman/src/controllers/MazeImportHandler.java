@@ -19,10 +19,11 @@ import enumations.TileEnum;
 
 public class MazeImportHandler {
 
-	private TileEnum[][] maze = new TileEnum[29][31];
+
+	private TileEnum[][] maze = new TileEnum[28][31];
 	private int[] positionPacman = new int[2];
 	private int[][] positionGhosts = new int[4][2];
-	private int allfood;
+	private int allfood = 0;
 	
 	public void readFile(String file) throws IOException, UnsupportedOperationException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(file))));
@@ -44,6 +45,14 @@ public class MazeImportHandler {
 		data = br.readLine();
 		this.allfood = Integer.parseInt(data);
 		br.close();
+	}
+
+	public String[] getFileNames() {		
+		File dir = new File("./src/maze/");
+		if (dir.isDirectory()) {
+			return dir.list();
+		}
+		return null;
 	}
 
 	public TileEnum[][] getMaze() {

@@ -10,6 +10,7 @@ import models.Ghost;
 import enumations.DirectionEnum;
 import enumations.GameStateEnum;
 import enumations.TileEnum;
+import models.Ghost;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -95,7 +96,8 @@ public class MazeBuilder extends JFrame {
 		importImage();
 
         imageIndex = 0;
-		map = a.clone();
+		//map = a.clone();	
+		map = a;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Pac Man");
 		setPreferredSize(new Dimension(28*16,37*16+6));
@@ -162,8 +164,6 @@ public class MazeBuilder extends JFrame {
             pacmanLeft = new BufferedImage[] {pacman1, pacman2Left, pacman3Left, pacman2Left};
             
             
-            
-            
         }catch(IOException e){
         	System.out.println(e);
         }
@@ -176,7 +176,8 @@ public class MazeBuilder extends JFrame {
 		public DrawingPanel() {
 			addKeyListener(this);
 		}
-		TileEnum[][] drawingMap = new TileEnum[28][30];
+		
+		TileEnum[][] drawingMap;
 		int c;
 		@Override
 		public void keyPressed(KeyEvent e) { 
@@ -202,16 +203,20 @@ public class MazeBuilder extends JFrame {
 			}
 		}
 		@Override
-	    public void keyReleased(KeyEvent e) { }
+	    public void keyReleased(KeyEvent e) {}
+	    
 		@Override
-	    public void keyTyped(KeyEvent e) { }
+	    public void keyTyped(KeyEvent e) {}
 		
-		public void paintComponent(Graphics g) {
+		@Override
+	    public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
 			drawMaze(g2);
-			if(animatePacmanStep < animatePacmanStepMax) {
-			pacmanReset(g2,200,200, animatePacmanStep);
+			//System.out.println("CURRENT => " + gameState);			
+			if(animatePacmanStep < animatePacmanStepMax && game.getGameState() == GameStateEnum.ResetPacman) {
+				System.out.println("animation running");
+				pacmanReset(g2,200,200, animatePacmanStep);
 			}else {
 				try {
 					drawPacMan(g2, game.getPacman().getCurrentDirection());
@@ -224,7 +229,9 @@ public class MazeBuilder extends JFrame {
 				drawOrange(g2, game.getGhosts()[0].getCurrentDirection());
 				drawCyan(g2, game.getGhosts()[0].getCurrentDirection());
 				
-				if(gameControl.getGameState() == GameStateEnum.End) {
+				if(gameControl.getGameState() == GameStateEnum.End) 
+				{
+					System.out.println("ASDFASDFASDFASDFASDFASDFASDFSADFASDFASDFASDf");
 					g2.drawImage(gameover,111,189,this);
 				}	
 			}
@@ -242,12 +249,18 @@ public class MazeBuilder extends JFrame {
 				System.out.println(stepX*step);
 				g2.drawImage(pacman1, startX - (int)(stepX*step), (int)startY - (int)(stepY*step), this);
 				animatePacmanStep++;	
-				System.out.println(animatePacmanStep);
+				System.out.println("animation step: " + animatePacmanStep);
+				try {
+					Thread.sleep(33);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				repaint();
 			}else {
 				resumeGame();
 			}
 		}
-			
 		private void drawMaze(Graphics2D g2) {
 			for(int i = 0; i < drawingMap.length; i++) {
 				for(int j = 0; j < drawingMap[0].length; j++) {
@@ -314,38 +327,46 @@ public class MazeBuilder extends JFrame {
 		        image = spookedGhost;
             }
             g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+
 		}
 		
 		private void drawRed(Graphics2D g2, DirectionEnum dir) {
 			Ghost ghost = game.getGhosts()[1];
+
             BufferedImage image = redGhost;
             if (ghost.isVulnerable()){
                 image = spookedGhost;
             }
             g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+
 		}
 		
 		private void drawOrange(Graphics2D g2, DirectionEnum dir) {
 			Ghost ghost = game.getGhosts()[2];
+
             BufferedImage image = orangeGhost;
             if (ghost.isVulnerable()){
                 image = spookedGhost;
             }
             g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+
 		}
 		
 		private void drawCyan(Graphics2D g2, DirectionEnum dir) {
 			Ghost ghost = game.getGhosts()[3];
+
             BufferedImage image = cyanGhost;
             if (ghost.isVulnerable()){
                 image = spookedGhost;
             }
             g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+
  			
 		}
 
+
 		public void updateMap(TileEnum[][] a) {
-			drawingMap = a.clone();
+			drawingMap = a;
 		}
 		
 	}
@@ -424,7 +445,10 @@ public class MazeBuilder extends JFrame {
 	public void update(Game game) {
 		System.out.println("mazeBuilder.update");
 		//gameState = state;
-		
+		if(game.getGameState() == GameStateEnum.ResetPacman) {
+			animatePacmanStep = animatePacmanStepMin;
+		}
+		System.out.println("update: " + gameState);
 		this.repaint();
 	}
 	
