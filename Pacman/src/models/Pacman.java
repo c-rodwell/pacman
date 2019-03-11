@@ -1,7 +1,5 @@
 package models;
 
-import enumations.TileEnum;
-
 /**   
 * @Title: Pacman.java 
 * @Package model 
@@ -14,10 +12,6 @@ import enumations.TileEnum;
 public class Pacman extends Agent {
 
 	private int lives;
-	
-	public TileEnum eat(TileEnum[][] maze) {
-		return null;
-	}
 
 	private Pacman() {}
 	
@@ -38,13 +32,9 @@ public class Pacman extends Agent {
 		this.lives = lives;
 	}
 
+	@Override
 	public String getDebugString(){
-		return "lives: "+lives
-				+", x: "+x
-				+", y: "+y
-				+", speed: "+speed
-				+", currentDirection: "+currentDirection
-				+", nextDirection: "+nextDirection;
+		return "lives: "+lives+", "+super.getDebugString();
 	}
 	
 }

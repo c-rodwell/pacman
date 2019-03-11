@@ -7,7 +7,9 @@ import javax.swing.JPanel;
 import controllers.GameCtrl;
 import models.Game;
 import enumations.DirectionEnum;
+import enumations.GameStateEnum;
 import enumations.TileEnum;
+import models.Ghost;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,6 +31,7 @@ public class MazeBuilder extends JFrame {
 	private TileEnum[][] map;
 	
 	BufferedImage food;
+	BufferedImage power;
 	BufferedImage wall;
 	BufferedImage blank;
 	BufferedImage redGhost;
@@ -36,14 +39,24 @@ public class MazeBuilder extends JFrame {
 	BufferedImage orangeGhost;
 	BufferedImage pinkGhost;
 	BufferedImage spookedGhost;
+	BufferedImage pacman1;
+	BufferedImage pacman2Down;
+	BufferedImage pacman2Left;
+	BufferedImage pacman2Up;
+	BufferedImage pacman2Right;
+	BufferedImage pacman3Down;
+	BufferedImage pacman3Left;
+	BufferedImage pacman3Up;
+	BufferedImage pacman3Right;
 	
 	GameCtrl gameControl = GameCtrl.getInstance();
+	Game game;
 	
 	private MazeBuilder(TileEnum[][] a) {
 		
 		importImage();
 		
-		map = a.clone();
+		map = a;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Pac Man");
 		setPreferredSize(new Dimension(28*16,37*16+6));
@@ -75,16 +88,33 @@ public class MazeBuilder extends JFrame {
 		setVisible(true);
 		pack();	
 	}
+	
 	private void importImage() {
 		try{ 
             food = ImageIO.read(getClass().getResource("/pictures/Food.png"));
+            power = ImageIO.read(getClass().getResource("/pictures/Power.png"));
             wall = ImageIO.read(getClass().getResource("/pictures/Wall.png"));
             blank = ImageIO.read(getClass().getResource("/pictures/Blank.png"));
+            redGhost = ImageIO.read(getClass().getResource("/pictures/Red.png"));
+            cyanGhost = ImageIO.read(getClass().getResource("/pictures/Cyan.png"));
+            pinkGhost = ImageIO.read(getClass().getResource("/pictures/Pink.png"));
+            orangeGhost = ImageIO.read(getClass().getResource("/pictures/Orange.png"));
+            spookedGhost = ImageIO.read(getClass().getResource("/pictures/Spooked.png"));
+            pacman1 = ImageIO.read(getClass().getResource("/pictures/pacman1.png"));
+            pacman2Down = ImageIO.read(getClass().getResource("/pictures/pacman2Down.png"));
+            pacman2Left = ImageIO.read(getClass().getResource("/pictures/pacman2Left.png"));
+            pacman2Up = ImageIO.read(getClass().getResource("/pictures/pacman2Up.png"));
+            pacman2Right = ImageIO.read(getClass().getResource("/pictures/pacman2Right.png"));
+            pacman3Down = ImageIO.read(getClass().getResource("/pictures/pacman3Down.png"));
+            pacman3Left = ImageIO.read(getClass().getResource("/pictures/pacman3Left.png"));
+            pacman3Up = ImageIO.read(getClass().getResource("/pictures/pacman3Up.png"));
+            pacman3Right = ImageIO.read(getClass().getResource("/pictures/pacman3Right.png"));
             
         }catch(IOException e){
         	System.out.println(e);
         }
 	}
+	
 	private class DrawingPanel extends JPanel implements KeyListener{
 		
 		private static final long serialVersionUID = 3752806378765782599L;
@@ -92,33 +122,53 @@ public class MazeBuilder extends JFrame {
 		public DrawingPanel() {
 			addKeyListener(this);
 		}
-		TileEnum[][] drawingMap = new TileEnum[28][30];
+		
+		TileEnum[][] drawingMap;
 		int c;
 		
+		@Override
 		public void keyPressed(KeyEvent e) { 
 			c = e.getKeyCode();
+			gameControl.setGameState(GameStateEnum.Running);
 			switch(c) {
-			case 38:
-				gameControl.updatePacmanDirection(DirectionEnum.Up);
-				break;
-			case 39:
-				gameControl.updatePacmanDirection(DirectionEnum.Right);
-				break;
-			case 40:
-				gameControl.updatePacmanDirection(DirectionEnum.Bottom);
-				break;
-			case 37:
-				gameControl.updatePacmanDirection(DirectionEnum.Left);
-				break;
+				case 38:
+					gameControl.updatePacmanDirection(DirectionEnum.Up);
+					break;
+				case 39:
+					gameControl.updatePacmanDirection(DirectionEnum.Right);
+					break;
+				case 40:
+					gameControl.updatePacmanDirection(DirectionEnum.Bottom);
+					break;
+				case 37:
+					gameControl.updatePacmanDirection(DirectionEnum.Left);
+					break;
+				default: 
+					gameControl.setGameState(GameStateEnum.Pause);
+					break;
 			}
-			System.out.println(c);
 		}
-	    public void keyReleased(KeyEvent e) { }
-	    public void keyTyped(KeyEvent e) { }
 		
-		public void paintComponent(Graphics g) {
+		@Override
+	    public void keyReleased(KeyEvent e) {}
+	    
+		@Override
+	    public void keyTyped(KeyEvent e) {}
+		
+		@Override
+	    public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D g2 = (Graphics2D)g;
+			drawMaze(g2);
+			drawPacMan(g2, game.getPacman().getCurrentDirection());
+			drawPink(g2, game.getGhosts()[0].getCurrentDirection());
+			drawRed(g2, game.getGhosts()[0].getCurrentDirection());
+			drawOrange(g2, game.getGhosts()[0].getCurrentDirection());
+			drawCyan(g2, game.getGhosts()[0].getCurrentDirection());
+			drawGhost(g2);
+		}
+		
+		private void drawMaze(Graphics2D g2) {
 			for(int i = 0; i < drawingMap.length; i++) {
 				for(int j = 0; j < drawingMap[0].length; j++) {
 					switch(drawingMap[i][j]) {
@@ -131,13 +181,82 @@ public class MazeBuilder extends JFrame {
 						case Food:
 							g2.drawImage(food,i*16,j*16,this);
 							break;
+                        case Power:
+                            g2.drawImage(power, i*16, j*16, this);
 						default: break;
 					}
 				}
 			}
 		}
+		
+		private void drawPacMan(Graphics2D g2, DirectionEnum dir) {
+			switch(dir) {
+			case Up: 
+				g2.drawImage(pacman2Up, game.getPacman().getX(), game.getPacman().getY(), this); 
+				repaint();
+				break;
+			case Right: 
+				g2.drawImage(pacman2Right, game.getPacman().getX(), game.getPacman().getY(), this);
+				repaint();
+				break;
+			case Bottom: 
+				g2.drawImage(pacman2Down, game.getPacman().getX(), game.getPacman().getY(), this);
+				repaint();
+				break;
+			case Left: 
+				g2.drawImage(pacman2Left, game.getPacman().getX(), game.getPacman().getY(), this);
+				repaint();
+				break;
+			}
+		}
+
+		private void drawPink(Graphics2D g2, DirectionEnum dir) {
+		    Ghost ghost = game.getGhosts()[0];
+		    BufferedImage image = pinkGhost;
+		    if (ghost.isVulnerable()){
+		        image = spookedGhost;
+            }
+            g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+            repaint();
+		}
+
+		
+		private void drawRed(Graphics2D g2, DirectionEnum dir) {
+            Ghost ghost = game.getGhosts()[1];
+            BufferedImage image = redGhost;
+            if (ghost.isVulnerable()){
+                image = spookedGhost;
+            }
+            g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+            repaint();
+		}
+		
+		private void drawOrange(Graphics2D g2, DirectionEnum dir) {
+            Ghost ghost = game.getGhosts()[2];
+            BufferedImage image = orangeGhost;
+            if (ghost.isVulnerable()){
+                image = spookedGhost;
+            }
+            g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+            repaint();
+		}
+		
+		private void drawCyan(Graphics2D g2, DirectionEnum dir) {
+            Ghost ghost = game.getGhosts()[3];
+            BufferedImage image = cyanGhost;
+            if (ghost.isVulnerable()){
+                image = spookedGhost;
+            }
+            g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+            repaint();
+		}
+		
+		private void drawGhost(Graphics2D g2) {
+			
+		}
+		
 		public void updateMap(TileEnum[][] a) {
-			drawingMap = a.clone();
+			drawingMap = a;
 		}
 		
 	}
@@ -147,12 +266,14 @@ public class MazeBuilder extends JFrame {
 	public static MazeBuilder getInstance(Game game) {
 		if (null == mazeBuilder) {
 			mazeBuilder = new MazeBuilder(game.getMaze());
+			mazeBuilder.game = game;
 		}
 		return mazeBuilder;
 	}
 	
 	public void update(Game game) {
 		System.out.println("mazeBuilder.update");
+		this.repaint();
 	}
 	
 }

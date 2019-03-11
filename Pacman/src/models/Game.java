@@ -20,6 +20,8 @@ public class Game {
 	private Pacman pacman;
 	private Ghost[] ghosts;
 	private GameStateEnum gameState;
+	private int[] positionPacman;
+	private int[][] positionGhosts;
 	
 	private Game() {}
 	
@@ -80,10 +82,26 @@ public class Game {
 		this.gameState = gameState;
 	}
 
+	public int[] getPositionPacman() {
+		return positionPacman;
+	}
+
+	public void setPositionPacman(int[] positionPacman) {
+		this.positionPacman = positionPacman;
+	}
+
+	public int[][] getPositionGhosts() {
+		return positionGhosts;
+	}
+
+	public void setPositionGhosts(int[][] positionGhosts) {
+		this.positionGhosts = positionGhosts;
+	}
+
 	public String getDebugString(){
 		String gameString = "Game: "
-				+"all food: "+getAllFood()
-				+", eaten food: "+getFoodEat();
+				+"all food: "+allFood
+				+", eaten food: "+foodEat;
 
 		String pacManString = "Pacman: "+pacman.getDebugString();
 		String ghostString = "";
@@ -92,5 +110,6 @@ public class Game {
 		}
 		return gameString + "\n"+ pacManString + "\n"+ ghostString;
 	}
-	
+
+
 }

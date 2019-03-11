@@ -12,7 +12,9 @@ package models;
 public class Ghost extends Agent {
 
 	private boolean vulnerable;
+	private int vulnerableCounter;
 	private boolean dead;
+	private static int vulnerableTime = 50;
 	
 	private Ghost() {}
 	
@@ -33,8 +35,20 @@ public class Ghost extends Agent {
 	}
 
 	public void setVulnerable(boolean vulnerable) {
-		this.vulnerable = vulnerable;
+	    this.vulnerable = vulnerable;
+	    if (vulnerable){
+	        vulnerableCounter = vulnerableTime;
+        }
 	}
+
+	public void tickDown(){
+	    if (vulnerable){
+	        vulnerableCounter -= 1;
+	        if (vulnerableCounter <= 0){
+	            setVulnerable(false);
+            }
+        }
+    }
 
 	public boolean isDead() {
 		return dead;
@@ -44,13 +58,9 @@ public class Ghost extends Agent {
 		this.dead = dead;
 	}
 
+	@Override
 	public String getDebugString(){
-		return "dead: "+dead
-				+", x: "+x
-				+", y: "+y
-				+", speed: "+speed
-				+", currentDirection: "+currentDirection
-				+", nextDirection: "+nextDirection;
+		return "dead: "+dead+", "+super.getDebugString();
 	}
 	
 }
