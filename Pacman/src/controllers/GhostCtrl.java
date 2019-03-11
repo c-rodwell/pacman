@@ -59,8 +59,11 @@ public class GhostCtrl {
 				g.setNextDirection(DirectionEnum.class.getEnumConstants()[r]);
 				System.out.println("hit a wall, can't go any further "+currentDirection);
 			}
+			g.tickDown();
 		}
 	}
+
+
 
 	public DirectionEnum decideMove(Ghost g){
 		return DirectionEnum.Bottom;

@@ -137,5 +137,6 @@ public class Game {
 		}
 		return gameString + "\n"+ pacManString + "\n"+ ghostString;
 	}
-	
+
+
 }

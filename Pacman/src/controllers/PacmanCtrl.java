@@ -1,8 +1,9 @@
-package controllers;
+﻿package controllers;
 
 import enumations.DirectionEnum;
 import enumations.TileEnum;
 import models.Game;
+import models.Ghost;
 import models.Pacman;
 
 /**   
@@ -95,16 +96,26 @@ public class PacmanCtrl {
 		if (t1 == t2) {
 			if (t1 != TileEnum.Wall) {
 				int[] p = pacman.translateToTile(pacman.getNextX() + 7, pacman.getNextY() + 7);
-				if (game.getMaze()[p[0]][p[1]] == TileEnum.Food) {
-					game.getMaze()[p[0]][p[1]] = TileEnum.Path;
-					game.setFoodEat(game.getFoodEat() + 1);
-					game.setScore(game.getScore() + 1);
-				}
+				eatTile(game, p[0], p[1]);
 			}
 			return t1;
 		} else {
 			return TileEnum.Wall;
 		}	
 	}
+
+	private void eatTile(Game game, int x, int y){
+	    TileEnum tileToEat = game.getMaze()[x][y];
+        if (tileToEat == TileEnum.Food) {
+            game.getMaze()[x][y] = TileEnum.Path;
+            game.setFoodEat(game.getFoodEat() + 1);
+            game.setFoodEat(game.getFoodEat() + 1);
+        } else if (tileToEat == TileEnum.Power){
+            game.getMaze()[x][y] = TileEnum.Path;
+            for (Ghost ghost : game.getGhosts()){
+                ghost.setVulnerable(true);
+            }
+        }
+    }
 	
 }
