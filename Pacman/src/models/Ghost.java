@@ -1,10 +1,5 @@
 package models;
 
-import enumations.DirectionEnum;
-import enumations.TileEnum;
-import interfaces.Collidable;
-import interfaces.Movable;
-
 /**   
 * @Title: Ghost.java 
 * @Package models 
@@ -14,64 +9,23 @@ import interfaces.Movable;
 * @version V1.0   
 */
 
-public class Ghost implements Movable, Collidable {
+public class Ghost extends Agent {
 
-	private double x;
-	private double y;
-	private double speed;
-	private DirectionEnum currentDirection;
-	private DirectionEnum nextDirection;
 	private boolean vulnerable;
 	private boolean dead;
 	
-	@Override
-	public TileEnum collide(TileEnum[][] maze) {
-		return null;
-	}
-
-	@Override
-	public void move() {
-		
-	}
+	private Ghost() {}
 	
-	public double getX() {
-		return x;
-	}
-
-	public void setX(double x) {
-		this.x = x;
-	}
+	private static Ghost[] ghosts;
 	
-	public double getY() {
-		return y;
-	}
-	
-	public void setY(double y) {
-		this.y = y;
-	}
-
-	public double getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(double speed) {
-		this.speed = speed;
-	}
-
-	public DirectionEnum getCurrentDirection() {
-		return currentDirection;
-	}
-
-	public void setCurrentDirection(DirectionEnum currentDirection) {
-		this.currentDirection = currentDirection;
-	}
-
-	public DirectionEnum getNextDirection() {
-		return nextDirection;
-	}
-
-	public void setNextDirection(DirectionEnum nextDirection) {
-		this.nextDirection = nextDirection;
+	public static Ghost[] getInstance() {
+		if (null == ghosts) {
+			ghosts = new Ghost[4];
+			for (int i = 0; i < ghosts.length; i++) {
+				ghosts[i] = new Ghost();
+			}
+		}
+		return ghosts;
 	}
 
 	public boolean isVulnerable() {
@@ -88,6 +42,11 @@ public class Ghost implements Movable, Collidable {
 
 	public void setDead(boolean dead) {
 		this.dead = dead;
+	}
+
+	@Override
+	public String getDebugString(){
+		return "dead: "+dead+", "+super.getDebugString();
 	}
 	
 }

@@ -1,6 +1,5 @@
 package models;
 
-import enumations.DirectionEnum;
 import enumations.GameStateEnum;
 import enumations.TileEnum;
 
@@ -15,13 +14,17 @@ import enumations.TileEnum;
 
 public class Game {
 
-	private DirectionEnum inputDirection;
 	private int foodEat;
 	private int allFood;
+	private int score;
 	private TileEnum[][] maze;
 	private Pacman pacman;
 	private Ghost[] ghosts;
 	private GameStateEnum gameState;
+	private int[] positionPacman;
+	private int[][] positionGhosts;
+	private String[] allLevel;
+	private int currentLevel;
 	
 	private Game() {}
 	
@@ -32,14 +35,6 @@ public class Game {
 			game = new Game();
 		}
 		return game;
-	}
-	
-	public DirectionEnum getInputDirection() {
-		return inputDirection;
-	}
-
-	public void setInputDirection(DirectionEnum inputDirection) {
-		this.inputDirection = inputDirection;
 	}
 
 	public int getFoodEat() {
@@ -56,6 +51,14 @@ public class Game {
 
 	public void setAllFood(int allFood) {
 		this.allFood = allFood;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public TileEnum[][] getMaze() {
@@ -88,6 +91,51 @@ public class Game {
 
 	public void setGameState(GameStateEnum gameState) {
 		this.gameState = gameState;
+	}
+
+	public int[] getPositionPacman() {
+		return positionPacman;
+	}
+
+	public void setPositionPacman(int[] positionPacman) {
+		this.positionPacman = positionPacman;
+	}
+
+	public int[][] getPositionGhosts() {
+		return positionGhosts;
+	}
+
+	public void setPositionGhosts(int[][] positionGhosts) {
+		this.positionGhosts = positionGhosts;
+	}
+
+	public String[] getAllLevel() {
+		return allLevel;
+	}
+
+	public void setAllLevel(String[] allLevel) {
+		this.allLevel = allLevel;
+	}
+
+	public int getCurrentLevel() {
+		return currentLevel;
+	}
+
+	public void setCurrentLevel(int currentLevel) {
+		this.currentLevel = currentLevel;
+	}
+
+	public String getDebugString(){
+		String gameString = "Game: "
+				+"all food: "+allFood
+				+", eaten food: "+foodEat;
+
+		String pacManString = "Pacman: "+pacman.getDebugString();
+		String ghostString = "";
+		for (int i=0; i<ghosts.length; i++){
+			ghostString+="Ghost "+i+": "+ghosts[i].getDebugString()+"\n";
+		}
+		return gameString + "\n"+ pacManString + "\n"+ ghostString;
 	}
 	
 }

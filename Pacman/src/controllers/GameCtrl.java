@@ -1,6 +1,9 @@
 package controllers;
 
-import enumations.TileEnum;
+import java.io.IOException;
+
+import enumations.DirectionEnum;
+import enumations.GameStateEnum;
 import models.Game;
 import models.Ghost;
 import models.Pacman;
@@ -15,10 +18,10 @@ import views.MazeBuilder;
 * @version V1.0   
 */
 
-public class GameCtrl {
+public class GameCtrl implements Runnable {
 	
 	private GameCtrl() {}
-	
+
 	private static GameCtrl gameCtrl;
 	
 	public static GameCtrl getInstance() {
@@ -30,46 +33,140 @@ public class GameCtrl {
 	
 	private PacmanCtrl pacmanCtrl = PacmanCtrl.getInstance();
 	private GhostCtrl ghostCtrl = GhostCtrl.getInstance();
-	private MazeBuilder mazeBuilder = MazeBuilder.getInstance();
+	private MazeBuilder mazeBuilder;
 	
 	private Game game = Game.getInstance();
 	
 	public void init() {
-		game.setPacman(pacmanCtrl.init());
-		game.setGhosts(ghostCtrl.init());
-		//more
+		MazeImportHandler m = new MazeImportHandler();
+		if (null == game.getAllLevel() || game.getAllLevel().length == 0) {
+			game.setAllLevel(m.getFileNames());
+			game.setCurrentLevel(0);
+		}
+		if (game.getAllLevel().length == game.getCurrentLevel()) {
+			youWin();
+			return ;
+		}
+		try {
+			m.readFile("./src/maze/" + game.getAllLevel()[game.getCurrentLevel()]);
+			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), 3));
+			game.setPositionPacman(m.getPositionPacman());
+			game.setGhosts(ghostCtrl.init(m.getPositionGhosts()));
+			game.setPositionGhosts(m.getPositionGhosts());
+			game.setMaze(m.getMaze());
+			game.setAllFood(m.getAllfood());
+			game.setFoodEat(0);
+		} catch (UnsupportedOperationException | IOException e) {
+			e.printStackTrace();
+		}
+		mazeBuilder = MazeBuilder.getInstance(game);
+		game.setGameState(GameStateEnum.Pause);
 	}
-	
+
 	public void update() {
-		pacmanCtrl.movePacman(game.getMaze());
-		ghostCtrl.moveGhosts();
+		pacmanCtrl.movePacman(game);
+		ghostCtrl.moveGhosts(game);
 		if (isPacmanCaptured(game.getPacman(), game.getGhosts())) {
+			setGameState(GameStateEnum.Pause);
 			pacmanCtrl.pacmanIsCaptured();
-			if (game.getPacman().getLives() == 0) {
-				//game over
+			int life = game.getPacman().getLives();
+			if (life == 0) {
+				gameOver();
 			} else {
 				reset();
 			}
-		} else if (noMoreFood(game.getMaze())) {
+		} else if (noMoreFood()) {
 			nextLevel();
 		}
 		mazeBuilder.update(game);
 	}
 	
+	public void setGameState(GameStateEnum e) {
+		if (GameStateEnum.End != game.getGameState()) {
+			game.setGameState(e);
+		}
+	}
+	
 	private boolean isPacmanCaptured(Pacman pacman, Ghost[] ghosts) {
+		int xl = pacman.getX();
+		int xr = xl + 15;
+		int yt = pacman.getY();
+		int yb = yt + 15;
+		for (Ghost g : ghosts) {
+			int x = g.getX();
+			int y = g.getY();
+			if (x >= xl && x <= xr && y >= yt && y <= yb) {
+				System.out.println("\n******************\npacman got captured.\n******************\n");
+				return true;
+			}
+		}
 		return false;
 	}
 	
-	private boolean noMoreFood(TileEnum[][] maze) {
+	private boolean noMoreFood() {
 		return game.getAllFood() == game.getFoodEat();
 	}
-	
+
+	//pacman lost a life but has lives left:
+	//	put pacman and ghosts back to original positions
+	//	food remains eaten
 	private void reset() {
-		
+		pacmanCtrl.init(game.getPositionPacman(), game.getPacman().getLives());
+		ghostCtrl.init(game.getPositionGhosts());
+		game.setGameState(GameStateEnum.Pause);
+		System.out.println("reset current level");
+	}
+
+	//create next level - new food, new ghosts, possibly new maze layout
+	private void nextLevel() {
+		System.out.println("next level");
+		game.setCurrentLevel(game.getCurrentLevel() + 1);
+		gameCtrl.init();
+		game.setGameState(GameStateEnum.Pause);
+	}
+
+	//game over - show a game over message and score. can play again from here
+	private void gameOver(){
+		System.out.println("Game over");
+		game.setGameState(GameStateEnum.End);
 	}
 	
-	private void nextLevel() {
-		
+	private void youWin() {
+		System.out.println("You Win!");
+		game.setGameState(GameStateEnum.End);
+	}
+	
+	public void updatePacmanDirection(DirectionEnum direction) {
+		pacmanCtrl.updatePacmanDirection(direction);
+	}
+	
+	@Override
+	public void run() {
+		if (GameStateEnum.Running == game.getGameState()) {
+			update();
+			printStatus();
+		}
+	}
+	
+	@SuppressWarnings("static-access")
+	public static void main(String[] args) {
+		GameCtrl gameCtrl = new GameCtrl();
+		while (true) {
+			gameCtrl.init();
+			Thread thread = new Thread(gameCtrl);
+			while (true) {
+				thread.run();
+				try {
+					thread.sleep(33);
+				} catch (InterruptedException e) {}
+			}
+		}
+	}
+
+	//debugging helper - print out details of game state
+	private void printStatus(){
+		System.out.println("\n______ game state: ______");
+		System.out.println(game.getDebugString());
 	}
 	
 }
