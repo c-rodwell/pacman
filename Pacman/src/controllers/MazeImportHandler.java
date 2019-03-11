@@ -45,6 +45,14 @@ public class MazeImportHandler {
 		this.allfood = Integer.parseInt(data);
 		br.close();
 	}
+	
+	public String[] getFileNames() {		
+		File dir = new File("./src/maze/");
+		if (dir.isDirectory()) {
+			return dir.list();
+		}
+		return null;
+	}
 
 	public TileEnum[][] getMaze() {
 		return maze;

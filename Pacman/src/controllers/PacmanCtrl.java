@@ -98,6 +98,7 @@ public class PacmanCtrl {
 				if (game.getMaze()[p[0]][p[1]] == TileEnum.Food) {
 					game.getMaze()[p[0]][p[1]] = TileEnum.Path;
 					game.setFoodEat(game.getFoodEat() + 1);
+					game.setScore(game.getScore() + 1);
 				}
 			}
 			return t1;
