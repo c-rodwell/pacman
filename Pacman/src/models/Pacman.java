@@ -1,7 +1,5 @@
 package models;
 
-import enumations.TileEnum;
-
 /**   
 * @Title: Pacman.java 
 * @Package model 
@@ -13,20 +11,9 @@ import enumations.TileEnum;
 
 public class Pacman extends Agent {
 
-	private int lives;
-	
-	public TileEnum eat(TileEnum[][] maze) {
-		return null;
-	}
+	private int lives = 3;
 
-	private Pacman() {
-		speed = 1;
-
-		//hardcode position corresponding to 1,1 in the hardcoded maze, which is a food tile
-		//TODO get pacman start position from the maze layout
-		x = 16;
-		y = 16;
-	}
+	private Pacman() {}
 	
 	private static Pacman pacman;
 	
@@ -45,13 +32,9 @@ public class Pacman extends Agent {
 		this.lives = lives;
 	}
 
+	@Override
 	public String getDebugString(){
-		return "lives: "+lives
-				+", x: "+x
-				+", y: "+y
-				+", speed: "+speed
-				+", currentDirection: "+currentDirection
-				+", nextDirection: "+nextDirection;
+		return "lives: "+lives+", "+super.getDebugString();
 	}
 	
 }

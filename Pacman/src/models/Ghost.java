@@ -44,13 +44,9 @@ public class Ghost extends Agent {
 		this.dead = dead;
 	}
 
+	@Override
 	public String getDebugString(){
-		return "dead: "+dead
-				+", x: "+x
-				+", y: "+y
-				+", speed: "+speed
-				+", currentDirection: "+currentDirection
-				+", nextDirection: "+nextDirection;
+		return "dead: "+dead+", "+super.getDebugString();
 	}
 	
 }

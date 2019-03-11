@@ -29,31 +29,29 @@ public class PacmanCtrl {
 	
 	private Pacman pacman = Pacman.getInstance();
 	
-	public Pacman init() {
+	public Pacman init(int[] position) {
 		//set pacman
+		pacman.setSpeed(4);
+		pacman.setCurrentDirection(DirectionEnum.Right);
+		pacman.setX(16);
+		pacman.setY(16);
 		return pacman;
 	}
-
-	public void movePacman(TileEnum[][] maze) {
-
-		Game game = Game.getInstance();
+	
+	public void movePacman(Game game) {
 		DirectionEnum nextDirection = pacman.getNextDirection();
 		DirectionEnum currentDirection = pacman.getCurrentDirection();
-
-		//first, try to go in nextDirection if possible (then update currentDirection, set nextDirection back to null)
-		if ((nextDirection!= null)&&(game.checkMove(pacman, nextDirection))){
-			System.out.println("changed direction to "+nextDirection);
+		if (nextDirection != null && checkMove(game, nextDirection)) {
+			System.out.println("changed direction to " + nextDirection);
 			pacman.setCurrentDirection(nextDirection);
 			pacman.setNextDirection(null);	//does this risk race condition since listener also sets nextDirection?
-			pacman.move();
-		//next try going in currentDirection
-		} else if ((currentDirection!= null)&&(game.checkMove(pacman, currentDirection))){
-			pacman.move();
+			pacman.setPosition();
+		} else if (currentDirection != null && checkMove(game, currentDirection)) {
+			System.out.println("current direction is " + currentDirection);
+			pacman.setPosition();
 		} else {
-			//System.out.println("hit a wall, can't go any further "+currentDirection);
-			//pacman can't move in currentDirection or nextDirection - stay still?
+			System.out.println("hit a wall, can't go any further "+currentDirection);
 		}
-		pacman.eat(maze);
 	}
 	
 	public void pacmanIsCaptured() {
@@ -62,21 +60,48 @@ public class PacmanCtrl {
 	
 	public void updatePacmanDirection(DirectionEnum nextDirection) {
 		pacman.setNextDirection(nextDirection);
-		System.out.println(pacman.getNextDirection());
 	}
 	
-	private boolean checkChangeDirection() {
-		return false;
+	private boolean checkMove(Game game, DirectionEnum direction) {
+		if (TileEnum.Wall == checkFace(game, direction)) {
+			pacman.restoreExpect();
+			return false;
+		} else {
+			return true;
+		}
 	}
-
-//	private boolean checkMove(DirectionEnum direction) {
-//		double[] nextPosition = pacman.getNextPosition(direction);
-//		if(game.isPassable(x,y))
-//
-//	}
-
-//	private DirectionEnum getDirectionInput(){
-//		return DirectionEnum.Bottom;
-//	}
+	
+	private TileEnum checkFace(Game game, DirectionEnum direction) {
+		pacman.preMove(direction);
+		int[] p1 = new int[2];
+		int[] p2 = new int[2];
+		if (direction.equals(DirectionEnum.Bottom)) {
+			p1 = pacman.translateToTile(pacman.getNextX(), pacman.getNextY() + 15);
+			p2 = pacman.translateToTile(pacman.getNextX() + 15, pacman.getNextY() + 15);
+		} else if (direction.equals(DirectionEnum.Right)) {
+			p1 = pacman.translateToTile(pacman.getNextX() + 15, pacman.getNextY());
+			p2 = pacman.translateToTile(pacman.getNextX() + 15, pacman.getNextY() + 15);
+		} else if (direction.equals(DirectionEnum.Up)) {
+			p1 = pacman.translateToTile(pacman.getNextX(), pacman.getNextY());
+			p2 = pacman.translateToTile(pacman.getNextX() + 15, pacman.getNextY());
+		} else if (direction.equals(DirectionEnum.Left)) {
+			p1 = pacman.translateToTile(pacman.getNextX(), pacman.getNextY());
+			p2 = pacman.translateToTile(pacman.getNextX(), pacman.getNextY() + 15);
+		}
+		TileEnum t1 = game.getMaze()[p1[0]][p1[1]];
+		TileEnum t2 = game.getMaze()[p2[0]][p2[1]];
+		if (t1 == t2) {
+			if (t1 != TileEnum.Wall) {
+				int[] p = pacman.translateToTile(pacman.getNextX() + 7, pacman.getNextY() + 7);
+				if (game.getMaze()[p[0]][p[1]] == TileEnum.Food) {
+					game.getMaze()[p[0]][p[1]] = TileEnum.Path;
+					game.setFoodEat(game.getFoodEat() + 1);
+				}
+			}
+			return t1;
+		} else {
+			return TileEnum.Wall;
+		}	
+	}
 	
 }

@@ -1,6 +1,5 @@
 package models;
 
-import enumations.DirectionEnum;
 import enumations.GameStateEnum;
 import enumations.TileEnum;
 
@@ -83,38 +82,15 @@ public class Game {
 
 	public String getDebugString(){
 		String gameString = "Game: "
-				+"all food: "+getAllFood()
-				+", eaten food: "+getFoodEat();
+				+"all food: "+allFood
+				+", eaten food: "+foodEat;
 
 		String pacManString = "Pacman: "+pacman.getDebugString();
 		String ghostString = "";
 		for (int i=0; i<ghosts.length; i++){
 			ghostString+="Ghost "+i+": "+ghosts[i].getDebugString()+"\n";
 		}
-		//return gameString + "\n"+ pacManString + "\n"+ ghostString;
-		return pacManString;
-	}
-
-	public boolean checkMove(Agent agent, DirectionEnum direction) {
-		double[] nextPosition = agent.getNextPosition(direction);
-		return (isPassable(nextPosition[0], nextPosition[1]));
-	}
-
-	//check if pac man can go to that place
-	//is it as simple as checking if position is a wall, or do we need to enforce min distance from a wall?
-	//in tunnel of 1 square width, pacman shouldn't be able to move toward either wall
-	public boolean isPassable(double x, double y){
-		int[] intPosition = doubleToIntPosition(x, y);
-
-		System.out.println("check x: " + intPosition[0] + " y: " + intPosition[1] + " its a " + maze[intPosition[0]][intPosition[1]]);
-		return maze[intPosition[0]][intPosition[1]] != TileEnum.Wall;
-	}
-
-	//transate the double position to closest integer position in the maze
-	//is this the right way up? not sure which way x and y go in the array
-	public int[] doubleToIntPosition(double x, double y){
-		int[] intPoint = {(int) x/16, (int) y/16};
-		return intPoint;
+		return gameString + "\n"+ pacManString + "\n"+ ghostString;
 	}
 	
 }

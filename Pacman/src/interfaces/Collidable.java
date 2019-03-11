@@ -1,7 +1,5 @@
 package interfaces;
 
-import enumations.TileEnum;
-
 /**   
 * @Title: Collidable.java 
 * @Package interfaces 
@@ -13,6 +11,8 @@ import enumations.TileEnum;
 
 public interface Collidable {
 	
-	public TileEnum collide(TileEnum[][] maze);
+	//public TileEnum collide(TileEnum[][] maze);
+		
+	public int[] translateToTile(int x, int y);
 	
 }
