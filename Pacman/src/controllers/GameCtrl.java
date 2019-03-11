@@ -106,9 +106,10 @@ public class GameCtrl implements Runnable {
 	public void eatGhost(int ghostNum){
 		Ghost g = game.getGhosts()[ghostNum];
 		g.setVulnerable(false);
-		int[] position = game.getPositionGhosts()[ghostNum];
-		g.setX(position[0]);
-		g.setY(position[1]);
+		int[][] position = game.getPositionGhosts();
+		g.setX(position[ghostNum][0]);
+		g.setY(position[ghostNum][1]);
+		g.restoreExpect();
 	}
 
 	private void pacmanCaptured(){
