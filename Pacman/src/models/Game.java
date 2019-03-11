@@ -16,12 +16,15 @@ public class Game {
 
 	private int foodEat;
 	private int allFood;
+	private int score;
 	private TileEnum[][] maze;
 	private Pacman pacman;
 	private Ghost[] ghosts;
 	private GameStateEnum gameState;
 	private int[] positionPacman;
 	private int[][] positionGhosts;
+	private String[] allLevel;
+	private int currentLevel;
 	
 	private Game() {}
 	
@@ -48,6 +51,14 @@ public class Game {
 
 	public void setAllFood(int allFood) {
 		this.allFood = allFood;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
 	}
 
 	public TileEnum[][] getMaze() {
@@ -96,6 +107,22 @@ public class Game {
 
 	public void setPositionGhosts(int[][] positionGhosts) {
 		this.positionGhosts = positionGhosts;
+	}
+
+	public String[] getAllLevel() {
+		return allLevel;
+	}
+
+	public void setAllLevel(String[] allLevel) {
+		this.allLevel = allLevel;
+	}
+
+	public int getCurrentLevel() {
+		return currentLevel;
+	}
+
+	public void setCurrentLevel(int currentLevel) {
+		this.currentLevel = currentLevel;
 	}
 
 	public String getDebugString(){

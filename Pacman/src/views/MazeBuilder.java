@@ -264,10 +264,8 @@ public class MazeBuilder extends JFrame {
 	private static MazeBuilder mazeBuilder;
 		
 	public static MazeBuilder getInstance(Game game) {
-		if (null == mazeBuilder) {
-			mazeBuilder = new MazeBuilder(game.getMaze());
-			mazeBuilder.game = game;
-		}
+		mazeBuilder = new MazeBuilder(game.getMaze());
+		mazeBuilder.game = game;
 		return mazeBuilder;
 	}
 	

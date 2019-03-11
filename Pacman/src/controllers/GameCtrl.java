@@ -40,14 +40,23 @@ public class GameCtrl implements Runnable {
 	
 	public void init() {
 		MazeImportHandler m = new MazeImportHandler();
+		if (null == game.getAllLevel() || game.getAllLevel().length == 0) {
+			game.setAllLevel(m.getFileNames());
+			game.setCurrentLevel(0);
+		}
+		if (game.getAllLevel().length == game.getCurrentLevel()) {
+			youWin();
+			return ;
+		}
 		try {
-			m.readFile("./src/maze/1.txt");
+			m.readFile("./src/maze/" + game.getAllLevel()[game.getCurrentLevel()]);
 			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), 3));
 			game.setPositionPacman(m.getPositionPacman());
 			game.setGhosts(ghostCtrl.init(m.getPositionGhosts()));
 			game.setPositionGhosts(m.getPositionGhosts());
 			game.setMaze(m.getMaze());
-			game.setAllFood(244);
+			game.setAllFood(m.getAllfood());
+			game.setFoodEat(0);
 		} catch (UnsupportedOperationException | IOException e) {
 			e.printStackTrace();
 		}
@@ -55,7 +64,7 @@ public class GameCtrl implements Runnable {
 		mazeBuilder = MazeBuilder.getInstance(game);
 		game.setGameState(GameStateEnum.Pause);
 	}
-	
+
 	public void update() {
 		pacmanCtrl.movePacman(game);
 		ghostCtrl.moveGhosts(game);
@@ -97,9 +106,10 @@ public class GameCtrl implements Runnable {
 	public void eatGhost(int ghostNum){
 		Ghost g = game.getGhosts()[ghostNum];
 		g.setVulnerable(false);
-		int[] position = game.getPositionGhosts()[ghostNum];
-		g.setX(position[0]);
-		g.setY(position[1]);
+		int[][] position = game.getPositionGhosts();
+		g.setX(position[ghostNum][0]);
+		g.setY(position[ghostNum][1]);
+		g.restoreExpect();
 	}
 
 	private void pacmanCaptured(){
@@ -131,12 +141,19 @@ public class GameCtrl implements Runnable {
 	//create next level - new food, new ghosts, possibly new maze layout
 	private void nextLevel() {
 		System.out.println("next level");
+		game.setCurrentLevel(game.getCurrentLevel() + 1);
+		gameCtrl.init();
 		game.setGameState(GameStateEnum.Pause);
 	}
 
 	//game over - show a game over message and score. can play again from here
 	private void gameOver(){
 		System.out.println("Game over");
+		game.setGameState(GameStateEnum.End);
+	}
+	
+	private void youWin() {
+		System.out.println("You Win!");
 		game.setGameState(GameStateEnum.End);
 	}
 	
@@ -150,7 +167,6 @@ public class GameCtrl implements Runnable {
 			update();
 			printStatus();
 		}
-		//System.out.println(game.getGhosts()[0].isDead());
 	}
 	
 	@SuppressWarnings("static-access")
