@@ -38,7 +38,6 @@ public class GhostCtrl {
 			g.setX(position[i][0]);
 			g.setY(position[i][1]);
 			g.restoreExpect();
-			//more
 		}
 		return ghosts;
 	}
@@ -63,7 +62,13 @@ public class GhostCtrl {
 		}
 	}
 
-
+	public void beAten(Ghost g, Game game, int ghostNum) {
+		g.setVulnerable(false);
+		int[][] position = game.getPositionGhosts();
+		g.setX(position[ghostNum][0]);
+		g.setY(position[ghostNum][1]);
+		g.restoreExpect();
+	}
 
 	public DirectionEnum decideMove(Ghost g){
 		return DirectionEnum.Bottom;
@@ -83,26 +88,9 @@ public class GhostCtrl {
 	}
 	
 	private TileEnum checkFace(Ghost g, Game game, DirectionEnum direction) {
-		g.preMove(direction);
-		int[] p1 = new int[2];
-		int[] p2 = new int[2];
-		if (direction.equals(DirectionEnum.Bottom)) {
-			p1 = g.translateToTile(g.getNextX(), g.getNextY() + 15);
-			p2 = g.translateToTile(g.getNextX() + 15, g.getNextY() + 15);
-		} else if (direction.equals(DirectionEnum.Right)) {
-			p1 = g.translateToTile(g.getNextX() + 15, g.getNextY());
-			p2 = g.translateToTile(g.getNextX() + 15, g.getNextY() + 15);
-		} else if (direction.equals(DirectionEnum.Up)) {
-			p1 = g.translateToTile(g.getNextX(), g.getNextY());
-			p2 = g.translateToTile(g.getNextX() + 15, g.getNextY());
-		} else if (direction.equals(DirectionEnum.Left)) {
-			p1 = g.translateToTile(g.getNextX(), g.getNextY());
-			p2 = g.translateToTile(g.getNextX(), g.getNextY() + 15);
-		}
-		TileEnum t1 = game.getMaze()[p1[0]][p1[1]];
-		TileEnum t2 = game.getMaze()[p2[0]][p2[1]];
-		if (t1 == t2) {
-			return t1;
+		TileEnum[] t = g.checkFace(game, direction);
+		if (t[0] == t[1]) {
+			return t[0];
 		} else {
 			return TileEnum.Wall;
 		}	

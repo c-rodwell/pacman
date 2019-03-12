@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import enumations.DirectionEnum;
 import enumations.GameStateEnum;
-import enumations.TileEnum;
 import models.Game;
 import models.Ghost;
 import models.Pacman;
@@ -62,13 +61,16 @@ public class GameCtrl implements Runnable {
 		}
 
 		mazeBuilder = MazeBuilder.getInstance(game);
-		game.setGameState(GameStateEnum.Pause);
+		setGameState(GameStateEnum.Pause);
 	}
 
 	public void update() {
 		pacmanCtrl.movePacman(game);
 		ghostCtrl.moveGhosts(game);
-		updateForGhostCollision();
+		if (updateForGhostCollision()) {
+			mazeBuilder.update(game);
+			return;
+		}
 		if (noMoreFood()){
 			nextLevel();
 		}
@@ -81,7 +83,7 @@ public class GameCtrl implements Runnable {
 		}
 	}
 
-	private void updateForGhostCollision() {
+	private boolean updateForGhostCollision() {
 		Pacman pacman = game.getPacman();
 		int xl = pacman.getX();
 		int xr = xl + 15;
@@ -97,24 +99,21 @@ public class GameCtrl implements Runnable {
 					eatGhost(i);
 				} else {
 					pacmanCaptured();
-					return;
 				}
+				return true;
 			}
 		}
+		return false;
 	}
 
 	public void eatGhost(int ghostNum){
 		Ghost g = game.getGhosts()[ghostNum];
-		g.setVulnerable(false);
-		int[][] position = game.getPositionGhosts();
-		g.setX(position[ghostNum][0]);
-		g.setY(position[ghostNum][1]);
-		g.restoreExpect();
+		ghostCtrl.beAten(g, game, ghostNum);
 	}
 
 	private void pacmanCaptured(){
 		System.out.println("\n******************\npacman got captured.\n******************\n");
-		setGameState(GameStateEnum.Pause);
+		setGameState(GameStateEnum.ResetPacman);
 		pacmanCtrl.pacmanIsCaptured();
 		int life = game.getPacman().getLives();
 		if (life == 0) {
@@ -134,7 +133,6 @@ public class GameCtrl implements Runnable {
 	private void reset() {
 		pacmanCtrl.init(game.getPositionPacman(), game.getPacman().getLives());
 		ghostCtrl.init(game.getPositionGhosts());
-		game.setGameState(GameStateEnum.Pause);
 		System.out.println("reset current level");
 	}
 

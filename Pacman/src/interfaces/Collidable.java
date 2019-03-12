@@ -1,5 +1,9 @@
 package interfaces;
 
+import enumations.DirectionEnum;
+import enumations.TileEnum;
+import models.Game;
+
 /**   
 * @Title: Collidable.java 
 * @Package interfaces 
@@ -11,8 +15,8 @@ package interfaces;
 
 public interface Collidable {
 	
-	//public TileEnum collide(TileEnum[][] maze);
-		
+	public TileEnum[] checkFace(Game game, DirectionEnum direction);
+	
 	public int[] translateToTile(int x, int y);
 	
 }

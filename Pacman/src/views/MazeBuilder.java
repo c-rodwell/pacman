@@ -193,19 +193,15 @@ public class MazeBuilder extends JFrame {
 			switch(dir) {
 			case Up: 
 				g2.drawImage(pacman2Up, game.getPacman().getX(), game.getPacman().getY(), this); 
-				repaint();
 				break;
 			case Right: 
 				g2.drawImage(pacman2Right, game.getPacman().getX(), game.getPacman().getY(), this);
-				repaint();
 				break;
 			case Bottom: 
 				g2.drawImage(pacman2Down, game.getPacman().getX(), game.getPacman().getY(), this);
-				repaint();
 				break;
 			case Left: 
 				g2.drawImage(pacman2Left, game.getPacman().getX(), game.getPacman().getY(), this);
-				repaint();
 				break;
 			}
 		}
@@ -217,7 +213,6 @@ public class MazeBuilder extends JFrame {
 		        image = spookedGhost;
             }
             g2.drawImage(image, ghost.getX(), ghost.getY(), this);
-            repaint();
 		}
 
 		
@@ -228,7 +223,6 @@ public class MazeBuilder extends JFrame {
                 image = spookedGhost;
             }
             g2.drawImage(image, ghost.getX(), ghost.getY(), this);
-            repaint();
 		}
 		
 		private void drawOrange(Graphics2D g2, DirectionEnum dir) {
@@ -238,7 +232,6 @@ public class MazeBuilder extends JFrame {
                 image = spookedGhost;
             }
             g2.drawImage(image, ghost.getX(), ghost.getY(), this);
-            repaint();
 		}
 		
 		private void drawCyan(Graphics2D g2, DirectionEnum dir) {
@@ -248,7 +241,6 @@ public class MazeBuilder extends JFrame {
                 image = spookedGhost;
             }
             g2.drawImage(image, ghost.getX(), ghost.getY(), this);
-            repaint();
 		}
 		
 		private void drawGhost(Graphics2D g2) {
