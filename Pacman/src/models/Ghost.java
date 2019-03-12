@@ -13,7 +13,7 @@ public class Ghost extends Agent {
 
 	private boolean vulnerable;
 	private int vulnerableCounter;
-	private static int vulnerableTime = 120;
+	private final int vulnerableTime = 120;
 	
 	private Ghost() {}
 	

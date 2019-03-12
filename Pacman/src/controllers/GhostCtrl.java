@@ -35,6 +35,7 @@ public class GhostCtrl {
 		for (int i = 0; i < ghosts.length; i++) {
 			Ghost g = ghosts[i];
 			g.setCurrentDirection(DirectionEnum.Left);
+			g.setVulnerable(false);
 			g.setSpeed(4);
 			g.setX(position[i][0]);
 			g.setY(position[i][1]);

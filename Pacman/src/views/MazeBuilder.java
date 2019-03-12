@@ -312,7 +312,6 @@ public class MazeBuilder extends JFrame {
 				try {
 					Thread.sleep(delay);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				repaint();
