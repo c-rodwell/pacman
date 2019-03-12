@@ -39,12 +39,12 @@ public class GameCtrl implements Runnable {
 	
 	public void init() {
 		MazeImportHandler m = new MazeImportHandler();
-		if (null == game.getAllLevel() || game.getAllLevel().length == 0) {
+		if (null == game.getAllLevel() || game.getAllLevel().size() == 0) {
 			game.setAllLevel(m.getFileNames());
 			game.setCurrentLevel(0);
 		}
 		try {
-			m.readFile("./src/maze/" + game.getAllLevel()[game.getCurrentLevel()]);
+			m.readFile("./src/maze/" + game.getAllLevel().get(game.getCurrentLevel()));
 			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), null == game.getPacman() ? 3 : game.getPacman().getLives()));
 			game.setPositionPacman(m.getPositionPacman());
 			game.setGhosts(ghostCtrl.init(m.getPositionGhosts()));
@@ -144,7 +144,7 @@ public class GameCtrl implements Runnable {
 	private void nextLevel() {
 		System.out.println("next level");
 		game.setCurrentLevel(game.getCurrentLevel() + 1);
-		if (game.getAllLevel().length == game.getCurrentLevel()) {
+		if (game.getAllLevel().size() == game.getCurrentLevel()) {
 			youWin();
 		} else {
 			gameCtrl.init();

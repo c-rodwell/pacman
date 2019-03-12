@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import enumations.GameStateEnum;
 import enumations.TileEnum;
 
@@ -23,7 +25,7 @@ public class Game {
 	private GameStateEnum gameState;
 	private int[] positionPacman;
 	private int[][] positionGhosts;
-	private String[] allLevel;
+	private List<String> allLevel;
 	private int currentLevel;
 	
 	private Game() {}
@@ -109,11 +111,11 @@ public class Game {
 		this.positionGhosts = positionGhosts;
 	}
 
-	public String[] getAllLevel() {
+	public List<String> getAllLevel() {
 		return allLevel;
 	}
 
-	public void setAllLevel(String[] allLevel) {
+	public void setAllLevel(List<String> allLevel) {
 		this.allLevel = allLevel;
 	}
 
