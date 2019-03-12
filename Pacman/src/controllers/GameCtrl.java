@@ -41,7 +41,7 @@ public class GameCtrl implements Runnable {
 	
 	public Game game = Game.getInstance();
 	
-	public void init() throws UnsupportedAudioFileException, LineUnavailableException {
+	public void init() {
 		MazeImportHandler m = new MazeImportHandler();
 		if (null == game.getAllLevel() || game.getAllLevel().length == 0) {
 			game.setAllLevel(m.getFileNames());
@@ -68,7 +68,7 @@ public class GameCtrl implements Runnable {
 		game.setGameState(GameStateEnum.Pause);
 	}
 
-	public void update() throws UnsupportedAudioFileException, LineUnavailableException {
+	public void update() {
 		pacmanCtrl.movePacman(game);
 		ghostCtrl.moveGhosts(game);
 		if (updateForGhostCollision()) {
@@ -152,7 +152,7 @@ public class GameCtrl implements Runnable {
 	}
 
 	//create next level - new food, new ghosts, possibly new maze layout
-	private void nextLevel() throws UnsupportedAudioFileException, LineUnavailableException {
+	private void nextLevel() {
 		System.out.println("next level");
 
 		game.setCurrentLevel(game.getCurrentLevel() + 1);
@@ -179,19 +179,13 @@ public class GameCtrl implements Runnable {
 	@Override
 	public void run() {
 		if (GameStateEnum.Running == game.getGameState()) {
-			try {
-				update();
-			} catch (UnsupportedAudioFileException | LineUnavailableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
+			update();
 			printStatus();
 		}
 	}
 	
 	@SuppressWarnings("static-access")
-	public static void main(String[] args) throws UnsupportedAudioFileException, LineUnavailableException {
+	public static void main(String[] args) {
 		GameCtrl gameCtrl = new GameCtrl();
 		while (true) {
 			gameCtrl.init();

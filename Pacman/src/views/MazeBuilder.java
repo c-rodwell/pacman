@@ -94,7 +94,7 @@ public class MazeBuilder extends JFrame {
 	private final int animatePacmanStepMax = 50;
 	int gameState = 1;
 	
-	public MazeBuilder(TileEnum[][] a) throws UnsupportedAudioFileException, LineUnavailableException {
+	public MazeBuilder(TileEnum[][] a){
 		importImage();
 
         imageIndex = 0;
@@ -130,45 +130,47 @@ public class MazeBuilder extends JFrame {
 		setVisible(true);
 		pack();	
 	}
-	private void importImage() throws UnsupportedAudioFileException, LineUnavailableException {
-		try{ 
+	private void importImage() {
+		try {
 			audioInputStream = AudioSystem.getAudioInputStream(new File(soundName).getAbsoluteFile());
 			clip = AudioSystem.getClip();
-
 			clip.open(audioInputStream);
-			
-            food = ImageIO.read(getClass().getResource("/pictures/Food.png"));
-            power = ImageIO.read(getClass().getResource("/pictures/Power.png"));
-            wall = ImageIO.read(getClass().getResource("/pictures/Wall.png"));
-            blank = ImageIO.read(getClass().getResource("/pictures/Blank.png"));
-            gate = ImageIO.read(getClass().getResource("/pictures/Gate.png"));
-            redGhost = ImageIO.read(getClass().getResource("/pictures/Red.png"));
-            cyanGhost = ImageIO.read(getClass().getResource("/pictures/Cyan.png"));
-            pinkGhost = ImageIO.read(getClass().getResource("/pictures/Pink.png"));
-            orangeGhost = ImageIO.read(getClass().getResource("/pictures/Orange.png"));
-            spookedGhost = ImageIO.read(getClass().getResource("/pictures/Spooked.png"));
-            pacman1 = ImageIO.read(getClass().getResource("/pictures/pacman1.png"));
-            pacman2Down = ImageIO.read(getClass().getResource("/pictures/pacman2Down.png"));
-            pacman2Left = ImageIO.read(getClass().getResource("/pictures/pacman2Left.png"));
-            pacman2Up = ImageIO.read(getClass().getResource("/pictures/pacman2Up.png"));
-            pacman2Right = ImageIO.read(getClass().getResource("/pictures/pacman2Right.png"));
-            pacman3Down = ImageIO.read(getClass().getResource("/pictures/pacman3Down.png"));
-            pacman3Left = ImageIO.read(getClass().getResource("/pictures/pacman3Left.png"));
-            pacman3Up = ImageIO.read(getClass().getResource("/pictures/pacman3Up.png"));
-            pacman3Right = ImageIO.read(getClass().getResource("/pictures/pacman3Right.png"));
-            score = ImageIO.read(getClass().getResource("/pictures/score.png"));
-            number = ImageIO.read(getClass().getResource("/pictures/number.png"));
-            gameover = ImageIO.read(getClass().getResource("/pictures/gameover.png"));
+		} catch (Exception e){
+			System.out.println("error importing auido file: " +e.getMessage());
+		}
+		try {
+			food = ImageIO.read(getClass().getResource("/pictures/Food.png"));
+			power = ImageIO.read(getClass().getResource("/pictures/Power.png"));
+			wall = ImageIO.read(getClass().getResource("/pictures/Wall.png"));
+			blank = ImageIO.read(getClass().getResource("/pictures/Blank.png"));
+			gate = ImageIO.read(getClass().getResource("/pictures/Gate.png"));
+			redGhost = ImageIO.read(getClass().getResource("/pictures/Red.png"));
+			cyanGhost = ImageIO.read(getClass().getResource("/pictures/Cyan.png"));
+			pinkGhost = ImageIO.read(getClass().getResource("/pictures/Pink.png"));
+			orangeGhost = ImageIO.read(getClass().getResource("/pictures/Orange.png"));
+			spookedGhost = ImageIO.read(getClass().getResource("/pictures/Spooked.png"));
+			pacman1 = ImageIO.read(getClass().getResource("/pictures/pacman1.png"));
+			pacman2Down = ImageIO.read(getClass().getResource("/pictures/pacman2Down.png"));
+			pacman2Left = ImageIO.read(getClass().getResource("/pictures/pacman2Left.png"));
+			pacman2Up = ImageIO.read(getClass().getResource("/pictures/pacman2Up.png"));
+			pacman2Right = ImageIO.read(getClass().getResource("/pictures/pacman2Right.png"));
+			pacman3Down = ImageIO.read(getClass().getResource("/pictures/pacman3Down.png"));
+			pacman3Left = ImageIO.read(getClass().getResource("/pictures/pacman3Left.png"));
+			pacman3Up = ImageIO.read(getClass().getResource("/pictures/pacman3Up.png"));
+			pacman3Right = ImageIO.read(getClass().getResource("/pictures/pacman3Right.png"));
+			score = ImageIO.read(getClass().getResource("/pictures/score.png"));
+			number = ImageIO.read(getClass().getResource("/pictures/number.png"));
+			gameover = ImageIO.read(getClass().getResource("/pictures/gameover.png"));
+		}catch (IOException e){
+			System.out.println("error on file imports" +e.getMessage());
+			System.exit(1);
+		}
             
-            pacmanUp = new BufferedImage[] {pacman1, pacman2Up, pacman3Up, pacman2Up};
-            pacmanRight = new BufferedImage[] {pacman1, pacman2Right, pacman3Right, pacman2Right};
-            pacmanDown = new BufferedImage[] {pacman1, pacman2Down, pacman3Down, pacman2Down};
-            pacmanLeft = new BufferedImage[] {pacman1, pacman2Left, pacman3Left, pacman2Left};
-            
-            
-        }catch(IOException e){
-        	System.out.println(e);
-        }
+		pacmanUp = new BufferedImage[] {pacman1, pacman2Up, pacman3Up, pacman2Up};
+		pacmanRight = new BufferedImage[] {pacman1, pacman2Right, pacman3Right, pacman2Right};
+		pacmanDown = new BufferedImage[] {pacman1, pacman2Down, pacman3Down, pacman2Down};
+		pacmanLeft = new BufferedImage[] {pacman1, pacman2Left, pacman3Left, pacman2Left};
+
 	}
 	@SuppressWarnings("serial")
 	private class DrawingPanel extends JPanel implements KeyListener{
@@ -220,12 +222,7 @@ public class MazeBuilder extends JFrame {
 				System.out.println("animation running");
 				pacmanReset(g2, pacmanEndX, pacmanEndY, animatePacmanStep);
 			}else {
-				try {
-					drawPacMan(g2, game.getPacman().getCurrentDirection());
-				} catch (LineUnavailableException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				drawPacMan(g2, game.getPacman().getCurrentDirection());
 				drawPink(g2, game.getGhosts()[0].getCurrentDirection());
 				drawRed(g2, game.getGhosts()[0].getCurrentDirection());
 				drawOrange(g2, game.getGhosts()[0].getCurrentDirection());
@@ -287,7 +284,7 @@ public class MazeBuilder extends JFrame {
 			}
 		}
 
-		private void drawPacMan(Graphics2D g2, DirectionEnum dir) throws LineUnavailableException, IOException {
+		private void drawPacMan(Graphics2D g2, DirectionEnum dir) {
 			int x = (int)gameControl.game.getPacman().getX();
 			int y = (int)gameControl.game.getPacman().getY();
 			switch(dir) {
@@ -441,7 +438,7 @@ public class MazeBuilder extends JFrame {
 	
 	private static MazeBuilder mazeBuilder;
 		
-	public static MazeBuilder getInstance(Game game) throws UnsupportedAudioFileException, LineUnavailableException {
+	public static MazeBuilder getInstance(Game game) {
 		mazeBuilder = new MazeBuilder(game.getMaze());
 		mazeBuilder.game = game;	
 		return mazeBuilder;
