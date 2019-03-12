@@ -1,5 +1,7 @@
 package controllers;
 
+import java.io.IOException;
+
 import enumations.DirectionEnum;
 import enumations.GameStateEnum;
 import enumations.TileEnum;
@@ -37,56 +39,38 @@ public class GameCtrl implements Runnable {
 	private Game game = Game.getInstance();
 	
 	public void init() {
-		game.setPacman(pacmanCtrl.init());
-		game.setGhosts(ghostCtrl.init());
-		game.setMaze(new TileEnum[][]{
-				{TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall,TileEnum.Wall,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Food,TileEnum.Wall},
-				{TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Wall,TileEnum.Path,TileEnum.Path,TileEnum.Path,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall,TileEnum.Wall}});
-		//more
+		MazeImportHandler m = new MazeImportHandler();
+		if (null == game.getAllLevel() || game.getAllLevel().length == 0) {
+			game.setAllLevel(m.getFileNames());
+			game.setCurrentLevel(0);
+		}
+		if (game.getAllLevel().length == game.getCurrentLevel()) {
+			youWin();
+			return ;
+		}
+		try {
+			m.readFile("./src/maze/" + game.getAllLevel()[game.getCurrentLevel()]);
+			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), 3));
+			game.setPositionPacman(m.getPositionPacman());
+			game.setGhosts(ghostCtrl.init(m.getPositionGhosts()));
+			game.setPositionGhosts(m.getPositionGhosts());
+			game.setMaze(m.getMaze());
+			game.setAllFood(m.getAllfood());
+			game.setFoodEat(0);
+		} catch (UnsupportedOperationException | IOException e) {
+			e.printStackTrace();
+		}
+
 		mazeBuilder = MazeBuilder.getInstance(game);
-		game.setAllFood(244);
 		game.setGameState(GameStateEnum.Pause);
 	}
-	
+
 	public void update() {
 		pacmanCtrl.movePacman(game);
 		//ghostCtrl.moveGhostsDirectional(game);
 		ghostCtrl.moveGhosts(game);
-		if (isPacmanCaptured(game.getPacman(), game.getGhosts())) {
-			setGameState(GameStateEnum.Pause);
-			pacmanCtrl.pacmanIsCaptured();
-			if (game.getPacman().getLives() == 0) {
-				gameOver();
-			} else {
-				reset();
-			}
-		} else if (noMoreFood()) {
+		updateForGhostCollision();
+		if (noMoreFood()){
 			nextLevel();
 		}
 		mazeBuilder.update(game);
@@ -97,21 +81,48 @@ public class GameCtrl implements Runnable {
 			game.setGameState(e);
 		}
 	}
-	
-	private boolean isPacmanCaptured(Pacman pacman, Ghost[] ghosts) {
+
+	private void updateForGhostCollision() {
+		Pacman pacman = game.getPacman();
 		int xl = pacman.getX();
 		int xr = xl + 15;
 		int yt = pacman.getY();
 		int yb = yt + 15;
-		for (Ghost g : ghosts) {
+		Ghost[] ghosts = game.getGhosts();
+		for (int i=0; i< ghosts.length; i++) {
+			Ghost g = ghosts[i];
 			int x = g.getX();
 			int y = g.getY();
 			if (x >= xl && x <= xr && y >= yt && y <= yb) {
-				System.out.println("\n******************\npacman got captured.\n******************\n");
-				return true;
+				if (g.isVulnerable()) {
+					eatGhost(i);
+				} else {
+					pacmanCaptured();
+					return;
+				}
 			}
 		}
-		return false;
+	}
+
+	public void eatGhost(int ghostNum){
+		Ghost g = game.getGhosts()[ghostNum];
+		g.setVulnerable(false);
+		int[][] position = game.getPositionGhosts();
+		g.setX(position[ghostNum][0]);
+		g.setY(position[ghostNum][1]);
+		g.restoreExpect();
+	}
+
+	private void pacmanCaptured(){
+		System.out.println("\n******************\npacman got captured.\n******************\n");
+		setGameState(GameStateEnum.Pause);
+		pacmanCtrl.pacmanIsCaptured();
+		int life = game.getPacman().getLives();
+		if (life == 0) {
+			gameOver();
+		} else {
+			reset();
+		}
 	}
 	
 	private boolean noMoreFood() {
@@ -122,18 +133,28 @@ public class GameCtrl implements Runnable {
 	//	put pacman and ghosts back to original positions
 	//	food remains eaten
 	private void reset() {
+		pacmanCtrl.init(game.getPositionPacman(), game.getPacman().getLives());
+		ghostCtrl.init(game.getPositionGhosts());
+		game.setGameState(GameStateEnum.Pause);
 		System.out.println("reset current level");
 	}
 
 	//create next level - new food, new ghosts, possibly new maze layout
 	private void nextLevel() {
 		System.out.println("next level");
-		game.setGameState(GameStateEnum.End);
+		game.setCurrentLevel(game.getCurrentLevel() + 1);
+		gameCtrl.init();
+		game.setGameState(GameStateEnum.Pause);
 	}
 
 	//game over - show a game over message and score. can play again from here
 	private void gameOver(){
 		System.out.println("Game over");
+		game.setGameState(GameStateEnum.End);
+	}
+	
+	private void youWin() {
+		System.out.println("You Win!");
 		game.setGameState(GameStateEnum.End);
 	}
 	
@@ -147,7 +168,6 @@ public class GameCtrl implements Runnable {
 			update();
 			printStatus();
 		}
-		//System.out.println(game.getGhosts()[0].isDead());
 	}
 	
 	@SuppressWarnings("static-access")

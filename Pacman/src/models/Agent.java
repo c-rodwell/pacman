@@ -30,9 +30,15 @@ public abstract class Agent implements Movable, Collidable {
         switch (d){
             case Bottom:
             	nextY = y + speed;
+            	if (nextY > 480) {
+            		nextY = 0;
+            	}
                 break;
             case Up:
             	nextY = y - speed;
+            	if (nextY < 0) {
+            		nextY = 480;
+            	}
                 break;
             case Left:
             	nextX = x - speed;

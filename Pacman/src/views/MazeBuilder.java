@@ -9,6 +9,7 @@ import models.Game;
 import enumations.DirectionEnum;
 import enumations.GameStateEnum;
 import enumations.TileEnum;
+import models.Ghost;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,6 +31,7 @@ public class MazeBuilder extends JFrame {
 	private TileEnum[][] map;
 	
 	BufferedImage food;
+	BufferedImage power;
 	BufferedImage wall;
 	BufferedImage blank;
 	BufferedImage redGhost;
@@ -90,6 +92,7 @@ public class MazeBuilder extends JFrame {
 	private void importImage() {
 		try{ 
             food = ImageIO.read(getClass().getResource("/pictures/Food.png"));
+            power = ImageIO.read(getClass().getResource("/pictures/Power.png"));
             wall = ImageIO.read(getClass().getResource("/pictures/Wall.png"));
             blank = ImageIO.read(getClass().getResource("/pictures/Blank.png"));
             redGhost = ImageIO.read(getClass().getResource("/pictures/Red.png"));
@@ -120,7 +123,7 @@ public class MazeBuilder extends JFrame {
 			addKeyListener(this);
 		}
 		
-		TileEnum[][] drawingMap = new TileEnum[28][30];
+		TileEnum[][] drawingMap;
 		int c;
 		
 		@Override
@@ -163,7 +166,6 @@ public class MazeBuilder extends JFrame {
 			drawOrange(g2, game.getGhosts()[0].getCurrentDirection());
 			drawCyan(g2, game.getGhosts()[0].getCurrentDirection());
 			drawGhost(g2);
-			
 		}
 		
 		private void drawMaze(Graphics2D g2) {
@@ -179,6 +181,8 @@ public class MazeBuilder extends JFrame {
 						case Food:
 							g2.drawImage(food,i*16,j*16,this);
 							break;
+                        case Power:
+                            g2.drawImage(power, i*16, j*16, this);
 						default: break;
 					}
 				}
@@ -205,89 +209,46 @@ public class MazeBuilder extends JFrame {
 				break;
 			}
 		}
-		
+
 		private void drawPink(Graphics2D g2, DirectionEnum dir) {
-			switch(dir) {
-			case Up: 
-				g2.drawImage(pinkGhost, game.getGhosts()[0].getX(), game.getGhosts()[0].getY(), this); 
-				repaint();
-				break;
-			case Right: 
-				g2.drawImage(pinkGhost, game.getGhosts()[0].getX(), game.getGhosts()[0].getY(), this);
-				repaint();
-				break;
-			case Bottom: 
-				g2.drawImage(pinkGhost, game.getGhosts()[0].getX(), game.getGhosts()[0].getY(), this);
-				repaint();
-				break;
-			case Left: 
-				g2.drawImage(pinkGhost, game.getGhosts()[0].getX(), game.getGhosts()[0].getY(), this);
-				repaint();
-				break;
-			}
+		    Ghost ghost = game.getGhosts()[0];
+		    BufferedImage image = pinkGhost;
+		    if (ghost.isVulnerable()){
+		        image = spookedGhost;
+            }
+            g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+            repaint();
 		}
+
 		
 		private void drawRed(Graphics2D g2, DirectionEnum dir) {
-			switch(dir) {
-			case Up: 
-				g2.drawImage(redGhost, game.getGhosts()[1].getX(), game.getGhosts()[1].getY(), this); 
-				repaint();
-				break;
-			case Right: 
-				g2.drawImage(redGhost, game.getGhosts()[1].getX(), game.getGhosts()[1].getY(), this);
-				repaint();
-				break;
-			case Bottom: 
-				g2.drawImage(redGhost, game.getGhosts()[1].getX(), game.getGhosts()[1].getY(), this);
-				repaint();
-				break;
-			case Left: 
-				g2.drawImage(redGhost, game.getGhosts()[1].getX(), game.getGhosts()[1].getY(), this);
-				repaint();
-				break;
-			}
+            Ghost ghost = game.getGhosts()[1];
+            BufferedImage image = redGhost;
+            if (ghost.isVulnerable()){
+                image = spookedGhost;
+            }
+            g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+            repaint();
 		}
 		
 		private void drawOrange(Graphics2D g2, DirectionEnum dir) {
-			switch(dir) {
-			case Up: 
-				g2.drawImage(orangeGhost, game.getGhosts()[2].getX(), game.getGhosts()[2].getY(), this); 
-				repaint();
-				break;
-			case Right: 
-				g2.drawImage(orangeGhost, game.getGhosts()[2].getX(), game.getGhosts()[2].getY(), this);
-				repaint();
-				break;
-			case Bottom: 
-				g2.drawImage(orangeGhost, game.getGhosts()[2].getX(), game.getGhosts()[2].getY(), this);
-				repaint();
-				break;
-			case Left: 
-				g2.drawImage(orangeGhost, game.getGhosts()[2].getX(), game.getGhosts()[2].getY(), this);
-				repaint();
-				break;
-			}
+            Ghost ghost = game.getGhosts()[2];
+            BufferedImage image = orangeGhost;
+            if (ghost.isVulnerable()){
+                image = spookedGhost;
+            }
+            g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+            repaint();
 		}
 		
 		private void drawCyan(Graphics2D g2, DirectionEnum dir) {
-			switch(dir) {
-			case Up: 
-				g2.drawImage(cyanGhost, game.getGhosts()[3].getX(), game.getGhosts()[3].getY(), this); 
-				repaint();
-				break;
-			case Right: 
-				g2.drawImage(cyanGhost, game.getGhosts()[3].getX(), game.getGhosts()[3].getY(), this);
-				repaint();
-				break;
-			case Bottom: 
-				g2.drawImage(cyanGhost, game.getGhosts()[3].getX(), game.getGhosts()[3].getY(), this);
-				repaint();
-				break;
-			case Left: 
-				g2.drawImage(cyanGhost, game.getGhosts()[3].getX(), game.getGhosts()[3].getY(), this);
-				repaint();
-				break;
-			}
+            Ghost ghost = game.getGhosts()[3];
+            BufferedImage image = cyanGhost;
+            if (ghost.isVulnerable()){
+                image = spookedGhost;
+            }
+            g2.drawImage(image, ghost.getX(), ghost.getY(), this);
+            repaint();
 		}
 		
 		private void drawGhost(Graphics2D g2) {
@@ -303,10 +264,8 @@ public class MazeBuilder extends JFrame {
 	private static MazeBuilder mazeBuilder;
 		
 	public static MazeBuilder getInstance(Game game) {
-		if (null == mazeBuilder) {
-			mazeBuilder = new MazeBuilder(game.getMaze());
-			mazeBuilder.game = game;
-		}
+		mazeBuilder = new MazeBuilder(game.getMaze());
+		mazeBuilder.game = game;
 		return mazeBuilder;
 	}
 	

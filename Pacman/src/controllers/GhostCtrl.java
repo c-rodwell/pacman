@@ -32,15 +32,15 @@ public class GhostCtrl {
 		
 	private Ghost[] ghosts = Ghost.getInstance();
 	
-	public Ghost[] init() {
-		for (Ghost g : ghosts) {
+	public Ghost[] init(int[][] position) {
+		for (int i = 0; i < ghosts.length; i++) {
+			Ghost g = ghosts[i];
 			g.setDead(false);
 			g.setCurrentDirection(DirectionEnum.Left);
 			
 			//Randomize speed
 			double r = Math.random();
 			g.setSpeed(4);
-
 			
 			//Randomize starting position
 			r = Math.random();
@@ -57,7 +57,9 @@ public class GhostCtrl {
 				g.setX(416);
 				g.setY(416);
 			}
-			
+//			g.setX(position[i][0]);
+//			g.setY(position[i][1]);
+			g.restoreExpect();
 			//more
 		}
 		return ghosts;
@@ -83,6 +85,7 @@ public class GhostCtrl {
 //				g.setNextDirection(DirectionEnum.class.getEnumConstants()[r]);
 				System.out.println("hit a wall, can't go any further " + currentDirection);
 			}
+			g.tickDown();
 		}
 	}
 	
@@ -187,17 +190,10 @@ public class GhostCtrl {
 			
 			nextDirection = DirectionEnum.class.getEnumConstants()[direction];
 		}	
-//			//Move ghost
-//			g.preMove(nextDirection);
-//			if (nextDirection != currentDirection) {
-//				System.out.println("changed direction to " + nextDirection);
-//			}
-//			g.setCurrentDirection(nextDirection);
-//			g.setPosition();
+
 	return nextDirection;
 	}
-	
-	
+
 	public DirectionEnum decideMove(Ghost g){
 		return DirectionEnum.Bottom;
 	}
