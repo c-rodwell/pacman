@@ -13,7 +13,6 @@ public class Ghost extends Agent {
 
 	private boolean vulnerable;
 	private int vulnerableCounter;
-	private boolean dead;
 	private static int vulnerableTime = 120;
 	
 	private Ghost() {}
@@ -51,17 +50,9 @@ public class Ghost extends Agent {
         }
     }
 
-	public boolean isDead() {
-		return dead;
-	}
-
-	public void setDead(boolean dead) {
-		this.dead = dead;
-	}
-
 	@Override
 	public String getDebugString(){
-		return "dead: "+dead+", "+super.getDebugString();
+		return super.getDebugString();
 	}
 	
 }
