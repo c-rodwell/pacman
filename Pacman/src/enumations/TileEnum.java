@@ -11,6 +11,6 @@ package enumations;
 
 public enum TileEnum {
 
-	Wall, Food, Power, Path;
+	Wall, Food, Power, Path, Gate;
 	
 }

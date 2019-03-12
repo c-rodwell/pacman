@@ -1,6 +1,10 @@
 package controllers;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import enumations.DirectionEnum;
 import enumations.GameStateEnum;
@@ -60,7 +64,11 @@ public class GameCtrl implements Runnable {
 			e.printStackTrace();
 		}
 
-		mazeBuilder = MazeBuilder.getInstance(game);
+		try {
+			mazeBuilder = MazeBuilder.getInstance(game);
+		} catch (UnsupportedAudioFileException | LineUnavailableException | FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		setGameState(GameStateEnum.Pause);
 	}
 
@@ -68,7 +76,6 @@ public class GameCtrl implements Runnable {
 		pacmanCtrl.movePacman(game);
 		ghostCtrl.moveGhosts(game);
 		if (updateForGhostCollision()) {
-			mazeBuilder.update(game);
 			return;
 		}
 		if (noMoreFood()){
@@ -131,6 +138,8 @@ public class GameCtrl implements Runnable {
 	//	put pacman and ghosts back to original positions
 	//	food remains eaten
 	private void reset() {
+		mazeBuilder.updatePacmanEndpoint();
+		mazeBuilder.update(game);
 		pacmanCtrl.init(game.getPositionPacman(), game.getPacman().getLives());
 		ghostCtrl.init(game.getPositionGhosts());
 		System.out.println("reset current level");
@@ -148,6 +157,7 @@ public class GameCtrl implements Runnable {
 	private void gameOver(){
 		System.out.println("Game over");
 		game.setGameState(GameStateEnum.End);
+		mazeBuilder.update(game);
 	}
 	
 	private void youWin() {
