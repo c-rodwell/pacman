@@ -96,7 +96,8 @@ public class GhostCtrl {
 		Pacman pacman =  Pacman.getInstance();
 		int pacManX = pacman.getX();
 		int pacManY = pacman.getY();
-		boolean vul = g.isVulnerable();
+		//boolean vul = g.isVulnerable();
+		boolean vul = false;
 		
 		//Calculate distances to pacman for different next directions
 		int[] distances = new int[4];
@@ -156,7 +157,7 @@ public class GhostCtrl {
 			double[] distribution = new double[4];
 			double distributionSum = 0;
 			for (int i = 0; i < 4; i++) {
-				if (distances[i] == minDistance) {
+				if (distances[i] == optimalDistance) {
 					distribution[i] = 0.7 / (double)numMin;
 					distributionSum += 0.7 / (double)numMin;
 				} else if (distances[i] < Integer.MAX_VALUE && distances[i] > Integer.MIN_VALUE) {
@@ -196,79 +197,6 @@ public class GhostCtrl {
 	return nextDirection;
 	}
 	
-	private DirectionEnum moveGhostsChaseGhost(Game game, Ghost target, Ghost g) {
-		DirectionEnum nextDirection;
-		int[] distances = new int[4];
-		int minDistance = Integer.MAX_VALUE;
-		
-		for (int i = 0; i < 4; i++) {
-			if (checkMove(g, game, DirectionEnum.class.getEnumConstants()[i])) {
-				distances[i] = manhattanDistance(target.getNextX(), target.getNextY(), g.getNextX(), g.getNextY());
-				minDistance = Math.min(minDistance, distances[i]);
-				g.restoreExpect();
-			} else {
-				distances[i] = Integer.MAX_VALUE;
-			}
-		}
-		
-		//Check if currentDirection is optimal
-			DirectionEnum currentDirection = g.getCurrentDirection();
-			boolean ifcontinue = false;
-			for (int i = 0; i < 4; i++) {
-				if (distances[i] == minDistance && DirectionEnum.class.getEnumConstants()[i] == currentDirection) {
-					ifcontinue = true;
-				}
-			}
-
-			//If current already optimal, continue with current direction, otherwise randomize direction
-			if (ifcontinue) {
-				nextDirection = currentDirection;
-			} else {
-				int numMin = 0;
-				int numOther = 0;
-				for (int i = 0; i < 4; i++) {
-					if (distances[i] == minDistance) {
-						numMin++;
-					} else if (distances[i] < Integer.MAX_VALUE) {
-						numOther++;
-					}
-				}
-				
-				//Calculate next direction distribution
-				double[] distribution = new double[4];
-				double distributionSum = 0;
-				for (int i = 0; i < 4; i++) {
-					if (distances[i] == minDistance) {
-						distribution[i] = 0.8 / (double)numMin;
-						distributionSum += 0.8 / (double)numMin;
-					} else if (distances[i] < Integer.MAX_VALUE) {
-						distribution[i] = 0.2 / (double)numOther;
-						distributionSum += 0.2 / (double)numOther;
-					} else {
-						distribution[i] = 0;
-					}
-				}
-				
-				//Normalize distribution
-				for (int i = 0; i < 4; i++) {
-					distribution[i] /= distributionSum;
-				}
-				
-				//Randomize over the distribution
-				double r = Math.random();
-				double base = 0.0;
-				int direction = 0;
-				for (int i = 0; i < 4; i++) {
-					base += distribution[i];
-					if (r <= base) {
-						direction = i;
-						break;
-					}
-				}
-				nextDirection = DirectionEnum.class.getEnumConstants()[direction];
-			}	
-		return nextDirection;
-	}
 	
 	public DirectionEnum decideMove(Ghost g){
 		return DirectionEnum.Bottom;
