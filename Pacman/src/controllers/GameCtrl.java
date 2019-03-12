@@ -67,6 +67,7 @@ public class GameCtrl implements Runnable {
 
 	public void update() {
 		pacmanCtrl.movePacman(game);
+		//ghostCtrl.moveGhostsDirectional(game);
 		ghostCtrl.moveGhosts(game);
 		updateForGhostCollision();
 		if (noMoreFood()){
