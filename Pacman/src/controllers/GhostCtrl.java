@@ -96,8 +96,8 @@ public class GhostCtrl {
 		Pacman pacman =  Pacman.getInstance();
 		int pacManX = pacman.getX();
 		int pacManY = pacman.getY();
-		//boolean vul = g.isVulnerable();
-		boolean vul = false;
+		boolean vul = g.isVulnerable();
+	
 		
 		//Calculate distances to pacman for different next directions
 		int[] distances = new int[4];
