@@ -1,10 +1,6 @@
 package controllers;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import enumations.DirectionEnum;
 import enumations.GameStateEnum;
@@ -53,7 +49,7 @@ public class GameCtrl implements Runnable {
 		}
 		try {
 			m.readFile("./src/maze/" + game.getAllLevel()[game.getCurrentLevel()]);
-			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), 3));
+			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), null == game.getPacman() ? 3 : game.getPacman().getLives()));
 			game.setPositionPacman(m.getPositionPacman());
 			game.setGhosts(ghostCtrl.init(m.getPositionGhosts()));
 			game.setPositionGhosts(m.getPositionGhosts());
@@ -64,11 +60,7 @@ public class GameCtrl implements Runnable {
 			e.printStackTrace();
 		}
 
-		try {
-			mazeBuilder = MazeBuilder.getInstance(game);
-		} catch (UnsupportedAudioFileException | LineUnavailableException | FileNotFoundException e) {
-			e.printStackTrace();
-		}
+		mazeBuilder = MazeBuilder.getInstance(game);
 		setGameState(GameStateEnum.Pause);
 	}
 

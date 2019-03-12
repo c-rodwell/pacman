@@ -31,6 +31,9 @@ public class MazeImportHandler {
 			String[] ss = data.split(",");
 			for (int j = 0; j < 31; j++) {
 				this.maze[i][j] = TileEnum.valueOf(ss[j]);
+				if (this.maze[i][j] == TileEnum.Food) {
+					this.allfood++;
+				}
 			}
 		}
 		String data = br.readLine();
@@ -41,8 +44,6 @@ public class MazeImportHandler {
 		for (int i = 0; i < 4; i++) {
 			this.positionGhosts[i] = new int[]{Integer.parseInt(ss[0 + 2 * i]), Integer.parseInt(ss[1 + 2 * i])};
 		}
-		data = br.readLine();
-		this.allfood = Integer.parseInt(data);
 		br.close();
 	}
 	
