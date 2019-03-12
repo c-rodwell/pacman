@@ -71,8 +71,9 @@ public class GameCtrl implements Runnable {
 	public void update() throws UnsupportedAudioFileException, LineUnavailableException {
 		pacmanCtrl.movePacman(game);
 		ghostCtrl.moveGhosts(game);
-		if(updateForGhostCollision())
+		if (updateForGhostCollision()) {
 			return;
+		}
 		if (noMoreFood()){
 			nextLevel();
 		}
@@ -125,7 +126,7 @@ public class GameCtrl implements Runnable {
 
 	private void pacmanCaptured(){
 		System.out.println("\n******************\npacman got captured.\n******************\n");
-		setGameState(GameStateEnum.Pause);
+		setGameState(GameStateEnum.ResetPacman);
 		pacmanCtrl.pacmanIsCaptured();
 		int life = game.getPacman().getLives();
 		if (life == 0) {
@@ -143,15 +144,11 @@ public class GameCtrl implements Runnable {
 	//	put pacman and ghosts back to original positions
 	//	food remains eaten
 	private void reset() {
-		//pacmanCtrl.init(game.getPositionPacman(), game.getPacman().getLives());
-		//ghostCtrl.init(game.getPositionGhosts());
-		System.out.println("reset current level");
-		
-		
-		
-		game.setGameState(GameStateEnum.ResetPacman);
+		mazeBuilder.updatePacmanEndpoint();
 		mazeBuilder.update(game);
-		
+		pacmanCtrl.init(game.getPositionPacman(), game.getPacman().getLives());
+		ghostCtrl.init(game.getPositionGhosts());
+		System.out.println("reset current level");	
 	}
 
 	//create next level - new food, new ghosts, possibly new maze layout

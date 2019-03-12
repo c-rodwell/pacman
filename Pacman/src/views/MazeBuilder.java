@@ -87,6 +87,8 @@ public class MazeBuilder extends JFrame {
 	
 	private double animatePacmanX;
 	private double animatePacmanY;
+	private int pacmanEndX;
+	private int pacmanEndY;
 	private int animatePacmanStep = 0;
 	private final int animatePacmanStepMin = 0;
 	private final int animatePacmanStepMax = 50;
@@ -216,7 +218,7 @@ public class MazeBuilder extends JFrame {
 			//System.out.println("CURRENT => " + gameState);			
 			if(animatePacmanStep < animatePacmanStepMax && game.getGameState() == GameStateEnum.ResetPacman) {
 				System.out.println("animation running");
-				pacmanReset(g2,200,200, animatePacmanStep);
+				pacmanReset(g2, pacmanEndX, pacmanEndY, animatePacmanStep);
 			}else {
 				try {
 					drawPacMan(g2, game.getPacman().getCurrentDirection());
@@ -240,8 +242,8 @@ public class MazeBuilder extends JFrame {
 		
 		private void pacmanReset(Graphics2D g2, int startX, int startY, int step) {
 			if(step < animatePacmanStepMax) {	
-				int endX = 16*14;
-				int endY = 16*23;
+				int endX = game.getPositionPacman()[0];
+				int endY = game.getPositionPacman()[1];
 				int slopeX = startX - endX;
 				int slopeY = startY - endY;
 				double stepX = (double)slopeX/(double)animatePacmanStepMax;
@@ -424,7 +426,10 @@ public class MazeBuilder extends JFrame {
 		}
 	}
 	
-	
+	public void updatePacmanEndpoint() {
+		pacmanEndX = game.getPacman().getX();
+		pacmanEndY = game.getPacman().getY();
+	}
 	
 	public void updateScore(int temp) {
 		scoreNum = temp;
