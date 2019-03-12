@@ -43,10 +43,6 @@ public class GameCtrl implements Runnable {
 			game.setAllLevel(m.getFileNames());
 			game.setCurrentLevel(0);
 		}
-		if (game.getAllLevel().length == game.getCurrentLevel()) {
-			youWin();
-			return ;
-		}
 		try {
 			m.readFile("./src/maze/" + game.getAllLevel()[game.getCurrentLevel()]);
 			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), null == game.getPacman() ? 3 : game.getPacman().getLives()));
@@ -72,6 +68,7 @@ public class GameCtrl implements Runnable {
 		}
 		if (noMoreFood()){
 			nextLevel();
+			return;
 		}
 		mazeBuilder.update(game);
 	}
@@ -106,6 +103,9 @@ public class GameCtrl implements Runnable {
 	}
 
 	public void eatGhost(int ghostNum){
+		setGameState(GameStateEnum.ResetGhost);
+		mazeBuilder.updateGhostEndpoint(ghostNum);
+		mazeBuilder.update(game);
 		Ghost g = game.getGhosts()[ghostNum];
 		ghostCtrl.beAten(g, game, ghostNum);
 	}
@@ -131,6 +131,9 @@ public class GameCtrl implements Runnable {
 	//	food remains eaten
 	private void reset() {
 		mazeBuilder.updatePacmanEndpoint();
+		for (int i = 0; i < 4; i++) {
+			mazeBuilder.updateGhostEndpoint(i);
+		}
 		mazeBuilder.update(game);
 		pacmanCtrl.init(game.getPositionPacman(), game.getPacman().getLives());
 		ghostCtrl.init(game.getPositionGhosts());
@@ -141,20 +144,25 @@ public class GameCtrl implements Runnable {
 	private void nextLevel() {
 		System.out.println("next level");
 		game.setCurrentLevel(game.getCurrentLevel() + 1);
-		gameCtrl.init();
-		game.setGameState(GameStateEnum.Pause);
+		if (game.getAllLevel().length == game.getCurrentLevel()) {
+			youWin();
+		} else {
+			gameCtrl.init();
+		}
 	}
 
 	//game over - show a game over message and score. can play again from here
 	private void gameOver(){
 		System.out.println("Game over");
 		game.setGameState(GameStateEnum.End);
+		System.out.println(mazeBuilder);
 		mazeBuilder.update(game);
 	}
 	
 	private void youWin() {
 		System.out.println("You Win!");
-		game.setGameState(GameStateEnum.End);
+		game.setGameState(GameStateEnum.Win);
+		mazeBuilder.update(game);
 	}
 	
 	public void updatePacmanDirection(DirectionEnum direction) {

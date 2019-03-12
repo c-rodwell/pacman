@@ -34,7 +34,6 @@ public class GhostCtrl {
 	public Ghost[] init(int[][] position) {
 		for (int i = 0; i < ghosts.length; i++) {
 			Ghost g = ghosts[i];
-			g.setDead(false);
 			g.setCurrentDirection(DirectionEnum.Left);
 			g.setSpeed(4);
 			g.setX(position[i][0]);
@@ -77,10 +76,6 @@ public class GhostCtrl {
 
 	public DirectionEnum decideMove(Ghost g) {
 		return DirectionEnum.Bottom;
-	}
-
-	public void killGhost(int i) {
-		ghosts[i].setDead(true);
 	}
 
 	private boolean checkMove(Ghost g, Game game, DirectionEnum direction) {
