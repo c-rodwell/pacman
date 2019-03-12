@@ -14,7 +14,7 @@ public class Ghost extends Agent {
 	private boolean vulnerable;
 	private int vulnerableCounter;
 	private boolean dead;
-	private static int vulnerableTime = 50;
+	private static int vulnerableTime = 120;
 	
 	private Ghost() {}
 	
@@ -45,6 +45,7 @@ public class Ghost extends Agent {
 	    if (vulnerable){
 	        vulnerableCounter -= 1;
 	        if (vulnerableCounter <= 0){
+	        	setSpeed(4);
 	            setVulnerable(false);
             }
         }

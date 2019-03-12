@@ -96,6 +96,7 @@ public class PacmanCtrl {
             game.getMaze()[x][y] = TileEnum.Path;
             for (Ghost ghost : game.getGhosts()){
                 ghost.setVulnerable(true);
+                ghost.setSpeed(2);
             }
         }
     }
