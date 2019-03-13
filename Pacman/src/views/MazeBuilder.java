@@ -180,7 +180,9 @@ public class MazeBuilder extends JFrame {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			c = e.getKeyCode();
-			gameControl.setGameState(GameStateEnum.Running);
+			if (game.getGameState() == GameStateEnum.Pause) {
+				gameControl.setGameState(GameStateEnum.Running);
+			}
 			switch (c) {
 			case 38:
 				gameControl.updatePacmanDirection(DirectionEnum.Up);
@@ -197,6 +199,11 @@ public class MazeBuilder extends JFrame {
 			case 37:
 				gameControl.updatePacmanDirection(DirectionEnum.Left);
 				temp = DirectionEnum.Left;
+				break;
+			default:
+				if (game.getGameState() == GameStateEnum.Running) {
+					gameControl.setGameState(GameStateEnum.Pause);
+				}
 				break;
 			}
 		}

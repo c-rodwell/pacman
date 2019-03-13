@@ -102,7 +102,7 @@ public class GameCtrl implements Runnable {
 		return false;
 	}
 
-	public void eatGhost(int ghostNum){
+	private void eatGhost(int ghostNum){
 		setGameState(GameStateEnum.ResetGhost);
 		mazeBuilder.updateGhostEndpoint(ghostNum);
 		mazeBuilder.update(game);
