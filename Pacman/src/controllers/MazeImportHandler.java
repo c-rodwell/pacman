@@ -57,7 +57,9 @@ public class MazeImportHandler {
 			Comparator<String> c = new FileSort();
 			ArrayList<String> list = new ArrayList<String>();
 			for (String s : ss) {
-				list.add(s);
+				if(!s.equals(".DS_Store")) {
+					list.add(s);
+				}
 			}
 			Collections.sort(list, c);
 			return list;
