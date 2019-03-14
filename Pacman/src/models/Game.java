@@ -63,6 +63,8 @@ public class Game {
 		this.score = score;
 	}
 
+	public void addScore(int points){this.score += points;}
+
 	public TileEnum[][] getMaze() {
 		return maze;
 	}

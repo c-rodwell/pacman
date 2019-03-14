@@ -91,12 +91,11 @@ public class PacmanCtrl {
         if (tileToEat == TileEnum.Food) {
             game.getMaze()[x][y] = TileEnum.Path;
             game.setFoodEat(game.getFoodEat() + 1);
-            game.setScore(game.getScore() + 1);
+            game.addScore(1);
         } else if (tileToEat == TileEnum.Power){
             game.getMaze()[x][y] = TileEnum.Path;
             for (Ghost ghost : game.getGhosts()){
                 ghost.setVulnerable(true);
-                ghost.setSpeed(2);
             }
         }
     }

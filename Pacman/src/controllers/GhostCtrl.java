@@ -17,6 +17,10 @@ import models.Pacman;
 
 public class GhostCtrl {
 
+    public static final int NormalSpeed = 4;
+    public static final int ScaredSpeed = 2;
+    public static final int points_for_eating_ghost = 10;
+
 	private GhostCtrl() {
 	}
 
@@ -36,7 +40,7 @@ public class GhostCtrl {
 			Ghost g = ghosts[i];
 			g.setCurrentDirection(DirectionEnum.Left);
 			g.setVulnerable(false);
-			g.setSpeed(4);
+			g.setSpeed(NormalSpeed);
 			g.setX(position[i][0]);
 			g.setY(position[i][1]);
 			g.restoreExpect();
@@ -66,9 +70,9 @@ public class GhostCtrl {
 		}
 	}
 
-	public void beAten(Ghost g, Game game, int ghostNum) {
+	public void beEaten(Ghost g, Game game, int ghostNum) {
 		g.setVulnerable(false);
-		g.setSpeed(4);
+		g.setSpeed(NormalSpeed);
 		int[][] position = game.getPositionGhosts();
 		g.setX(position[ghostNum][0]);
 		g.setY(position[ghostNum][1]);
