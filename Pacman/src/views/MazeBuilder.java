@@ -203,6 +203,8 @@ public class MazeBuilder extends JFrame {
 			default:
 				if (game.getGameState() == GameStateEnum.Running) {
 					gameControl.setGameState(GameStateEnum.Pause);
+				} else if (game.getGameState() == GameStateEnum.End || game.getGameState() == GameStateEnum.Win) {
+					gameControl.init(true);
 				}
 				break;
 			}

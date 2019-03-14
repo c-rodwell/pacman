@@ -37,27 +37,27 @@ public class GameCtrl implements Runnable {
 	
 	private Game game = Game.getInstance();
 	
-	public void init() {
+	public void init(boolean b) {
 		MazeImportHandler m = new MazeImportHandler();
-		if (null == game.getAllLevel() || game.getAllLevel().size() == 0) {
+		if (b) {
 			game.setAllLevel(m.getFileNames());
 			game.setCurrentLevel(0);
 		}
 		try {
 			m.readFile("./src/maze/" + game.getAllLevel().get(game.getCurrentLevel()));
-			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), null == game.getPacman() ? 3 : game.getPacman().getLives()));
+			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), b ? 3 : game.getPacman().getLives()));
 			game.setPositionPacman(m.getPositionPacman());
 			game.setGhosts(ghostCtrl.init(m.getPositionGhosts()));
 			game.setPositionGhosts(m.getPositionGhosts());
 			game.setMaze(m.getMaze());
 			game.setAllFood(m.getAllfood());
 			game.setFoodEat(0);
+			game.setScore(b ? 0 : game.getScore());
 		} catch (UnsupportedOperationException | IOException e) {
 			e.printStackTrace();
 		}
-
-		mazeBuilder = MazeBuilder.getInstance(game);
 		setGameState(GameStateEnum.Pause);
+		mazeBuilder = MazeBuilder.getInstance(game);
 	}
 
 	public void update() {
@@ -74,9 +74,7 @@ public class GameCtrl implements Runnable {
 	}
 	
 	public void setGameState(GameStateEnum e) {
-		if (GameStateEnum.End != game.getGameState()) {
-			game.setGameState(e);
-		}
+		game.setGameState(e);
 	}
 
 	private boolean updateForGhostCollision() {
@@ -147,7 +145,7 @@ public class GameCtrl implements Runnable {
 		if (game.getAllLevel().size() == game.getCurrentLevel()) {
 			youWin();
 		} else {
-			gameCtrl.init();
+			gameCtrl.init(false);
 		}
 	}
 
@@ -181,7 +179,7 @@ public class GameCtrl implements Runnable {
 	public static void main(String[] args) {
 		GameCtrl gameCtrl = new GameCtrl();
 		while (true) {
-			gameCtrl.init();
+			gameCtrl.init(true);
 			Thread thread = new Thread(gameCtrl);
 			while (true) {
 				thread.run();
