@@ -1,6 +1,8 @@
 package models;
 
-/**   
+import controllers.GhostCtrl;
+
+/**
 * @Title: Ghost.java 
 * @Package models 
 * @Description:  
@@ -36,6 +38,7 @@ public class Ghost extends Agent {
 	public void setVulnerable(boolean vulnerable) {
 	    this.vulnerable = vulnerable;
 	    if (vulnerable){
+	        setSpeed(GhostCtrl.ScaredSpeed);
 	        vulnerableCounter = vulnerableTime;
         }
 	}
@@ -44,7 +47,7 @@ public class Ghost extends Agent {
 	    if (vulnerable){
 	        vulnerableCounter -= 1;
 	        if (vulnerableCounter <= 0){
-	        	setSpeed(4);
+	        	setSpeed(GhostCtrl.NormalSpeed);
 	            setVulnerable(false);
             }
         }

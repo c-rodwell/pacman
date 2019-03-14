@@ -36,6 +36,8 @@ public class GameCtrl implements Runnable {
 	private MazeBuilder mazeBuilder;
 	
 	private Game game = Game.getInstance();
+
+	private static final int points_for_ghost = 10;
 	
 	public void init(boolean b) {
 		MazeImportHandler m = new MazeImportHandler();
@@ -91,6 +93,7 @@ public class GameCtrl implements Runnable {
 			if (x >= xl && x <= xr && y >= yt && y <= yb) {
 				if (g.isVulnerable()) {
 					eatGhost(i);
+					game.addScore(points_for_ghost);
 				} else {
 					pacmanCaptured();
 				}
@@ -105,7 +108,7 @@ public class GameCtrl implements Runnable {
 		mazeBuilder.updateGhostEndpoint(ghostNum);
 		mazeBuilder.update(game);
 		Ghost g = game.getGhosts()[ghostNum];
-		ghostCtrl.beAten(g, game, ghostNum);
+		ghostCtrl.beEaten(g, game, ghostNum);
 	}
 
 	private void pacmanCaptured(){
