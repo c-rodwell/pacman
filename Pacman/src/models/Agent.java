@@ -1,6 +1,7 @@
 package models;
 
 import enumations.DirectionEnum;
+import enumations.TileEnum;
 import interfaces.Collidable;
 import interfaces.Movable;
 
@@ -14,15 +15,33 @@ public abstract class Agent implements Movable, Collidable {
     private int speed;
     private DirectionEnum currentDirection;
     private DirectionEnum nextDirection;
-
-    /*@Override
-    public TileEnum collide(TileEnum[][] maze) {
-        return null;
-    }*/
     
     @Override
     public int[] translateToTile(int x, int y) {
     	return new int[]{x / 16, y / 16};
+    }
+    
+    @Override
+    public TileEnum[] checkFace(Game game, DirectionEnum direction) {
+    	this.preMove(direction);
+    	int[] p1 = new int[2];
+		int[] p2 = new int[2];
+		if (direction.equals(DirectionEnum.Bottom)) {
+			p1 = this.translateToTile(this.getNextX(), this.getNextY() + 15);
+			p2 = this.translateToTile(this.getNextX() + 15, this.getNextY() + 15);
+		} else if (direction.equals(DirectionEnum.Right)) {
+			p1 = this.translateToTile(this.getNextX() + 15, this.getNextY());
+			p2 = this.translateToTile(this.getNextX() + 15, this.getNextY() + 15);
+		} else if (direction.equals(DirectionEnum.Up)) {
+			p1 = this.translateToTile(this.getNextX(), this.getNextY());
+			p2 = this.translateToTile(this.getNextX() + 15, this.getNextY());
+		} else if (direction.equals(DirectionEnum.Left)) {
+			p1 = this.translateToTile(this.getNextX(), this.getNextY());
+			p2 = this.translateToTile(this.getNextX(), this.getNextY() + 15);
+		}
+		TileEnum t1 = game.getMaze()[p1[0]][p1[1]];
+		TileEnum t2 = game.getMaze()[p2[0]][p2[1]];
+		return new TileEnum[]{t1, t2};
     }
     
     @Override

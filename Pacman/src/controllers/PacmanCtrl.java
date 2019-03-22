@@ -31,7 +31,6 @@ public class PacmanCtrl {
 	private Pacman pacman = Pacman.getInstance();
 	
 	public Pacman init(int[] position, int life) {
-		//set pacman
 		pacman.setLives(life);
 		pacman.setSpeed(4);
 		pacman.setCurrentDirection(DirectionEnum.Right);
@@ -75,30 +74,13 @@ public class PacmanCtrl {
 	}
 	
 	private TileEnum checkFace(Game game, DirectionEnum direction) {
-		pacman.preMove(direction);
-		int[] p1 = new int[2];
-		int[] p2 = new int[2];
-		if (direction.equals(DirectionEnum.Bottom)) {
-			p1 = pacman.translateToTile(pacman.getNextX(), pacman.getNextY() + 15);
-			p2 = pacman.translateToTile(pacman.getNextX() + 15, pacman.getNextY() + 15);
-		} else if (direction.equals(DirectionEnum.Right)) {
-			p1 = pacman.translateToTile(pacman.getNextX() + 15, pacman.getNextY());
-			p2 = pacman.translateToTile(pacman.getNextX() + 15, pacman.getNextY() + 15);
-		} else if (direction.equals(DirectionEnum.Up)) {
-			p1 = pacman.translateToTile(pacman.getNextX(), pacman.getNextY());
-			p2 = pacman.translateToTile(pacman.getNextX() + 15, pacman.getNextY());
-		} else if (direction.equals(DirectionEnum.Left)) {
-			p1 = pacman.translateToTile(pacman.getNextX(), pacman.getNextY());
-			p2 = pacman.translateToTile(pacman.getNextX(), pacman.getNextY() + 15);
-		}
-		TileEnum t1 = game.getMaze()[p1[0]][p1[1]];
-		TileEnum t2 = game.getMaze()[p2[0]][p2[1]];
-		if (t1 == t2) {
-			if (t1 != TileEnum.Wall) {
+		TileEnum[] t = pacman.checkFace(game, direction);
+		if (t[0] == t[1]) {
+			if (t[0] != TileEnum.Wall) {
 				int[] p = pacman.translateToTile(pacman.getNextX() + 7, pacman.getNextY() + 7);
 				eatTile(game, p[0], p[1]);
 			}
-			return t1;
+			return t[0];
 		} else {
 			return TileEnum.Wall;
 		}	
@@ -109,7 +91,7 @@ public class PacmanCtrl {
         if (tileToEat == TileEnum.Food) {
             game.getMaze()[x][y] = TileEnum.Path;
             game.setFoodEat(game.getFoodEat() + 1);
-            game.setScore(game.getScore() + 1);
+            game.addScore(1);
         } else if (tileToEat == TileEnum.Power){
             game.getMaze()[x][y] = TileEnum.Path;
             for (Ghost ghost : game.getGhosts()){

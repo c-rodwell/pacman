@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import enumations.DirectionEnum;
 import enumations.GameStateEnum;
-import enumations.TileEnum;
 import models.Game;
 import models.Ghost;
 import models.Pacman;
@@ -37,51 +36,50 @@ public class GameCtrl implements Runnable {
 	private MazeBuilder mazeBuilder;
 	
 	private Game game = Game.getInstance();
+
+	private static final int points_for_ghost = 10;
 	
-	public void init() {
+	public void init(boolean b) {
 		MazeImportHandler m = new MazeImportHandler();
-		if (null == game.getAllLevel() || game.getAllLevel().length == 0) {
+		if (b) {
 			game.setAllLevel(m.getFileNames());
 			game.setCurrentLevel(0);
 		}
-		if (game.getAllLevel().length == game.getCurrentLevel()) {
-			youWin();
-			return ;
-		}
 		try {
-			m.readFile("./src/maze/" + game.getAllLevel()[game.getCurrentLevel()]);
-			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), 3));
+			m.readFile("./src/maze/" + game.getAllLevel().get(game.getCurrentLevel()));
+			game.setPacman(pacmanCtrl.init(m.getPositionPacman(), b ? 3 : game.getPacman().getLives()));
 			game.setPositionPacman(m.getPositionPacman());
 			game.setGhosts(ghostCtrl.init(m.getPositionGhosts()));
 			game.setPositionGhosts(m.getPositionGhosts());
 			game.setMaze(m.getMaze());
 			game.setAllFood(m.getAllfood());
 			game.setFoodEat(0);
+			game.setScore(b ? 0 : game.getScore());
 		} catch (UnsupportedOperationException | IOException e) {
 			e.printStackTrace();
 		}
-
+		setGameState(GameStateEnum.Pause);
 		mazeBuilder = MazeBuilder.getInstance(game);
-		game.setGameState(GameStateEnum.Pause);
 	}
 
 	public void update() {
 		pacmanCtrl.movePacman(game);
 		ghostCtrl.moveGhosts(game);
-		updateForGhostCollision();
+		if (updateForGhostCollision()) {
+			return;
+		}
 		if (noMoreFood()){
 			nextLevel();
+			return;
 		}
 		mazeBuilder.update(game);
 	}
 	
 	public void setGameState(GameStateEnum e) {
-		if (GameStateEnum.End != game.getGameState()) {
-			game.setGameState(e);
-		}
+		game.setGameState(e);
 	}
 
-	private void updateForGhostCollision() {
+	private boolean updateForGhostCollision() {
 		Pacman pacman = game.getPacman();
 		int xl = pacman.getX();
 		int xr = xl + 15;
@@ -95,26 +93,27 @@ public class GameCtrl implements Runnable {
 			if (x >= xl && x <= xr && y >= yt && y <= yb) {
 				if (g.isVulnerable()) {
 					eatGhost(i);
+					game.addScore(points_for_ghost);
 				} else {
 					pacmanCaptured();
-					return;
 				}
+				return true;
 			}
 		}
+		return false;
 	}
 
-	public void eatGhost(int ghostNum){
+	private void eatGhost(int ghostNum){
+		setGameState(GameStateEnum.ResetGhost);
+		mazeBuilder.updateGhostEndpoint(ghostNum);
+		mazeBuilder.update(game);
 		Ghost g = game.getGhosts()[ghostNum];
-		g.setVulnerable(false);
-		int[][] position = game.getPositionGhosts();
-		g.setX(position[ghostNum][0]);
-		g.setY(position[ghostNum][1]);
-		g.restoreExpect();
+		ghostCtrl.beEaten(g, game, ghostNum);
 	}
 
 	private void pacmanCaptured(){
 		System.out.println("\n******************\npacman got captured.\n******************\n");
-		setGameState(GameStateEnum.Pause);
+		setGameState(GameStateEnum.ResetPacman);
 		pacmanCtrl.pacmanIsCaptured();
 		int life = game.getPacman().getLives();
 		if (life == 0) {
@@ -132,9 +131,13 @@ public class GameCtrl implements Runnable {
 	//	put pacman and ghosts back to original positions
 	//	food remains eaten
 	private void reset() {
+		mazeBuilder.updatePacmanEndpoint();
+		for (int i = 0; i < 4; i++) {
+			mazeBuilder.updateGhostEndpoint(i);
+		}
+		mazeBuilder.update(game);
 		pacmanCtrl.init(game.getPositionPacman(), game.getPacman().getLives());
 		ghostCtrl.init(game.getPositionGhosts());
-		game.setGameState(GameStateEnum.Pause);
 		System.out.println("reset current level");
 	}
 
@@ -142,19 +145,25 @@ public class GameCtrl implements Runnable {
 	private void nextLevel() {
 		System.out.println("next level");
 		game.setCurrentLevel(game.getCurrentLevel() + 1);
-		gameCtrl.init();
-		game.setGameState(GameStateEnum.Pause);
+		if (game.getAllLevel().size() == game.getCurrentLevel()) {
+			youWin();
+		} else {
+			gameCtrl.init(false);
+		}
 	}
 
 	//game over - show a game over message and score. can play again from here
 	private void gameOver(){
 		System.out.println("Game over");
 		game.setGameState(GameStateEnum.End);
+		System.out.println(mazeBuilder);
+		mazeBuilder.update(game);
 	}
 	
 	private void youWin() {
 		System.out.println("You Win!");
-		game.setGameState(GameStateEnum.End);
+		game.setGameState(GameStateEnum.Win);
+		mazeBuilder.update(game);
 	}
 	
 	public void updatePacmanDirection(DirectionEnum direction) {
@@ -173,7 +182,7 @@ public class GameCtrl implements Runnable {
 	public static void main(String[] args) {
 		GameCtrl gameCtrl = new GameCtrl();
 		while (true) {
-			gameCtrl.init();
+			gameCtrl.init(true);
 			Thread thread = new Thread(gameCtrl);
 			while (true) {
 				thread.run();

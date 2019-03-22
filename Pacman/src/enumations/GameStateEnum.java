@@ -11,6 +11,6 @@ package enumations;
 
 public enum GameStateEnum {
 
-	Running, End, Pause
+	Running, End, Pause, ResetPacman, ResetGhost, Win
 	
 }
